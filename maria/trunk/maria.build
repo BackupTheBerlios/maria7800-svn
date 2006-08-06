@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<project name="Maria" default="Maria.Core" basedir=".">
+	<description>NAnt build file for Maria, the .NET Atari 7800 emulator</description>
+
+
+	<!-- Properties -->
+	<property name="debug" value="true" overwrite="false" />
+	<property name="optimize" value="false" overwrite="false" />
+	<property name="builddir" value="build" />
+
+
+	<!-- Other pre-build tasks -->
+	<mkdir dir="${builddir}" verbose="true"/>
+
+
+	<target name="clean" description="Remove all generated files">
+		<delete verbose="true">
+			<fileset>
+				<include name="${builddir}/**" />
+			</fileset>
+		</delete>
+	</target>
+
+
+	<target name="reallyclean" description="Remove all generated and backup files"
+	depends="clean">
+		<delete verbose="true">
+			<fileset defaultexcludes="false">
+				<include name="**/*~" />
+			</fileset>
+		</delete>
+	</target>
+
+
+	<target name="Maria.Core" description="Build Maria.Core library">
+		<csc target="library" output="${builddir}/Maria.Core.dll" debug="${debug}"
+		optimize="${optimize}">
+			<sources>
+				<include name="Maria.Core/*.cs" />
+			</sources>
+		</csc>
+	</target>
+
+	<target name="Maria.Core.Test" description="Build Maria.Core.Test suite"
+	depends="Maria.Core">
+		<csc target="library" output="${builddir}/Maria.Core.Test.dll" debug="${debug}"
+		optimize="${optimize}">
+			<sources>
+				<include name="Maria.Core.Test/*.cs" />
+			</sources>
+			<pkg-references>
+				<package name="nunit-2.2" />
+			</pkg-references>
+			<references>
+				<lib>
+					<include name="${builddir}" />
+				</lib>
+				<include name="Maria.Core.dll" />
+			</references>
+		</csc>
+	</target>
+
+	<target name="run-Maria.Core.Test" description="Run Maria.Core.Test suite"
+	depends="Maria.Core.Test">
+		<nunit2>
+			<formatter type="Plain" />
+			<test>
+				<assemblies>
+					<lib>
+						<include name="${builddir}" />
+					</lib>
+					<include name="Maria.Core.Test.dll" />
+				</assemblies>
+			</test>
+		</nunit2>
+	</target>
+</project>

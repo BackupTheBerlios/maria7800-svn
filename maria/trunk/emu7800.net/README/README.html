@@ -1,0 +1,621 @@
+<html>
+    <head>
+    <title>EMU7800: A .NET Atari 7800 Emulator</title>
+    <meta name="keywords" content="emu7800, atari, 2600, 7800, emulation, emulator, .net" />
+    <meta http-equiv="keywords" content="emu7800 atari 2600 7800 .net emulator" />
+    </head>
+	<body style="font-family:Verdana">
+        <h1>EMU7800: A .NET Atari 7800 Emulator</h1>
+        v0.71, May 31, 2006<br />
+        Mike Murphy, <a href="mailto:mimurphy@users.sourceforge.net"><tt>mimurphy@users.sourceforge.net</tt></a>
+        <p />
+		EMU7800 releases can be downloaded from SourceForge <a href="http://sourceforge.net/project/showfiles.php?group_id=87365">here</a>.
+		<p />
+		Click <a href="#keyboardmappings">here</a> to jump to the Keyboard Mappings.
+		<p />
+		Click <a href="#screenshots">here</a> to jump to the Screenshot Gallery.
+		<p />
+		<h2>Contents</h2>
+		<a href="#introduction">1.0 Introduction</a><br />
+		&nbsp;&nbsp;&nbsp;&nbsp;<a href="#copyr">1.1 Copyright Notice, Disclaimer, License</a><br />
+		&nbsp;&nbsp;&nbsp;&nbsp;<a href="#releasenotes">1.2 Release Notes</a><br />
+		&nbsp;&nbsp;&nbsp;&nbsp;<a href="#acknowledgements">1.3 Acknowledgements</a><br />
+		&nbsp;&nbsp;&nbsp;&nbsp;<a href="#knownissues">1.4 Known Issues</a><br />
+		<a href="#installation">2.0 Installation</a><br />
+		&nbsp;&nbsp;&nbsp;&nbsp;<a href="#prerequisites">2.1 Prerequisites</a><br />
+		&nbsp;&nbsp;&nbsp;&nbsp;<a href="#msi">2.2 Installing the Distribution</a><br />
+		&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rebuilding">2.3 Rebuilding from Source</a><br />
+		&nbsp;&nbsp;&nbsp;&nbsp;<a href="#romproperties">2.4 Game Cartridge Information Database (a.k.a. ROMProperties)</a><br />
+		<a href="#runningtheemulator">3.0 Running the Emulator</a><br />
+		&nbsp;&nbsp;&nbsp;&nbsp;<a href="#keyboardmappings">3.1 Keyboard Mappings</a><br />
+		&nbsp;&nbsp;&nbsp;&nbsp;<a href="#gamecontrollersjoysticks">3.2 Game Controller/Joysticks</a><br />
+		&nbsp;&nbsp;&nbsp;&nbsp;<a href="#paddleandlightgunemu">3.3 Paddle and Lightgun Emulation via Mouse (SDL Host only)</a><br />
+		&nbsp;&nbsp;&nbsp;&nbsp;<a href="#userinterface">3.4 User Interface</a><br />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#gameselecttab">3.4.1 Game Select Tab</a><br />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#settingstab">3.4.2 Settings Tab</a><br />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#consoletab">3.4.3 Console Tab</a><br />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#helptab">3.4.4 Help Tab</a><br />
+		&nbsp;&nbsp;&nbsp;&nbsp<a href="#tuning">3.5 Addressing Performance Problems</a><br />
+		&nbsp;&nbsp;&nbsp;&nbsp<a href="#commandline">3.6 External Command-line Options</a><br />
+		<a href="#screenshots">4.0  Screenshot Gallery</a>
+		<h2 id="introduction">1.0 Introduction</h2>
+		This is a release of EMU7800, an Atari 7800 emulator implemented using Microsoft's .NET platform.
+		Most VCS (2600) and ProSystem (7800) titles work well, with 2600 
+		support featuring authentic HMOVE emulation, per Andrew Tower's paper &quot;A 
+		Small Opus on the TIA.&quot; The stars in Cosmic Ark appear, but without emulation cheats.
+		<p />
+		EMU7800 runs on Windows 2000, XP, and later systems. 
+		Performance is excellent on systems a year or less old.
+		<p />
+		EMU7800 was originally an academic graduate capstone project for the <a href="http://www.tacoma.washington.edu/tech">
+			Institute of Technology</a> at <a href="http://www.tacoma.washington.edu/">UW Tacoma</a>.
+		<p />
+		Send me a note if you have questions or feedback. Enjoy!
+		<p />
+		<h3 id="copyr">1.1 Copyright Notice, Disclaimer, License</h3>
+		EMU7800 is Copyright &copy; 2003-2006 Mike Murphy.
+		<p />
+		THIS SOFTWARE IS PROVIDED &quot;AS-IS&quot; WITHOUT ANY EXPRESSED OR IMPLIED 
+		WARRANTY. IN NO EVENT WILL THE AUTHOR BE HELD LIABLE FOR ANY DAMAGES ARISING 
+		FROM THE USE OF THIS SOFTWARE. PLEASE SEE THE ENCLOSED &quot;LICENSE.TXT&quot; 
+		FILE FOR THE COMPLETE LICENSING TERMS.
+		<p />
+		<h3 id="releasenotes">1.2 Release Notes</h3>
+		<h4>0.71:</h4>
+		<ul>
+		    <li>Added: Web browser control on new <a href="#helptab">Help</a> tab, enabling easy reference to this README and online game manuals where defined in <tt>ROMProperties.csv</tt></li>
+		    <li>Fixed: 7800 Emulation: 320B mode corrected to correspond to the real hardware&mdash;courtesy of Matthias Luedtke (<a href="mailto:matthias@atari8bit.de">matthias@atari8bit.de</a>)</li>
+            <li>Updated: Moved to .NET 2.0 and Visual Studio 2005</li>
+			<li>Updated: <tt>SDL.dll</tt> to version 1.2.10</li>
+			<li>Added: Emulator sleeps after each frame is rendered to reduce superfluous CPU consumption (can be tuned via the Console tab)</li>
+			<li>Updated: Better pause behavior&mdash;modal functions are still available during pause</li>
+		</ul>
+		<h4>0.61:</h4>
+		<ul>
+		    <li>Fixed: Emulator continued to run in the background when the window was closed</li>
+		    <li>Progress meter added so the user has something to watch while large ROM directories are examined</li>
+		    <li>Added: High Score Cartridge support (7800)&mdash;courtesy of Matthias Luedtke (<a href="mailto:matthias@atari8bit.de">matthias@atari8bit.de</a>)</li>
+		    <li>Added: Settings are stored in the Win32 registry, so they persist across new versions and recompiles</li>
+		    <li>Updated: <tt>SDL.dll</tt> to version 1.2.8</li>
+		    <li>Updated: Unified distribution into one single <tt>.MSI</tt> archive, that can build itself</li>
+		</ul>
+		<h4>0.60:</h4>
+		<ul>
+			<li>Added: Support for the <a href="http://www.atariage.com/store/product_info.php?products_id=267">Stelladaptor</a> controller</li>
+			<li>Added: Recognizes the now correct 7800 NTSC BIOS. Old 7800 BIOS is still recognized 
+			for now, but a warning message appears on the Green Screen log.
+			Thanks to Mitchell Orman (<a href="mailto:Mitch@atari7800.org">Mitch@atari7800.org</a>) for the information</li>
+			<li>Numerous minor fixes and documentation updates</li>
+		</ul>
+		<h4>0.55:</h4>
+		<ul>
+			<li>Added: NOP instruction register dumping (homebrew developer support), activate 
+			on the console using <tt>cpunop on</tt>. Setting will persist between invocations</li>
+			<li>Added: Button on the Settings Tab that brings up an openfile dialog to load previously saved machine states</li>
+			<li>Added: Double-clicking on the game select tab will immediately start the selected ROM</li>
+			<li>Updated: Converted ROM database to a .CSV file: Editable via MS Excel or text editor</li>
+			<li>Fixed: PAL 7800BIOS startup</li>
+			<li>Added: Command-line ROM invocation to support various emulator front-ends</li>
+			<li>Reverted: TIASound to v0.41 version: fixes a sound omission bug</li>
+			<li>No changes to emulation were made for this release</li>
+		</ul>
+		<h4>0.50:</h4>
+		<ul>
+			<li>&quot;The Truth in Advertising&quot; release... now, most 7800 titles are playable</li>
+			<li>Added: 7800 BIOS startup can be skipped</li>
+			<li>Added: Both .a78 and .bin 7800 ROMs are supported</li>
+			<li>Added: Game state save/restore</li>
+			<li>Added: Mouse-based lightgun support, which works correctly for 2600 games</li>
+			<li>Added: GUI options for varying emulation speed, etc.</li>
+		</ul>
+		<h4>0.41:</h4>
+		<ul>
+			<li>Substituted use of Managed DirectX with the Simple DirectMedia Layer (SDL). 
+			Fullscreen performance is now on par with the most excellent Z26 emulator.</li>
+			<li>Solved the sound syncronization problem; audio now works perfectly.</li>
+			<li>Added: Game controller (joystick) support.</li>
+			<li>Added: mouse-based paddle emulation on SDL fullscreen mode.</li>
+			<li>No changes to emulation were made for this release.</li>
+		</ul>
+		<h4>0.33:</h4>
+		Further refined the HMOVE emulation, added a few illegal opcodes to enable some 
+		of the homebrew titles to work, and fixed several emulation bugs. This cleaned 
+		up Pitfall2, and other Activision titles that had visual artifacts.
+		<ul>
+			<li>Fixed: eliminated PIA bugs: no more jittering for Star Fox, Off Your Rocker, 
+			Spitfire, Omega Race, Blueprint, and others probably</li>
+			<li>Fixed: minor missle/ball positioning TIA bug</li>
+			<li>Fixed: booster grip controller now works right</li>
+			<li>Fixed: Omega Race rom was being ignored because of its odd size</li>
+			<li>Fixed: emulator no longer requires one line of VSYNC; this helps one of the 
+			Bowling ROMs and others probably</li> 
+		</ul>
+		<h4>0.32:</h4>
+		<ul>
+			<li>Fixed: the file picker on the GameSelectTab hung in certain circumstances</li>
+			<li>Fixed: Pitfall2 rom was being ignored because of its odd size Cleaned up the 
+			distribution by removing some unneeded junk</li>
+		</ul>
+		<h4>0.31:</h4>
+		<ul>
+			<li>First major release via SourceForge.</li>
+		</ul>
+		<h3 id="acknowledgements">1.3 Acknowledgements</h3>
+		<p />
+		EMU7800 is a derived work of many people. Please let me know should others need to 
+		be included in the following list:
+		<ul>
+			<li>Bradford W. Mott, et al., Author of the <a href="http://stella.sourceforge.net">Stella</a> emulator</li>
+			<li>John Saeger, et al., Author of the <a href="http://www.whimsey.com/z26/z26.html">Z26</a> emulator</li>
+			<li>Dan Boris, Author of 7800 emulation in <a href="http://www.mess.org">MESS</a></li>
+			<li>Andrew Towers, Author of <a href="http://www.atarihq.com/danb/files/TIA_HW_Notes.txt">
+				&quot;TIA Hardware Notes: A Small Opus on the TIA&quot;</a></li>
+			<li>Ron Fries, Author of the <a href="http://members.aol.com/atari800xl/tiasnd11.zip">TIASound</a> library</li>
+		</ul>
+		For all things Atari, including game manuals, tips, and community, be sure to visit <a href="http://www.atariage.com">AtariAge</a>!
+		<p />
+		<h3 id="knownissues">1.4 Known Issues</h3>
+		<ul>
+			<li>Tetris (one scanline fast jitter)</li>
+			<li>Challenge: 4311a4115fb7bc68477c96cf44cebacf (doesnt work, needs some illegal opcodes)</li>
+			<li>Pitfall II sound needs fixin'</li>
+			<li>River Raid: Leftmost house moves a pixel to the right onscreen</li>
+			<li>Asteroids: Copyright logo on start up needs aligning</li>
+			<li>One on One Basketball (7800): Timing maybe fixed, but there are display artifacts</li>
+			<li>Xenophobe (7800): flickering/hangs</li>
+			<li>Lightgun for the 7800 is inaccurate; a timing problem</li>
+			<li>No Supercharger support</li>
+			<li>Grand Prix: &quot;off by two CLK&quot;</li>
+			<li>Need Pokey emulation for a couple 7800 titles (Ballblazer and Commando)</li>
+			<li>Need Mindlink controller support</li>
+			<li>Need to support more illegal CPU opcodes to better support homebrews</li>
+		</ul>
+		
+		<h2 id="installation">2.0 Installation</h2>
+		
+		<h3 id="prerequisites">2.1 Prerequisites</h3>
+		To run EMU7800, you will need to have the .NET 2.0 runtime installed onto your Windows-based computer.
+		You can do this via <a href="http://windowsupdate.microsoft.com">Windows Update</a>.
+		To have the capability to build from the included source code,
+		you'll either need the .NET 2.0 software development kit (SDK) or Visual Studio 2005.
+		Free versions of each are available on the <a href="http://msdn.microsoft.com">Microsoft Developer Network (MSDN)</a> site.
+		EMU7800 was developed on a machine with a Pentium 4 Celeron 1.7 GHZ processor (four year-old system, as of this writing.)
+		This appears adequate for emulator performance.
+		
+		<h3 id="msi">2.2 Installing the Distribution</h3>
+		The distribution is made available as an Windows Installer <tt>.MSI</tt> file. 
+		Simply launch it to deploy the software to your machine.
+		A single shortcut will be placed on your desktop to launch the emulator.
+		
+		<h3 id="rebuilding">2.3 Rebuilding from Source</h3>
+		For the curious, the complete source code is included in the distribution and is located
+		in the <tt>src/</tt> folder.
+		To rebuild from source, either use Visual Studio 2005 to open the <tt>*.sln</tt>
+		or use the following MSBuild command in a CMD.EXE window:
+		<p />
+		<tt>MSBuild /t:Rebuild /p:Configuration=Release EMU7800.csproj</tt>
+		<p />
+		<h4 id="romproperties">2.4 Game Cartridge Information Database (a.k.a. ROMProperties)</h4>
+		In EMU7800, recognized game ROM files have associated properties that determine the proper execution configuration of the emulator.
+		These attributes are stored in the <tt>ROMProperties.CSV</tt> file, located in the same directory as the executable.
+		Any editor that can work with <tt>.CSV</tt> files (e.g. NOTEPAD.EXE and Excel&trade;), can be used to update the file.
+		Note that a copy of this file is also in the <tt>src\</tt> folder&mdash;serving as a ready backup if necessary.
+		
+		<h2 id="runningtheemulator">3.0 Running the Emulator</h2>
+		
+		<h3 id="keyboardmappings">3.1 Keyboard Mappings</h3>
+		<table border="1">
+			<tr>
+				<th>Key</th>
+				<th>&nbsp;GDI Host&nbsp;</th>
+				<th>&nbsp;SDL Host&nbsp;</th>
+				<th>Function</th>
+			</tr>
+			<tr>
+				<td align="center">ESC</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Escape (quit) from the currently running machine/game</td>
+			</tr>
+			<tr>
+				<td align="center">Q</td>
+				<td align="center">&nbsp;</td>
+				<td align="center">&bull;</td>
+				<td>Swap <a href="http://www.atariage.com/store/product_info.php?products_id=267">Stelladaptor</a> paddles P1/P2 on device 0</td>
+			</tr>
+			<tr>
+				<td align="center">W</td>
+				<td align="center">&nbsp;</td>
+				<td align="center">&bull;</td>
+				<td>Swap game controller/joystick devices 0/1</td>
+			</tr>
+			<tr>
+				<td align="center">E</td>
+				<td align="center">&nbsp;</td>
+				<td align="center">&bull;</td>
+				<td>Swap <a href="http://www.atariage.com/store/product_info.php?products_id=267">Stelladaptor</a> paddles P3/P4 on device 1</td>
+			</tr>
+			<tr>
+				<td align="center">P</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Pause the emulator, any other key resumes</td>
+			</tr>
+			<tr>
+				<td align="center">M</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Sound mute toggle</td>
+			</tr>
+			<tr>
+				<td align="center">F</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Show frame rate, emulator execution duration (ms/frame), screen paint duration (ms/frame), sleep (ms/frame) </td>
+			</tr>
+			<tr>
+				<td align="center">R</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Game Reset Console Switch</td>
+			</tr>
+			<tr>
+				<td align="center">S</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Game Select Console Switch</td>
+			</tr>
+			<tr>
+				<td align="center">C</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Toggle between Color and B/W Console Switch settings</td>
+			</tr>
+			<tr>
+				<td align="center">1</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Toggle between A/B difficulty for left player</td>
+			</tr>
+			<tr>
+				<td align="center">2</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Toggle between A/B difficulty for right player</td>
+			</tr>
+			<tr>
+				<td align="center">F1</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Set keyboard/mouse to player 1 control</td>
+			</tr>
+			<tr>
+				<td align="center">F2</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Set keyboard/mouse to player 2 control</td>
+			</tr>
+			<tr>
+				<td align="center">F3</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Set keyboard/mouse to player 3 control</td>
+			</tr>
+			<tr>
+				<td align="center">F4</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Set keyboard/mouse to player 4 control</td>
+			</tr>
+			<tr>
+				<td align="center">F5</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Pan display left</td>
+			</tr>
+			<tr>
+				<td align="center">F6</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Pan display right</td>
+			</tr>
+			<tr>
+				<td align="center">F7</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Pan display up</td>
+			</tr>
+			<tr>
+				<td align="center">F8</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Pan display down</td>
+			</tr>
+			<tr>
+				<td align="center">F11</td>
+				<td align="center">&nbsp;</td>
+				<td align="center">&bull;</td>
+				<td>Save machine state to <tt>outdir/</tt></td>
+			</tr>
+			<tr>
+				<td align="center">F12</td>
+				<td align="center">&nbsp;</td>
+				<td align="center">&bull;</td>
+				<td>Save Screenshot to <tt>outdir/</tt></td>
+			</tr>
+			<tr>
+				<td align="center">Up Arrow</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Move up: joystick, booster grip</td>
+			</tr>
+			<tr>
+				<td align="center">Left Arrow</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Move left: joystick, booster grip, paddles, driving</td>
+			</tr>
+			<tr>
+				<td align="center">Right Arrow</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Move right: joystick, booster grip, paddles, driving</td>
+			</tr>
+			<tr>
+				<td align="center">Down Arrow</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Move down: joystick, booster grip</td>
+			</tr>
+			<tr>
+				<td align="center">CTRL</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Trigger</td>
+			</tr>
+			<tr>
+				<td align="center">ALT</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Booster</td>
+			</tr>
+			<tr>
+				<td align="center">NUMPAD7</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Keypad 7</td>
+			</tr>
+			<tr>
+				<td align="center">NUMPAD8</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Keypad 8</td>
+			</tr>
+			<tr>
+				<td align="center">NUMPAD9</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Keypad 9</td>
+			</tr>
+			<tr>
+				<td align="center">NUMPAD4</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Keypad 4</td>
+			</tr>
+			<tr>
+				<td align="center">NUMPAD5</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Keypad 5</td>
+			</tr>
+			<tr>
+				<td align="center">NUMPAD6</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Keypad 6</td>
+			</tr>
+			<tr>
+				<td align="center">NUMPAD1</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Keypad 1</td>
+			</tr>
+			<tr>
+				<td align="center">NUMPAD2</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Keypad 2</td>
+			</tr>
+			<tr>
+				<td align="center">NUMPAD3</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Keypad 3</td>
+			</tr>
+			<tr>
+				<td align="center">NUMPAD*</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Keypad *</td>
+			</tr>
+			<tr>
+				<td align="center">NUMPAD0</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Keypad 0</td>
+			</tr>
+			<tr>
+				<td align="center">NUMPAD/</td>
+				<td align="center">&bull;</td>
+				<td align="center">&bull;</td>
+				<td>Keypad #</td>
+			</tr>
+		</table>
+		
+		<h3 id="gamecontrollersjoysticks">3.2 Game Controller/Joysticks</h3>
+		Up to two game controllers (e.g. joysticks) can be used, where the first two found in the device list will be selected for use.
+		<p />
+		For game ROMs that use the paddle controller, the mouse will be used as input unless 
+		the <a href="http://www.atariage.com/store/product_info.php?products_id=267">Stelladaptor</a>
+		controller is detected as one of the selected game controllers.
+		In this case, mouse input is deactivated and the <a href="http://www.atariage.com/store/product_info.php?products_id=267">Stelladaptor</a> 
+		device is used instead for paddle input.
+		<p />
+		Mouse input can be disabled manually via the Console tab (enter <tt>?</tt> for a list of available commands) should your system
+		suppress the Stelladaptor device name from EMU7800.
+		<p />
+		The paddle swapping keys (<tt>Q</tt> and <tt>E</tt>) of the SDL Host are useful when you are using a set of original Atari
+		paddles, where the &quot;player 1&quot; potentiometer is excessively worn and delivers non-uniform and/or erratic resistances.
+		Chances are the &quot;player 2&quot; dial has not seen as much action, and will perform much better.
+			
+		<h3 id="paddleandlightgunemu">3.3 Paddle and Lightgun Emulation via Mouse (SDL Host only)</h3>
+		On paddle games, the mouse can be used as the paddle controller.
+		Sensitivity is currently not configurable.
+		The mouse is also be used for lightgun games. 
+		Look for a small white dot that indicates where on the screen the &quot;lightgun&quot; is pointed at.
+		<p />
+	
+		<h3 id="userinterface">3.4 User Interface</h3>
+		
+		<h4 id="gameselecttab">3.4.1 Game Select Tab</h4>
+		<p />
+		<img src="EMU7800GameSelect.JPG" alt="Game Select Tab"/>
+		<p />
+		The number of ROMs recognized in the <tt>roms/</tt> directory is displayed in the lower left corner.
+		To select a new directory, click the Select ROM File button, and navigate to the ROM directory of your choice.
+		When a ROM file is selected, the rest of the directory contents will be scanned and will be presented for subsequent selection.
+		<p />
+		<img src="EMU7800OpenFile.JPG" alt="Open File Dialog" />
+		<p />
+		By default, <tt>.bin</tt> files will be displayed in the Open File dialog.
+		To show <tt>.a78</tt> files, use the File Type drop-down.
+		
+		<h4 id="settingstab">3.4.2 Settings Tab</h4>
+		<p />
+		<img src="EMU7800Settings.JPG" alt="Settings Tab"/>
+		<p />
+		There are several settings that can be adjusted on this tab.
+		Settings will saved, so they will not need to be set again every time the program is launched.
+		<p />
+		<ul>
+			<li>		
+		    <b>Host Select</b>: There are two &quot;hosts&quot; available to run the emulated machinery.
+		    One is &quot;Windows GDI (GDI Host)&quot; and the other is &quot;Simple DirectMedia Layer (SDL Host).&quot;
+		    The GDI Host is not the better of the two for game playing, but is good for emulator development and testing.
+		    It does not operate in full-screen mode, and not all controller features are supported.
+		    Further, video performance degrades proportional to the amount of differences between frames.
+			For the best game-playing experience, choose the SDL Host.<p /></li>
+			<li>
+			<b>Frame Rate Adjust</b>: Default framerate for NTSC (N. American T.V. standard) games is 60HZ, while the default 
+			framerate for PAL (European T.V. standard) games is 50HZ. Should you find that your computer is not fast 
+			enough to run the emulator, you can adjust the framerate down as appropriate. 
+			Persistant audio popping indicates the sound queue is underflowing&mdash;indicating 
+			the emulator is unable to run fast enough to keep it filled. Note that reducing 
+			the framerate also scales down the audio playback frequency accordingly, so the 
+			audio pitch will decrease.
+			Audio playback is used to throttle the display framerate&mdash;so both are tightly coupled.<p /></li>
+			<li>
+			<b>Sound Queue Length</b>: Reducing the queue length reduces the sound latency, but increases the risk of 
+			the sound queue underflowing. Correspondingly, increasing the queue length 
+			increases the sound latency, but decreases the risk of the sound queue 
+			underflowing.  In many cases, this will not need to be adjusted.<p /></li>
+			<li>
+			<b>Sound Volume</b>: Adjusts the sound volume.  In many cases, this will not need to be adjusted as
+			the volume knob on your PC speakers may work just as well.<p /></li>
+			<li>
+			<b>Skip BIOS (7800 Emulation)</b>: The real Atari 7800 executes BIOS code on machine startup.
+			To do this on the emulator, the BIOS ROM(s) (one for NTSC, and one for PAL) need 
+			to be in the current ROM directory and this checkbox needs to be unchecked.
+			If you do not have the BIOS files or just want to skip BIOS execution, check this box.<p /></li>
+			<li>
+			<b>Use 7800 High Score Cart (7800 Emulation)</b>: For the 7800, there was a cartridge 
+			that provided a facility for 7800 games to save high score information.
+			Not all games, however, took advantage of this.
+			Set this checkbox to simulate this device&mdash;you will also need the associated ROM for this feature to work. 
+			EMU7800 will detect the ROM regardless of filename, as long as it is in the current ROM directory.<p /></li>
+		</ul>
+		
+		<h4 id="consoletab">3.4.3 Console Tab</h4>
+		<p />
+		<img src="EMU7800Console.JPG" alt="Console Tab" />
+		<p />
+		Events pertinate to the execution of the emulator are logged to the Console.
+		Commands may also be issued here to access features not available via the GUI.
+		To see what is available, enter <tt>?</tt>.
+		
+		<h4 id="helptab">3.4.4 Help Tab</h4>
+		<p />
+		<img src="EMU7800Help.JPG" alt="Help Tab" />
+		<p />
+		The Help tab features an integrated web browser control.
+		Two link controls are available, located at the bottom of the control.
+		The README link references this README file on the local system.
+		The Game Help link varies dependent upon the currently selected game,
+		and is intended to reference original game instruction manuals, available online.
+		At the time of this writing, not all games have help URLs defined.
+		URLs can be specified in the <tt>ROMProperties.csv</tt> file, and more will be included in subsequent EMU7800 verisons.
+		Standard web browser features, like the Back button and Refresh, are available by right-clicking in the browser window.
+		<p />
+		Note that when the Game Help link is clicked, it will &quot;disable&quot; to indicate the page is loading.
+		It will &quot;re-enable&quot; once loading is complete.
+		If no Game Help URL is available, the link will not be visible.
+		<p/>		
+		
+		<h3 id="tuning">3.5 Addressing Performance Problems</h3>
+		In essence, EMU7800 is a streaming media application.
+		Video output is a sequence of pixels emulating the television raster beam sweeping across the 
+		inside surface of the television screen.
+		Similarly, audio output is a stream of pulses.
+		The emulator operates by running as fast as possible, working to fill up the sound queue.
+		Once full, the emulator waits on the queue until a sound frame opens up to receive the next frame of data.
+		The sound queue is consumed by the audio device, at the suitable playback speed.
+		This has the effect of opening up sound frames precisely at the desired frame rate
+		and ultimately synchronizing the video and audio output together.
+		<p />
+		Should the sound queue be consumed at a faster rate than it can be filled,
+		annoying popping or buzzing noises will occur.
+		The <a href="#settingstab">Settings Tab</a> permit the frame rate to be throttled up or down from the default.
+		Reducing the frame rate will reduce the rate at which the sound queue is consumed,
+		giving the emulator a better chance of keeping up.
+		
+		<h3 id="commandline">3.6 External Command-line Options</h3>
+		To support various emulator front-end programs, EMU7800 can be launched with a 
+		full filename provided as a command-line argument:<br />
+		<br />
+		<tt>EMU7800.exe &quot;c:\Program Files\EMU7800\roms\OYSTR29.BIN&quot;</tt><br />
+		<br />
+		Should the ROM file not be found, be unreadable, or not recognized, the GUI 
+		interface will be launched as normal.
+		Clicking on the Console Tab will show the reason for the failure.
+		Otherwise, the ROM will be run immediately.
+		<p />
+		<h2 id="screenshots">4.0 Screenshot Gallery</h2>
+		<p />
+		Atari VCS (2600) Titles:
+		<p />
+		<img src="combat26.JPG" />
+		<img src="breakout26.JPG" />
+		<img src="oystron26.JPG" />
+		<img src="adventure26.JPG" />
+		<img src="frogger26.JPG" />
+		<img src="cosmicark26.JPG" />
+		<img src="asteroids26.JPG" />
+		<img src="gijoe26.JPG" />
+		<img src="earthdiesscreaming26.JPG" />
+    	<p />			
+		Atari ProSystem (7800) Titles:
+		<p />		
+		<img src="asteroids78.JPG" />		
+		<img src="impossiblemission78.JPG" />
+		<img src="mspacman78.JPG" />
+		<img src="summergames78.JPG" />
+		<img src="joust78.JPG" />
+		<img src="darkchambers78.JPG" />
+		<img src="robotron78.JPG" />
+		<img src="dkongjr78.JPG" />
+		<img src="mariobros78.JPG" />
+		<p />
+		<hr />
+	</body>
+</html>

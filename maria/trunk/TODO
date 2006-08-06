@@ -1,0 +1,25 @@
+- REALLY learn how to use svn. Involves probably working through
+  large parts of the starter kit book on svn. Whatever.
+  It's certainly worth it.
+- Try out SVN access at BerliOS. If it is any good:
+  - Import the stuff we have by now to BerliOS
+    (also a complete copy of the original emu7800 0.71 source)
+  - Change all email addresses in the code from tom42@sourceforge.net
+    tom42@users.berlios.de
+- Raise warning level when compiling ?
+- Well...I'd say we port the GameSettings class now. This involves creating
+  a bunch of enumerations up front, which isn't a big problem in my opinion.
+  Do the attributes in the GameSettings class really need to be all public,
+  btw ???
+- Port AddressSpace class (involves introducing a dummy machine class...)
+- We could also go and port the disassembler...the thing doesn't
+  seem to use too much other stuff ?
+  => nope...needs the AddressSpace class
+- The AddressSpace class can't be too hard to port actually,
+  even if the Machine class is still missing: AddressSpace just
+  stores a Machine reference, but never uses it itself...silly,
+  isn't it ?
+- We have now IDevice - which means we can port a bunch of devices =)
+  Pick another device and "port" it.
+
+
