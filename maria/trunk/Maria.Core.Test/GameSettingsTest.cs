@@ -27,12 +27,12 @@ namespace Maria.Core {
 
 		[SetUp]
 		public void SetUp() {
-			gs = new GameSettings();
+			gs = new GameSettings("Bogus MD5 checksum.");
 		}
 
 		[Test]
 		public void TestMD5() {
-			Assert.IsNull(gs.MD5);
+			Assert.AreEqual("Bogus MD5 checksum.", gs.MD5);
 			gs.MD5 = "foo";
 			Assert.AreEqual("foo", gs.MD5);
 		}
@@ -113,6 +113,16 @@ namespace Maria.Core {
 			Assert.IsNull(gs.FileInfo);
 			gs.FileInfo = fi;
 			Assert.AreEqual(fi, gs.FileInfo);
+		}
+
+		[Test]
+		public void TestOffset() {
+			FileInfo binFile = new FileInfo("argle.bin");
+			FileInfo a78File = new FileInfo("bargle.a78");
+			gs.FileInfo = binFile;
+			Assert.AreEqual(0, gs.Offset);
+			gs.FileInfo = a78File;
+			Assert.AreEqual(128, gs.Offset);
 		}
 	}
 }

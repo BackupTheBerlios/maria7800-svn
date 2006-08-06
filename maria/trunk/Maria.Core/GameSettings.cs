@@ -38,6 +38,11 @@ namespace Maria.Core {
 		private string fHelpUri;
 		private FileInfo fFileInfo;
 
+		public GameSettings(string md5)
+		{
+			MD5 = md5;
+		}
+
 		public string MD5 {
 			get { return fMD5; }
 			set { fMD5 = value; }
@@ -102,18 +107,12 @@ namespace Maria.Core {
 		// actually there should probably be some kind of ROMImage class
 		// that knows how to load rom images and perhaps create Cart objects
 		// from them.
-		// TODO : uncomment. It's needed in some other piece of messy code.
-//		public int Offset {
-	//		get { return (FileInfo.Extension.ToLower() == ".a78") ? 128 : 0; }
-		//}
-	}
-}
+		public int Offset {
+			get { return (FileInfo.Extension.ToLower() == ".a78") ? 128 : 0; }
+		}
 
-/*
-		public override string ToString()
-		{
+		public override string ToString() {
 			StringBuilder s = new StringBuilder("GameSettings:\n");
-
 			s.AppendFormat(" MD5: {0}\n", MD5);
 			s.AppendFormat(" Title: {0}\n", Title);
 			s.AppendFormat(" Manufacturer: {0}\n", Manufacturer);
@@ -124,23 +123,11 @@ namespace Maria.Core {
 			s.AppendFormat(" MachineType: {0}\n", MachineType);
 			s.AppendFormat(" LController: {0}\n", LController);
 			s.AppendFormat(" RController: {0}\n", RController);
-
 			s.AppendFormat(" FileName: {0}", FileInfo != null ? FileInfo.FullName : "<null>");
 			if (FileInfo != null)
-			{
 				s.AppendFormat("\n Size: {0}", FileInfo.Length);
-			}
 			s.AppendFormat("\n HelpUri: {0}", HelpUri);
-
 			return s.ToString();
-		}
-
-		public GameSettings(string md5)
-		{
-			MD5 = md5;
 		}
 	}
 }
-
-*/
-
