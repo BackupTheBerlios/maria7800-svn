@@ -1,7 +1,7 @@
 /*
  * Convenient interface to MD5 hash function.
  * Copyright (C) 2004 Mike Murphy
- * Copyright (C) 2006 Thomas Mathys (tom42@sourceforge.net)
+ * Copyright (C) 2006 Thomas Mathys (tom42@users.berlios.de)
  *
  * This file is part of Maria.
  *
