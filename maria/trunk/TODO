@@ -1,3 +1,6 @@
+- Introduce a util library with maria unspecific classes,
+  such as an ArgumentCheck class. Or so. Call the thing
+  Mrdr.Vtg.Util or somesuch. And of course test it.
 - Port AddressSpace class now. This involves:
   - Creating a dummy Machine class. This will work, since
     the AddressSpace just stores the reference, but never
