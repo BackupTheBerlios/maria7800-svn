@@ -107,6 +107,7 @@ namespace Maria.Core {
 			Assert.AreEqual("/dev/null", gs.HelpUri);
 		}
 
+		[Test]
 		public void TestFileInfo() {
 			FileInfo fi = new FileInfo("/foo/bar");
 			Assert.IsNull(gs.FileInfo);
