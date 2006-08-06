@@ -1,0 +1,300 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{75E76CE4-80D3-4CEE-836D-CB5120DA1806}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>Icon1.ico</ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>EMU7800</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>EMU7800</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>EMU7800.EMU7800App</StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisRules>-Microsoft.Design#CA1043;-Microsoft.Globalization#CA1301;-Microsoft.Globalization#CA1302;-Microsoft.Globalization#CA1303;-Microsoft.Globalization#CA1306;-Microsoft.Globalization#CA1304;-Microsoft.Globalization#CA1305;-Microsoft.Globalization#CA1300;-Microsoft.Naming#CA1705</CodeAnalysisRules>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <PlatformTarget>x86</PlatformTarget>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'GDIHost %28DEBUG%29|AnyCPU' ">
+    <OutputPath>bin\GDIHost %28DEBUG%29\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddressSpace.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="WinmmNativeMethods.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Bios7800.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Carts.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CommandLine.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EMU7800App.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FontRenderer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GameSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GlobalSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Host.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HostGDI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HostSDL.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HSC7800.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IDevice.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InputAdapters.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EMUTraceListener.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="M6502.cs" />
+    <Compile Include="M6502DASM.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Machine.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Machine2600.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Machine7800.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Maria.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MariaTables.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MD5.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NullDevice.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PIA.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RAM6116.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Rectangulator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ROMProperties.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SdlNativeMethods.cs" />
+    <Compile Include="TIA.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TIASound.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TIATables.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\ControlPanelForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ControlPanelForm.Designer.cs">
+      <DependentUpon>ControlPanelForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ControlPanelForm.Console.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ControlPanelForm.GamePrograms.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ControlPanelForm.Settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Content Include="Documentation.zip" />
+    <Content Include="ROMProperties.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="Icon1.ico" />
+    <EmbeddedResource Include="Images\CLSDFOLD.BMP" />
+    <EmbeddedResource Include="Images\OPENFOLD.BMP" />
+    <EmbeddedResource Include="Images\ROM.BMP" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ControlPanelForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ControlPanelForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App.config" />
+    <None Include="README\EMU7800Console.JPG" />
+    <None Include="README\EMU7800GameSelect.JPG" />
+    <None Include="README\EMU7800OpenFile.JPG" />
+    <None Include="README\EMU7800Settings.JPG" />
+    <None Include="README\README.html" />
+    <None Include="roms\OYSTR29.BIN" />
+    <Content Include="LICENSE.TXT" />
+    <Content Include="README\adventure26.JPG" />
+    <Content Include="README\asteroids26.JPG" />
+    <Content Include="README\asteroids78.JPG" />
+    <Content Include="README\breakout26.JPG" />
+    <Content Include="README\combat26.JPG" />
+    <Content Include="README\cosmicark26.JPG" />
+    <Content Include="README\darkchambers78.JPG" />
+    <Content Include="README\dkongjr78.JPG" />
+    <Content Include="README\earthdiesscreaming26.JPG" />
+    <Content Include="README\EMU7800Help.JPG" />
+    <Content Include="README\frogger26.JPG" />
+    <Content Include="README\gijoe26.JPG" />
+    <Content Include="README\impossiblemission78.JPG" />
+    <Content Include="README\joust78.JPG" />
+    <Content Include="README\mariobros78.JPG" />
+    <Content Include="README\mspacman78.JPG" />
+    <Content Include="README\omegarace26.JPG" />
+    <Content Include="README\oystron26.JPG" />
+    <Content Include="README\robotron78.JPG" />
+    <Content Include="README\summergames78.JPG" />
+    <Content Include="SDL\README-SDL.txt" />
+    <Content Include="SDL\SDL.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>
