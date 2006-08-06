@@ -1,21 +1,35 @@
+- Port AddressSpace class now. This involves:
+  - Creating a dummy Machine class. This will work, since
+    the AddressSpace just stores the reference, but never
+    uses it (so it shouldn't have it at all, technically...)
+  - The old AddressSpace class uses the Cart class. However,
+    it only asks wether the Cart needs snooping (used mainly
+    for bankswitching, presumably) and then it upcasts to
+    IDevice and never worries about the cart anymore
+    (of course, if the cart requested snooping, the cart
+    is notified of bus accesses, but this is all done using
+    the IDevice interface)
+    => the whole point of this is, that Cart.RequestSnooping should
+       actually go into the IDevice interface, methinks.
+       (ANYWAY, READ THE CODE CAREFULLY BEFORE SCREWING UP THINGS)
+  - Perhaps the snooper thingy could be more bulletproof, or more versatile:
+    - Either check wether already a snooper is set, and if so, throw (when setting it again)
+    - Or allow N snoopers. Don't know wether this will be necessary, though.
 - Learn how to tag stuff, and tag the ORIGINAL emu7800 source code
   in the repository with 0.71 or somesuch.
+- Learn more about serialization in .NET
 - Raise warning level when compiling ?
-- Well...I'd say we port the GameSettings class now. This involves creating
-  a bunch of enumerations up front, which isn't a big problem in my opinion.
-  Do the attributes in the GameSettings class really need to be all public,
-  btw ???
 - Is it possible to disable array range checks ? Would probably speed up
   many things, for instance simulated RAM access...
-- Port AddressSpace class (involves introducing a dummy machine class...)
+- Find out what the compilers to with the modulo calculation in the
+  RAM6116 class ?
 - We could also go and port the disassembler...the thing doesn't
   seem to use too much other stuff ?
-  => nope...needs the AddressSpace class
-- The AddressSpace class can't be too hard to port actually,
-  even if the Machine class is still missing: AddressSpace just
-  stores a Machine reference, but never uses it itself...silly,
-  isn't it ?
-- We have now IDevice - which means we can port a bunch of devices =)
-  Pick another device and "port" it.
+  => nope...needs the AddressSpace and the Machine/CPU classes (?)
 
+---
+Stuff to clean up:
+- Duplicated code (offset calculation) in MD5.cs and GameSettings.cs
+- Does GameSettings really need that many getters/setters ?
+  (Nah. Probably it could happily be an immutable)
 
