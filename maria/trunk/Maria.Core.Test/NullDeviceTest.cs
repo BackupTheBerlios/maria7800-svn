@@ -48,5 +48,10 @@ namespace Maria.Core {
 				Assert.AreEqual(0, nullDevice[(ushort) address]);
 			}
 		}
+
+		[Test]
+		public void TestRequestSnooping() {
+			Assert.IsFalse(nullDevice.RequestSnooping);
+		}
 	}
 }

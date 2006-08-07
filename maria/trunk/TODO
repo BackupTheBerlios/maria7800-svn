@@ -5,16 +5,8 @@
   - Creating a dummy Machine class. This will work, since
     the AddressSpace just stores the reference, but never
     uses it (so it shouldn't have it at all, technically...)
-  - The old AddressSpace class uses the Cart class. However,
-    it only asks wether the Cart needs snooping (used mainly
-    for bankswitching, presumably) and then it upcasts to
-    IDevice and never worries about the cart anymore
-    (of course, if the cart requested snooping, the cart
-    is notified of bus accesses, but this is all done using
-    the IDevice interface)
-    => the whole point of this is, that Cart.RequestSnooping should
-       actually go into the IDevice interface, methinks.
-       (ANYWAY, READ THE CODE CAREFULLY BEFORE SCREWING UP THINGS)
+  - The two Map methods can be unified, since the interface
+    to support both of them is now unified in IDevice.
   - Perhaps the snooper thingy could be more bulletproof, or more versatile:
     - Either check wether already a snooper is set, and if so, throw (when setting it again)
     - Or allow N snoopers. Don't know wether this will be necessary, though.
@@ -29,7 +21,6 @@
 - We could also go and port the disassembler...the thing doesn't
   seem to use too much other stuff ?
   => nope...needs the AddressSpace and the Machine/CPU classes (?)
-
 ---
 Stuff to clean up:
 - Duplicated code (offset calculation) in MD5.cs and GameSettings.cs

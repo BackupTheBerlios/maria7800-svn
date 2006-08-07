@@ -30,5 +30,6 @@ namespace Maria.Core {
 			set;
 		}
 		int Size { get; }
+		bool RequestSnooping { get; }
 	}
 }

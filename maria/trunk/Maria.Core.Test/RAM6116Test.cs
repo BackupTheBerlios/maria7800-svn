@@ -60,5 +60,10 @@ namespace Maria.Core {
 			Assert.AreEqual(42, fRAM[0]);
 			Assert.AreEqual(23, fRAM[1]);
 		}
+
+		[Test]
+		public void TestRequestSnooping() {
+			Assert.IsFalse(fRAM.RequestSnooping);
+		}
 	}
 }
