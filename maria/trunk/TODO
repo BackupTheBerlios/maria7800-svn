@@ -1,3 +1,6 @@
+- Nant starts to suck and since my primary development platform is
+  mono anyway I might aswell go for an autotools build, which seems
+  to be better for my purpose. let's try that.
 - Introduce a util library with maria unspecific classes,
   such as an ArgumentCheck class. Or so. Call the thing
   Mrdr.Vtg.Util or somesuch. And of course test it.
@@ -22,10 +25,10 @@
   in the repository with 0.71 or somesuch.
 - Learn more about serialization in .NET
 - Raise warning level when compiling ?
-- Is it possible to disable array range checks ? Would probably speed up
-  many things, for instance simulated RAM access...
 - Find out what the compilers to with the modulo calculation in the
   RAM6116 class ?
+  => well...a modulo operation. So we might want to witch back to a "manual"
+  and operation.
 - We could also go and port the disassembler...the thing doesn't
   seem to use too much other stuff ?
   => nope...needs the AddressSpace and the Machine/CPU classes (?)

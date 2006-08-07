@@ -44,14 +44,13 @@
 
 	<target name="Maria.Core.Test" description="Build Maria.Core.Test suite"
 	depends="Maria.Core">
+		<fileset id="Maria.Core.Test.Sources" >
+			<include name="Maria.Core.Test/*.cs" />
+		</fileset>
 		<csc target="library" output="${builddir}/Maria.Core.Test.dll" debug="${debug}"
 		optimize="${optimize}">
-			<sources>
-				<include name="Maria.Core.Test/*.cs" />
-			</sources>
-			<pkg-references>
-				<package name="nunit-2.2" />
-			</pkg-references>
+			<sources refid="Maria.Core.Test.Sources" />
+			<pkg-references name="nunit-2.2" />
 			<references>
 				<lib>
 					<include name="${builddir}" />
