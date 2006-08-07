@@ -2,16 +2,19 @@
 <project name="Maria" default="Maria.Core" basedir=".">
 	<description>NAnt build file for Maria, the .NET Atari 7800 emulator</description>
 
-
-	<!-- Properties -->
+	<!-- User overridable properties -->
 	<property name="debug" value="true" overwrite="false" />
 	<property name="optimize" value="false" overwrite="false" />
-	<property name="builddir" value="build" />
-
+	
+	<!-- Internal properties -->
+	<property name="builddir" value="build" readonly="true" />
+	<property name="target-framework" value="${framework::get-target-framework()}"
+	readonly="true" />
+	<property name="target-framework-family"
+	value="${framework::get-family(target-framework)}" readonly="true" />
 
 	<!-- Other pre-build tasks -->
 	<mkdir dir="${builddir}" verbose="true"/>
-
 
 	<target name="clean" description="Remove all generated files">
 		<delete verbose="true">
