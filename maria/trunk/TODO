@@ -1,6 +1,14 @@
 - Introduce a util library with maria unspecific classes,
   such as an ArgumentCheck class. Or so. Call the thing
   Mrdr.Vtg.Util or somesuch. And of course test it.
+  => started. stuff still to do:
+  - Start a testsuite, and make a target for that in the buildfile,
+    which depends on the util lib (Call this dll/target Mrdr.Vtg.Util.Test)
+  - Make a target to run the testsuite standalone: run-Mrdr.Vtg.Util.Test
+    This target must depend on Mrdr.Vtg.Util.Test
+  - Make a new target to run all testsuites (must depend on all suite targets)
+  - Maria.Core depends now on the new library (change build file), and also
+    references it.
 - Port AddressSpace class now. This involves:
   - Creating a dummy Machine class. This will work, since
     the AddressSpace just stores the reference, but never

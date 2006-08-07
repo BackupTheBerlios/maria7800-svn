@@ -21,7 +21,6 @@
 		</delete>
 	</target>
 
-
 	<target name="reallyclean" description="Remove all generated and backup files"
 	depends="clean">
 		<delete verbose="true">
@@ -30,7 +29,6 @@
 			</fileset>
 		</delete>
 	</target>
-
 
 	<target name="Maria.Core" description="Build Maria.Core library">
 		<csc target="library" output="${builddir}/Maria.Core.dll" debug="${debug}"
@@ -73,5 +71,14 @@
 				</assemblies>
 			</test>
 		</nunit2>
+	</target>
+
+	<target name="Mrdr.Vtg.Util">
+		<csc target="library" output="${builddir}/Mrdr.Vtg.Util.dll" debug="${debug}"
+		optimize="${optimize}">
+			<sources>
+				<include name="Mrdr.Vtg.Util/*.cs" />
+			</sources>
+		</csc>
 	</target>
 </project>
