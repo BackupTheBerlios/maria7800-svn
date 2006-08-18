@@ -1,7 +1,6 @@
-- Switch to autotools
-- Nant starts to suck and since my primary development platform is
-  mono anyway I might aswell go for an autotools build, which seems
-  to be better for my purpose. let's try that.
+- Finish AssemblyInfo stuff
+- Add functionality to create the launcher script (from script.in)
+  in the toplevel Makefile.am
 - Introduce a util library with maria unspecific classes,
   such as an ArgumentCheck class. Or so. Call the thing
   Mrdr.Vtg.Util or somesuch. And of course test it.

@@ -15,3 +15,19 @@
 # You should have received a copy of the GNU General Public License
 # along with Maria; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+mariadir = $(pkglibdir)
+maria_SCRIPTS = maria.exe
+
+EXTRA_DIST = $(maria_sources) $(maria_sources_in)
+CLEANFILES = maria.exe maria.exe.pdb
+
+maria_sources_in = AssemblyInfo.cs.in
+maria_generated_sources = $(maria_sources_in:.in=)
+maria_sources = Maria.cs
+
+maria_build_sources = $(addprefix $(srcdir)/, $(maria_sources)) $(maria_generated_sources)
+#maria_build_sources += $(maria_generated_sources)
+
+maria.exe : $(maria_build_sources)
+	$(MCS) -out:$@ $<
