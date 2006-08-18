@@ -1,3 +1,4 @@
+- Switch to autotools
 - Nant starts to suck and since my primary development platform is
   mono anyway I might aswell go for an autotools build, which seems
   to be better for my purpose. let's try that.
