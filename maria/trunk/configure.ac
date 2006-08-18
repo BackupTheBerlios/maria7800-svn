@@ -19,10 +19,18 @@ dnl You should have received a copy of the GNU General Public License
 dnl along with Maria; if not, write to the Free Software
 dnl Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-AC_INIT([maria],[0.71],[tom42@users.berlios.de])
+AC_INIT([maria], [0.71], [tom42@users.berlios.de])
 AC_PREREQ([2.60])
 AM_INIT_AUTOMAKE
+AM_MAINTAINER_MODE
 
+AC_PROG_INSTALL
+
+dnl Check for pkg-config
+AC_PATH_PROG([PKG_CONFIG], [pkg-config], [no])
+if test "x$PKG_CONFIG" = "xno"; then
+	AC_MSG_ERROR([You need to install pkg-config])
+fi
 
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
