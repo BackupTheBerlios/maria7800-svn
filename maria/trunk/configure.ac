@@ -54,5 +54,5 @@ echo "-------"
 echo "C# compiler : $MCS"
 echo
 
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile Maria/Makefile])
 AC_OUTPUT
