@@ -32,5 +32,27 @@ if test "x$PKG_CONFIG" = "xno"; then
 	AC_MSG_ERROR([You need to install pkg-config])
 fi
 
+dnl Check for C# compiler and Mono runtime
+AC_PATH_PROG([CSC], [csc], [no])
+AC_PATH_PROG([MCS], [mcs], [no])
+AC_PATH_PROG([MONO], [mono], [no])
+CS="C#"
+if test "x$CSC" = "xno" -a "x$MCS" = "xno" ; then
+	AC_MSG_ERROR([No $CS Compiler found])
+fi
+if test "x$MCS" = "xno" ; then
+	MCS=$CSC
+fi
+AC_SUBST([MCS])
+if test "x$MONO" = "xno" ; then
+	AC_MSG_ERROR([No mono runtime found])
+fi
+
+echo
+echo "Summary"
+echo "-------"
+echo "C# compiler : $MCS"
+echo
+
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
