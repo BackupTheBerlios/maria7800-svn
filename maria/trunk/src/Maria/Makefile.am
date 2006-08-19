@@ -23,7 +23,7 @@ maria_SCRIPTS = maria.exe
 bin_SCRIPTS = maria
 
 EXTRA_DIST = $(maria_sources) $(maria_sources_in) createlauncherscript.sh
-CLEANFILES = maria maria.exe maria.exe.pdb
+CLEANFILES = maria maria.exe maria.exe.mdb
 
 maria_sources_in = AssemblyInfo.cs.in
 maria_generated_sources = $(maria_sources_in:.in=)

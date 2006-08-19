@@ -57,6 +57,8 @@ echo
 AC_CONFIG_FILES([
 Makefile
 src/Makefile
+src/Maria.Core/AssemblyInfo.cs
+src/Maria.Core/Makefile
 src/Maria/AssemblyInfo.cs
 src/Maria/Makefile
 ])
