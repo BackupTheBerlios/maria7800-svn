@@ -1,4 +1,6 @@
-# Process this file with automake to get a Makefile
+#!/bin/sh
+#
+# Script to create Mono application launcher script.
 #
 # This file is part of Maria.
 # Copyright (C) 2006 Thomas Mathys (tom42@users.berlios.de)
@@ -17,9 +19,16 @@
 # along with Maria; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-SUBDIRS = Maria
-bin_SCRIPTS = maria
-CLEANFILES = maria
+if test "$#" != "3" ; then
+  echo "Wrong arguments"
+  echo "Usage : $0 monobinary pkglibdir exename"
+  exit 1
+fi
 
-maria : createlauncherscript.sh Makefile
-	sh createlauncherscript.sh "$(MONO)" "$(pkglibdir)" "$(PACKAGE_NAME)".exe > $@
+monobinary="$1"
+pkglibdir="$2"
+exename="$3"
+
+echo "#!/bin/sh"
+echo exec "$monobinary" "$pkglibdir"/"$exename" '$MONO_EXTRA_ARGS' '"$@"'
+
