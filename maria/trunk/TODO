@@ -1,6 +1,5 @@
 - Running Maria.Core.Test works, but running tests is not yet perfect:
   - Probably we should check for nunit-console in configure and AC_SUBST it
-  - What do we do with TestResult.xml ? it screws up the distcheck target
   - Actually we shouln't REQUIRE NUnit/nunit-console to be available.
     If they are available we'll compile/run tests, if not we won't. Simple.
 - Introduce a util library with maria unspecific classes,

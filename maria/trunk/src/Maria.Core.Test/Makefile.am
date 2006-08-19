@@ -25,7 +25,7 @@ MONO_PATH=$(dir $(OWN_ASSEMBLIES))
 
 check_SCRIPTS = Maria.Core.Test.dll
 EXTRA_DIST = $(Maria_Core_Test_sources) $(Maria_Core_Test_sources_in)
-CLEANFILES = Maria.Core.Test.dll Maria.Core.Test.dll.mdb
+CLEANFILES = Maria.Core.Test.dll Maria.Core.Test.dll.mdb TestResult.xml
 
 Maria_Core_Test_sources_in =
 Maria_Core_Test_generated_sources = $(Maria_Core_Test_sources_in:.in=)
