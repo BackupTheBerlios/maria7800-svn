@@ -50,13 +50,23 @@ fi
 
 dnl Check for NUnit
 NUNIT_REQUIRED_VERSION=2.2.0
-PKG_CHECK_MODULES([NUNIT], [nunit-2.2 >= $NUNIT_REQUIRED_VERSION])
-
+PKG_CHECK_MODULES([NUNIT], [nunit-2.2 >= $NUNIT_REQUIRED_VERSION], [NUNIT=yes], [echo no && NUNIT=no])
+AC_PATH_PROG([NUNIT_CONSOLE], [nunit-console], [no])
 
 echo
 echo "Summary"
 echo "-------"
 echo "C# compiler : $MCS"
+echo -n "NUnit $NUNIT_REQUIRED_VERSION or higher installed : $NUNIT"
+if test "x$NUNIT" = "xno" ; then
+	echo -n " (NUnit tests cannot be compiled)"
+fi
+echo
+echo -n "nunit-console : $NUNIT_CONSOLE"
+if test "x$NUNIT_CONSOLE" = "xno" ; then
+	echo -n " (NUnit tests cannot be compiled)"
+fi
+echo
 echo
 
 AC_CONFIG_FILES([
