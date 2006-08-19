@@ -18,6 +18,11 @@
 # along with Maria; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+TESTS = $(top_srcdir)/runtests.sh
+TESTS_ENVIRONMENT = \
+testassembly=Maria.Core.Test.dll \
+MONO_PATH=$(dir $(OWN_ASSEMBLIES))
+
 check_SCRIPTS = Maria.Core.Test.dll
 EXTRA_DIST = $(Maria_Core_Test_sources) $(Maria_Core_Test_sources_in)
 CLEANFILES = Maria.Core.Test.dll Maria.Core.Test.dll.mdb
@@ -31,7 +36,12 @@ NullDeviceTest.cs \
 NUnitTestTest.cs \
 RAM6116Test.cs
 
+OWN_ASSEMBLIES = \
+$(top_builddir)/src/Maria.Core/Maria.Core.dll
+
+OWN_ASSEMBLY_REFERENCES = $(addprefix -r:, $(OWN_ASSEMBLIES))
+
 Maria_Core_Test_build_sources = $(addprefix $(srcdir)/, $(Maria_Core_Test_sources) $(Maria_Core_Test_generated_sources))
 
 Maria.Core.Test.dll : $(Maria_Core_Test_build_sources)
-	$(MCS) -out:$@ -target:library $(NUNIT_LIBS) -r:$(top_builddir)/src/Maria.Core/Maria.Core.dll $^
+	$(MCS) -out:$@ -target:library $(NUNIT_LIBS) $(OWN_ASSEMBLY_REFERENCES) $^

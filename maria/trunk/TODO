@@ -1,6 +1,6 @@
-- Put Maria.Core.Test into the autotools build process.
-  How are we gonna make sure, NUnit is installed ?
-  How are we gonna run things ?
+- Running Maria.Core.Test works, but running tests is not yet perfect:
+  - Probably we should check for nunit-console in configure and AC_SUBST it
+  - What do we do with TestResult.xml ? it screws up the distcheck target
 - Introduce a util library with maria unspecific classes,
   such as an ArgumentCheck class. Or so. Call the thing
   Mrdr.Vtg.Util or somesuch. And of course test it.
