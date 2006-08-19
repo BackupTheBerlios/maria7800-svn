@@ -2,6 +2,7 @@
   in the toplevel Makefile.am
   => partially there, but doesn't work correctly yet. Seems to be
   some quoting problem again, this time with dollar signs.
+  => Also make sure the script gets (un)installed correctly
 - Introduce a util library with maria unspecific classes,
   such as an ArgumentCheck class. Or so. Call the thing
   Mrdr.Vtg.Util or somesuch. And of course test it.
