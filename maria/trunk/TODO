@@ -1,6 +1,4 @@
 - Put Maria.Core into the autotools build process.
-  Question: keep a separate src tree ?
-  (Makes probably sense)
 - Put Maria.Core.Test into the autotools build process.
   How are we gonna make sure, NUnit is installed ?
   How are we gonna run things ?

@@ -56,7 +56,8 @@ echo
 
 AC_CONFIG_FILES([
 Makefile
-Maria/AssemblyInfo.cs
-Maria/Makefile
+src/Makefile
+src/Maria/AssemblyInfo.cs
+src/Maria/Makefile
 ])
 AC_OUTPUT
