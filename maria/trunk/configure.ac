@@ -48,6 +48,11 @@ if test "x$MONO" = "xno" ; then
 	AC_MSG_ERROR([No mono runtime found])
 fi
 
+dnl Check for NUnit
+NUNIT_REQUIRED_VERSION=2.2.0
+PKG_CHECK_MODULES([NUNIT], [nunit-2.2 >= $NUNIT_REQUIRED_VERSION])
+
+
 echo
 echo "Summary"
 echo "-------"
