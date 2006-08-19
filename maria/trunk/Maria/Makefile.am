@@ -26,8 +26,7 @@ maria_sources_in = AssemblyInfo.cs.in
 maria_generated_sources = $(maria_sources_in:.in=)
 maria_sources = Maria.cs
 
-maria_build_sources = $(addprefix $(srcdir)/, $(maria_sources)) $(maria_generated_sources)
-#maria_build_sources += $(maria_generated_sources)
+maria_build_sources = $(addprefix $(srcdir)/, $(maria_sources) $(maria_generated_sources))
 
 maria.exe : $(maria_build_sources)
-	$(MCS) -out:$@ $<
+	$(MCS) -out:$@ $^
