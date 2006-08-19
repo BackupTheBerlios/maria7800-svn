@@ -1,5 +1,7 @@
 # Process this file with automake to get a Makefile
 #
+# Copyright (C) 2006 Thomas Mathys (tom42@users.berlios.de)
+#
 # This file is part of Maria.
 #
 # Maria is free software; you can redistribute it and/or modify
