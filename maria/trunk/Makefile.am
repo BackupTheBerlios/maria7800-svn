@@ -18,8 +18,3 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 SUBDIRS = Maria
-bin_SCRIPTS = maria
-CLEANFILES = maria
-
-maria : createlauncherscript.sh Makefile
-	sh createlauncherscript.sh "$(MONO)" "$(pkglibdir)" "$(PACKAGE_NAME)".exe > $@

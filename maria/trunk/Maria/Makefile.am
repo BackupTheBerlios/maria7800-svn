@@ -18,9 +18,10 @@
 
 mariadir = $(pkglibdir)
 maria_SCRIPTS = maria.exe
+bin_SCRIPTS = maria
 
-EXTRA_DIST = $(maria_sources) $(maria_sources_in)
-CLEANFILES = maria.exe maria.exe.pdb
+EXTRA_DIST = $(maria_sources) $(maria_sources_in) createlauncherscript.sh
+CLEANFILES = maria maria.exe maria.exe.pdb
 
 maria_sources_in = AssemblyInfo.cs.in
 maria_generated_sources = $(maria_sources_in:.in=)
@@ -30,3 +31,6 @@ maria_build_sources = $(addprefix $(srcdir)/, $(maria_sources) $(maria_generated
 
 maria.exe : $(maria_build_sources)
 	$(MCS) -out:$@ $^
+
+maria : $(srcdir)/createlauncherscript.sh
+	sh $(srcdir)/createlauncherscript.sh "$(MONO)" "$(pkglibdir)" "$(PACKAGE_NAME)".exe > $@
