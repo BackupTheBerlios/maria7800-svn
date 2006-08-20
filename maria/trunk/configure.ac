@@ -78,5 +78,6 @@ src/Maria/Makefile
 src/Maria.Core/AssemblyInfo.cs
 src/Maria.Core/Makefile
 src/Maria.Core.Test/Makefile
+src/Vtg.Util/Makefile
 ])
 AC_OUTPUT

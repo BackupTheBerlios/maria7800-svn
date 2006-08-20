@@ -20,4 +20,5 @@
 if ENABLE_UNIT_TESTS
   UNIT_TEST_DIRS = Maria.Core.Test
 endif
-SUBDIRS = Maria.Core Maria $(UNIT_TEST_DIRS)
+SUBDIRS = Vtg.Util Maria.Core Maria $(UNIT_TEST_DIRS)
+
