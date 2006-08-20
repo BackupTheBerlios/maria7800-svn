@@ -52,7 +52,7 @@ dnl Check for NUnit
 NUNIT_REQUIRED_VERSION=2.2.0
 PKG_CHECK_MODULES([NUNIT], [nunit-2.2 >= $NUNIT_REQUIRED_VERSION], [NUNIT=yes], [echo no && NUNIT=no])
 AC_PATH_PROG([NUNIT_CONSOLE], [nunit-console], [no])
-AM_CONDITIONAL(ENABLE_UNIT_TESTS, true)
+AM_CONDITIONAL([ENABLE_UNIT_TESTS], [test "x$NUNIT" != "xno"])
 
 echo
 echo "Summary"
