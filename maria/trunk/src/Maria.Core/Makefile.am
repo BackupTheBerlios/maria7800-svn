@@ -32,6 +32,7 @@ Controller.cs \
 Exceptions.cs \
 GameSettings.cs \
 IDevice.cs \
+Machine.cs \
 MachineType.cs \
 MariaTables.cs \
 MD5.cs \
