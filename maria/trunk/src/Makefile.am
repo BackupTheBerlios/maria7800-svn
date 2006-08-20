@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 if ENABLE_UNIT_TESTS
-  UNIT_TEST_DIRS = Maria.Core.Test
+  UNIT_TEST_DIRS = Vtg.Util.Test Maria.Core.Test
 endif
 SUBDIRS = Vtg.Util Maria.Core Maria $(UNIT_TEST_DIRS)
 

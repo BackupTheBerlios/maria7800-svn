@@ -1,4 +1,3 @@
-- Util lib needs an assemblyinfo (really ?)
 - Introduce a util library with maria unspecific classes,
   such as an ArgumentCheck class. Or so. Call the thing
   Mrdr.Vtg.Util or somesuch. And of course test it.
