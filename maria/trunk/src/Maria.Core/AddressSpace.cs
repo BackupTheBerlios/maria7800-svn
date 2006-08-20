@@ -27,44 +27,33 @@ namespace Maria.Core {
 	// TODO : implement, remove code below
 	[Serializable]
 	public sealed class AddressSpace {
+		// TODO : check which variables are used in a single method
+		// only, and remove these.
 		private Machine machine; 
+		private readonly int addrSpaceShift;	// TODO : unused ?
+		private readonly int addrSpaceSize;
+		private readonly int addrSpaceMask;
+		private readonly int pageShift;
+		private readonly int pageSize;
+		private IDevice[] memoryMap;
+		private IDevice snooper;
+		private byte dataBusState;
+
+		public Machine Machine {
+			get { return machine; }
+		}
+
+		public byte DataBusState {
+			get { return dataBusState; }
+		}
+
+		public override string ToString() {
+			return "AdrSpc";
+		}
 	}
 }
 
 /*
-		Machine _M;
-		public  Machine M
-		{
-			get
-			{
-				return _M;
-			}
-		}
-
-		readonly int AddrSpaceShift;
-		readonly int AddrSpaceSize;
-		readonly int AddrSpaceMask;
-
-		readonly int PageShift;
-		readonly int PageSize;
-
-		IDevice[] MemoryMap;
-		IDevice Snooper;
-
-		byte _DataBusState;
-		public byte DataBusState
-		{
-			get 
-			{
-				return _DataBusState;
-			}
-		}
-
-		public override string ToString()
-		{
-			return "AdrSpc";
-		}
-
 		public byte this[ushort addr]
 		{
 			get 
