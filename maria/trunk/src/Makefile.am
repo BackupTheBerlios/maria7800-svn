@@ -17,4 +17,7 @@
 # along with Maria; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-SUBDIRS = Maria.Core Maria Maria.Core.Test
+if ENABLE_UNIT_TESTS
+  UNIT_TEST_DIRS = Maria.Core.Test
+endif
+SUBDIRS = Maria.Core Maria $(UNIT_TEST_DIRS)
