@@ -54,6 +54,19 @@ PKG_CHECK_MODULES([NUNIT], [nunit-2.2 >= $NUNIT_REQUIRED_VERSION], [NUNIT=yes], 
 AC_PATH_PROG([NUNIT_CONSOLE], [nunit-console], [no])
 AM_CONDITIONAL([ENABLE_UNIT_TESTS], [test "x$NUNIT" != "xno" -a "x$NUNIT_CONSOLE" != "xno"])
 
+AC_CONFIG_FILES([
+Makefile
+src/Makefile
+src/Maria/AssemblyInfo.cs
+src/Maria/Makefile
+src/Maria.Core/AssemblyInfo.cs
+src/Maria.Core/Makefile
+src/Maria.Core.Test/Makefile
+src/Vtg.Util/AssemblyInfo.cs
+src/Vtg.Util/Makefile
+])
+AC_OUTPUT
+
 echo
 echo "Summary"
 echo "-------"
@@ -69,15 +82,3 @@ if test "x$NUNIT_CONSOLE" = "xno" ; then
 fi
 echo
 echo
-
-AC_CONFIG_FILES([
-Makefile
-src/Makefile
-src/Maria/AssemblyInfo.cs
-src/Maria/Makefile
-src/Maria.Core/AssemblyInfo.cs
-src/Maria.Core/Makefile
-src/Maria.Core.Test/Makefile
-src/Vtg.Util/Makefile
-])
-AC_OUTPUT
