@@ -1,14 +1,3 @@
-- Introduce a util library with maria unspecific classes,
-  such as an ArgumentCheck class. Or so. Call the thing
-  Mrdr.Vtg.Util or somesuch. And of course test it.
-  => started. stuff still to do:
-  - Start a testsuite, and make a target for that in the buildfile,
-    which depends on the util lib (Call this dll/target Mrdr.Vtg.Util.Test)
-  - Make a target to run the testsuite standalone: run-Mrdr.Vtg.Util.Test
-    This target must depend on Mrdr.Vtg.Util.Test
-  - Make a new target to run all testsuites (must depend on all suite targets)
-  - Maria.Core depends now on the new library (change build file), and also
-    references it.
 - Port AddressSpace class now. This involves:
   - Creating a dummy Machine class. This will work, since
     the AddressSpace just stores the reference, but never
@@ -20,7 +9,6 @@
     - Or allow N snoopers. Don't know wether this will be necessary, though.
 - Learn how to tag stuff, and tag the ORIGINAL emu7800 source code
   in the repository with 0.71 or somesuch.
-- Learn more about serialization in .NET
 - Raise warning level when compiling ?
 - Find out what the compilers to with the modulo calculation in the
   RAM6116 class ?

@@ -21,4 +21,12 @@
 using System;
 
 namespace Vtg.Util {
+	sealed public class ArgumentCheck {
+		private ArgumentCheck() {}
+
+		public static void NotNull(object parameter, string parameterName) {
+			if (parameter == null)
+				throw new ArgumentNullException(parameterName);
+		}
+	}
 }

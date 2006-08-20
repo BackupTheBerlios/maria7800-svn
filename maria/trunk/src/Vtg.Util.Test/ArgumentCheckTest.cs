@@ -18,6 +18,22 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 using System;
+using NUnit.Framework;
 
 namespace Vtg.Util {
+	[TestFixture]
+	public class ArgumentCheckTest {
+		[Test]
+		public void TestNotNull() {
+			ArgumentCheck.NotNull(true, "someString");
+			try {
+				ArgumentCheck.NotNull(null, "paramName");
+				Assert.Fail("ArgumentCheck.NotNull() " +
+					"should have thrown ArgumentNullException");
+			}
+			catch (ArgumentNullException expected) {
+				Assert.IsTrue(expected.Message.IndexOf("paramName") > 0);
+			}
+		}
+	}
 }
