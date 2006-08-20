@@ -25,7 +25,7 @@ namespace Maria.Core {
 	[Serializable]
 	public class RAM6116 : IDevice
 	{
-		private const int SIZE = 0x800;
+		private const int SIZE = 0x800;		// Must be a power of 2
 		private byte[] fRAM = new byte[SIZE];
 
 		public void Reset() {
@@ -38,9 +38,8 @@ namespace Maria.Core {
 
 		public byte this[ushort address]
 		{
-			// TODO : would be neat to see how this gets compiled...
-			get { return fRAM[address % SIZE]; }
-			set { fRAM[address % SIZE] = value; }
+			get { return fRAM[address & SIZE - 1]; }
+			set { fRAM[address & SIZE - 1] = value; }
 		}
 
 		public int Size {

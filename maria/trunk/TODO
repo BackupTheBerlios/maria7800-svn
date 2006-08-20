@@ -10,10 +10,6 @@
 - Learn how to tag stuff, and tag the ORIGINAL emu7800 source code
   in the repository with 0.71 or somesuch.
 - Raise warning level when compiling ?
-- Find out what the compilers to with the modulo calculation in the
-  RAM6116 class ?
-  => well...a modulo operation. So we might want to witch back to a "manual"
-  and operation.
 - We could also go and port the disassembler...the thing doesn't
   seem to use too much other stuff ?
   => nope...needs the AddressSpace and the Machine/CPU classes (?)
