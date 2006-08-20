@@ -18,9 +18,14 @@
 # along with Vtg.Util; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+TESTS = $(top_srcdir)/runtests.sh
+TESTS_ENVIRONMENT = \
+testassembly=Vtg.Util.Test.dll \
+MONO_PATH=$(dir $(OWN_ASSEMBLIES))
+
 check_SCRIPTS = Vtg.Util.Test.dll
 EXTRA_DIST = $(Vtg_Util_Test_sources) $(Vtg_Util_Test_sources_in)
-CLEANFILES = Vtg.Util.Test.dll Vtg.Util.Test.dll.mdb
+CLEANFILES = Vtg.Util.Test.dll Vtg.Util.Test.dll.mdb TestResult.xml
 
 Vtg_Util_Test_sources_in =
 Vtg_Util_Test_generated_sources = $(Vtg_Util_Test_sources_in:.in=)
@@ -31,11 +36,6 @@ OWN_ASSEMBLIES = \
 $(top_builddir)/src/Vtg.Util/Vtg.Util.dll
 
 OWN_ASSEMBLY_REFERENCES = $(addprefix -r:, $(OWN_ASSEMBLIES))
-
-#TESTS = $(top_srcdir)/runtests.sh
-#TESTS_ENVIRONMENT = \
-#testassembly=Maria.Core.Test.dll \
-#MONO_PATH=$(dir $(OWN_ASSEMBLIES))
 
 Vtg_Util_Test_build_sources = $(addprefix $(srcdir)/, $(Vtg_Util_Test_sources) $(Vtg_Util_Test_generated_sources))
 
