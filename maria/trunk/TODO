@@ -1,3 +1,7 @@
+- NEXT:
+  Implement AddressSpace ctor, and test things as we go.
+  An empty AddressSpaceTest#TestCreation() method exists
+  already. Or so. Oh well. Don't care too much, really.
 - Port AddressSpace class now. This involves:
   - Creating a dummy Machine class. This will work, since
     the AddressSpace just stores the reference, but never

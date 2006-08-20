@@ -29,6 +29,7 @@ namespace Maria.Core {
 	public sealed class AddressSpace {
 		// TODO : check which variables are used in a single method
 		// only, and remove these.
+		// TODO : check which non-readonly variables could be readonly, and make 'em so
 		private Machine machine; 
 		private readonly int addrSpaceShift;	// TODO : unused ?
 		private readonly int addrSpaceSize;
@@ -53,6 +54,7 @@ namespace Maria.Core {
 	}
 }
 
+// TODO : remove teh shit below.
 /*
 		public byte this[ushort addr]
 		{

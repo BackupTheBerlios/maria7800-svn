@@ -30,6 +30,7 @@ CLEANFILES = Maria.Core.Test.dll Maria.Core.Test.dll.mdb TestResult.xml
 Maria_Core_Test_sources_in =
 Maria_Core_Test_generated_sources = $(Maria_Core_Test_sources_in:.in=)
 Maria_Core_Test_sources = \
+AddressSpaceTest.cs \
 GameSettingsTest.cs \
 MD5Test.cs \
 NullDeviceTest.cs \
