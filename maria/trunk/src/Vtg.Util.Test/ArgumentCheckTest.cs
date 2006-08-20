@@ -1,5 +1,4 @@
 /*
- * Methods to help with argument sanity checks.
  * Copyright (C) 2006 Thomas Mathys (tom42@users.berlios.de)
  *
  * This file is part of Vtg.Util.

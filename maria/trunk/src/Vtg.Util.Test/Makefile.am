@@ -18,30 +18,26 @@
 # along with Vtg.Util; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+check_SCRIPTS = Vtg.Util.Test.dll
+EXTRA_DIST = $(Vtg_Util_Test_sources) $(Vtg_Util_Test_sources_in)
+CLEANFILES = Vtg.Util.Test.dll Vtg.Util.Test.dll.mdb
+
+Vtg_Util_Test_sources_in =
+Vtg_Util_Test_generated_sources = $(Vtg_Util_Test_sources_in:.in=)
+Vtg_Util_Test_sources = \
+ArgumentCheckTest.cs
+
+OWN_ASSEMBLIES = \
+$(top_builddir)/src/Vtg.Util/Vtg.Util.dll
+
+OWN_ASSEMBLY_REFERENCES = $(addprefix -r:, $(OWN_ASSEMBLIES))
+
 #TESTS = $(top_srcdir)/runtests.sh
 #TESTS_ENVIRONMENT = \
 #testassembly=Maria.Core.Test.dll \
 #MONO_PATH=$(dir $(OWN_ASSEMBLIES))
 
-#check_SCRIPTS = Maria.Core.Test.dll
-#EXTRA_DIST = $(Maria_Core_Test_sources) $(Maria_Core_Test_sources_in)
-#CLEANFILES = Maria.Core.Test.dll Maria.Core.Test.dll.mdb TestResult.xml
+Vtg_Util_Test_build_sources = $(addprefix $(srcdir)/, $(Vtg_Util_Test_sources) $(Vtg_Util_Test_generated_sources))
 
-#Maria_Core_Test_sources_in =
-#Maria_Core_Test_generated_sources = $(Maria_Core_Test_sources_in:.in=)
-#Maria_Core_Test_sources = \
-#GameSettingsTest.cs \
-#MD5Test.cs \
-#NullDeviceTest.cs \
-#NUnitTestTest.cs \
-#RAM6116Test.cs
-
-#OWN_ASSEMBLIES = \
-#$(top_builddir)/src/Maria.Core/Maria.Core.dll
-
-#OWN_ASSEMBLY_REFERENCES = $(addprefix -r:, $(OWN_ASSEMBLIES))
-
-#Maria_Core_Test_build_sources = $(addprefix $(srcdir)/, $(Maria_Core_Test_sources) $(Maria_Core_Test_generated_sources))
-
-#Maria.Core.Test.dll : $(Maria_Core_Test_build_sources)
-#	$(MCS) -out:$@ -target:library $(NUNIT_LIBS) $(OWN_ASSEMBLY_REFERENCES) $^
+Vtg.Util.Test.dll : $(Vtg_Util_Test_build_sources)
+	$(MCS) -out:$@ -target:library $(NUNIT_LIBS) $(OWN_ASSEMBLY_REFERENCES) $^
