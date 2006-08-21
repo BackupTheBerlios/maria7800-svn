@@ -1,19 +1,14 @@
 - Next : finish AddressSpace class.
-- Something with our build process is not yet quite right,
-  and we need to fix it. The problem, is, that dependencies
-  between referencing/referenced assemblies are ignored,
-  and another problem is that our runtests shebang doesn't
-  work correctly when we need to look for assemblies in
-  multiple path's or so. oh well. I don't care too much,
-  really.
-  => Well...the simplest way to do it would be to copy
-  EVERY assembly built into some directory, let's call
-  it run. I think I'm gonna put this directory under
-  source control, to make sure it's there, along with
-  some kind of readme file. This would require to put
-  a Makefile.am in there listing the readme file
-  as EXTRA_DIST, but I don't think this is a problem
-  neither. or so. oh well.
+- Build process:
+  - Copy every assembly to rundir. Affects the following files:
+	./src/Maria.Core/Makefile.am
+	./src/Maria/Makefile.am
+	./src/Vtg.Util.Test/Makefile.am
+	./src/Vtg.Util/Makefile.am
+	./src/Maria.Core.Test/Makefile.am
+  - Add dependencies between referencing/referenced assemblies
+    Can do that when we have fixed the stuff with the output thingy.
+    Or so. Oh well, don't care too much, really.
 - Look at AddressSpace class: are there places where
   ArgumentCheck might make sense ?
 - Port AddressSpace class now. This involves:
