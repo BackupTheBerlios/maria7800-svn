@@ -6,6 +6,13 @@
 	./src/Vtg.Util.Test/Makefile.am
 	./src/Vtg.Util/Makefile.am
 	./src/Maria.Core.Test/Makefile.am
+  - Anyway, we can probably greatly simplify these Makefile.am's
+    by using automake templates (Makefile.am skeletons included
+    into other Makefile.am's). As we've seen, make allows even
+    variable substitutions INSIDE VARIABLE NAMES. If automake
+    allows that too, then we can do some neat template which
+    we can use to compile all our libraries/exe's. Perhaps
+    tests need additional support, but that's ok.
   - Add dependencies between referencing/referenced assemblies
     Can do that when we have fixed the stuff with the output thingy.
     Or so. Oh well, don't care too much, really.
