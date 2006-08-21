@@ -23,14 +23,25 @@ namespace Maria.Core {
 	[TestFixture]
 	public class AddressSpaceTest {
 
-		private AddressSpace CreateAndCheck() {
-			AddressSpace result = new AddressSpace();
+		private AddressSpace CreateAndCheck(Machine m, int addrSpaceShift,
+			int pageShift,
+			int expectedAddrSpaceSize, int expectedPageSize,
+			int expectedPageCount) {
+			AddressSpace result = new AddressSpace(m, addrSpaceShift, pageShift);
+			Assert.AreEqual(m, result.Machine);
+			Assert.AreEqual(expectedAddrSpaceSize, result.AddrSpaceSize);
+			Assert.AreEqual(expectedPageSize, result.PageSize);
+			Assert.AreEqual(expectedPageCount, result.PageCount);
+			// TODO : test a newly created AddressSpace is read-only and
+			// returns 0 for all addresses ? (can only be done when setters
+			// are in place)
 			return result;
 		}
 
 		[Test]
 		public void TestCreation() {
-			CreateAndCheck();
+			CreateAndCheck(new Machine(), 16, 12, 0x10000, 0x1000, 16);
+			CreateAndCheck(new Machine(), 8, 6, 256, 64, 4);
 		}
 	}
 }

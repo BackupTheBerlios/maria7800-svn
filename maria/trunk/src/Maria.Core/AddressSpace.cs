@@ -27,18 +27,28 @@ namespace Maria.Core {
 	// TODO : implement, remove code below
 	[Serializable]
 	public sealed class AddressSpace {
-		// TODO : check which variables are used in a single method
-		// only, and remove these.
-		// TODO : check which non-readonly variables could be readonly, and make 'em so
-		private Machine machine; 
+		private readonly Machine machine; 
 		private readonly int addrSpaceShift;	// TODO : unused ?
 		private readonly int addrSpaceSize;
 		private readonly int addrSpaceMask;
 		private readonly int pageShift;
 		private readonly int pageSize;
-		private IDevice[] memoryMap;
+		private readonly IDevice[] memoryMap;
 		private IDevice snooper;
 		private byte dataBusState;
+
+		public AddressSpace(Machine m, int addrSpaceShift, int pageShift) {
+			this.machine = m;
+			this.addrSpaceShift = addrSpaceShift;
+			this.addrSpaceSize = 1 << addrSpaceShift;
+			this.addrSpaceMask = addrSpaceSize - 1;
+			this.pageShift = pageShift;
+			this.pageSize = 1 << pageShift;
+			this.memoryMap = new IDevice[addrSpaceSize / pageSize];
+			IDevice nullDev = new NullDevice();
+			for (int pageno=0; pageno < PageCount; ++pageno)
+				memoryMap[pageno] = nullDev;
+		}
 
 		public Machine Machine {
 			get { return machine; }
@@ -46,6 +56,18 @@ namespace Maria.Core {
 
 		public byte DataBusState {
 			get { return dataBusState; }
+		}
+
+		public int AddrSpaceSize {
+			get { return addrSpaceSize; }
+		}
+
+		public int PageSize {
+			get { return pageSize; }
+		}
+
+		public int PageCount {
+			get { return memoryMap.Length; }
 		}
 
 		public override string ToString() {
@@ -111,25 +133,6 @@ namespace Maria.Core {
 				Snooper = device;
 			}
 			Map(basea, size, device);
-		}
-
-		public AddressSpace(Machine m, int addrSpaceShift, int pageShift)
-		{
-			_M = m;
-
-			AddrSpaceShift = addrSpaceShift;
-			AddrSpaceSize  = 1 << AddrSpaceShift;
-			AddrSpaceMask = AddrSpaceSize - 1;
-
-			PageShift = pageShift;
-			PageSize = 1 << PageShift;
-
-			MemoryMap = new IDevice[1 << addrSpaceShift >> PageShift];
-			IDevice nullDev = new NullDevice();
-			for (int pageno=0; pageno < MemoryMap.Length; pageno++)
-			{
-				MemoryMap[pageno] = nullDev;
-			}
 		}
 	}
 }

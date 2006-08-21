@@ -1,7 +1,11 @@
-- NEXT:
-  Implement AddressSpace ctor, and test things as we go.
-  An empty AddressSpaceTest#TestCreation() method exists
-  already. Or so. Oh well. Don't care too much, really.
+- Next : finish AddressSpace class.
+- Something with our build process is not yet quite right,
+  and we need to fix it. The problem, is, that dependencies
+  between referencing/referenced assemblies are ignored,
+  and another problem is that our runtests shebang doesn't
+  work correctly when we need to look for assemblies in
+  multiple path's or so. oh well. I don't care too much,
+  really.
 - Port AddressSpace class now. This involves:
   - Creating a dummy Machine class. This will work, since
     the AddressSpace just stores the reference, but never
