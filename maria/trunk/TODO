@@ -1,9 +1,11 @@
 - fix build process first...I wonder wether using templates would be feasible
-  we'll see.
+  we'll see. => nah. anyway, there won't be much more templates, methinks,
+  so do we really want to add an additional predingsa step ? I don't
+  really think so...
 - Next : finish AddressSpace class.
 - Build process:
   - Copy every assembly to rundir. Affects the following files:
-	./src/Maria.Core/Makefile.am
+	./src/Maria.Core/Makefile.am		!
 	./src/Maria/Makefile.am
 	./src/Vtg.Util.Test/Makefile.am
 	./src/Vtg.Util/Makefile.am
