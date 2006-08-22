@@ -1,3 +1,5 @@
+- fix build process first...I wonder wether using templates would be feasible
+  we'll see.
 - Next : finish AddressSpace class.
 - Build process:
   - Copy every assembly to rundir. Affects the following files:
