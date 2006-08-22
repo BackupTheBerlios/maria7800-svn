@@ -22,12 +22,13 @@
  */
 using System;
 using System.Diagnostics;
+using Vtg.Util;
 
 namespace Maria.Core {
 	// TODO : implement, remove code below
 	[Serializable]
 	public sealed class AddressSpace {
-		private readonly Machine machine; 
+		private readonly Machine machine;
 		private readonly int addrSpaceShift;	// TODO : unused ?
 		private readonly int addrSpaceSize;
 		private readonly int addrSpaceMask;
@@ -38,6 +39,7 @@ namespace Maria.Core {
 		private byte dataBusState;
 
 		public AddressSpace(Machine m, int addrSpaceShift, int pageShift) {
+			ArgumentCheck.NotNull(m, "m");
 			this.machine = m;
 			this.addrSpaceShift = addrSpaceShift;
 			this.addrSpaceSize = 1 << addrSpaceShift;
@@ -80,7 +82,7 @@ namespace Maria.Core {
 /*
 		public byte this[ushort addr]
 		{
-			get 
+			get
 			{
 				if (Snooper != null)
 				{
@@ -91,7 +93,7 @@ namespace Maria.Core {
 				_DataBusState = dev[addr];
 				return _DataBusState;
 			}
-			set 
+			set
 			{
 				_DataBusState = value;
 				if (Snooper != null)

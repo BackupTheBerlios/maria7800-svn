@@ -23,13 +23,30 @@ Maria_Core_dll_SCRIPTS = Maria.Core.dll
 EXTRA_DIST = $(Maria_Core_dll_sources) $(Maria_Core_dll_sources_in)
 CLEANFILES = Maria.Core.dll Maria.Core.dll.mdb
 
-Maria_Core_dll_sources_in = AssemlyInfo.cs.in
-Maria_Core_dll_generated_sources = $(Maria_Core_sources_in:.in=)
+Maria_Core_dll_sources_in = AssemblyInfo.cs.in
+Maria_Core_dll_generated_sources = $(Maria_Core_dll_sources_in:.in=)
 Maria_Core_dll_sources = \
-MachineType.cs
+AddressSpace.cs \
+CartType.cs \
+Controller.cs \
+Exceptions.cs \
+GameSettings.cs \
+IDevice.cs \
+Machine.cs \
+MachineType.cs \
+MariaTables.cs \
+MD5.cs \
+NullDevice.cs \
+NUnitTest.cs \
+RAM6116.cs
+
+OWN_ASSEMBLIES = \
+$(top_builddir)/src/Vtg.Util/Vtg.Util.dll
+
+OWN_ASSEMBLY_REFERENCES = $(addprefix -r:, $(OWN_ASSEMBLIES))
 
 Maria_Core_dll_build_sources = $(addprefix $(srcdir)/, $(Maria_Core_dll_sources) $(Maria_Core_dll_generated_sources))
 
 Maria.Core.dll : $(Maria_Core_dll_build_sources)
-	$(MCS) -out:$@ -target:library $^
+	$(MCS) -out:$@ -target:library $(OWN_ASSEMBLY_REFERENCES) $^
 	cp $@ $(top_srcdir)/rundir
