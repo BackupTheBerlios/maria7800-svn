@@ -75,6 +75,16 @@ namespace Maria.Core {
 		public override string ToString() {
 			return "AdrSpc";
 		}
+
+		public byte this[ushort addr] {
+			get {
+				// TODO : hardcoded for empty space...
+				return 0;
+			}
+			set {
+				// TODO : hardcoded for empty space (which is read-only)
+			}
+		}
 	}
 }
 
