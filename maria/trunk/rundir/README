@@ -1,4 +1,0 @@
-The build process will copy every assembly it built into
-this directory, which makes running unit tests and executables
-much simpler during development.
-
