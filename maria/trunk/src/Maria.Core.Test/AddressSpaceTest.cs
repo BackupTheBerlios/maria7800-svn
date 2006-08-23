@@ -20,6 +20,18 @@ using System;
 using NUnit.Framework;
 
 namespace Maria.Core {
+
+	internal class BogusSnooper : IDevice{
+		public void Reset() {}
+		public void Map(AddressSpace s) {}
+		public byte this[ushort addr] {
+			get { return 0; }
+			set {}
+		}
+		public int Size { get { return -1; } }
+		public bool RequestSnooping { get { return true; } }
+	}
+
 	[TestFixture]
 	public class AddressSpaceTest {
 
@@ -50,6 +62,19 @@ namespace Maria.Core {
 				Assert.AreEqual(0, s[(ushort) addr]);
 			}
 			Assert.AreEqual(addr, s.AddrSpaceSize); 
+		}
+
+		[Test]
+		public void TestOnlyOneSnooperAllowed() {
+			AddressSpace s = CreateAndCheck(new Machine(), 15, 14, 0x8000, 0x4000, 2);
+			s.Map(0, 0x4000, new BogusSnooper());
+			try {
+				s.Map(0x4000, 0x4000, new BogusSnooper());
+				Assert.Fail("Map() should have thrown InternalErrorException().");
+			}
+			catch (InternalErrorException expected) {
+				Assert.AreEqual("Only one snooper is allowed.", expected.Message);
+			}
 		}
 	}
 }

@@ -85,6 +85,18 @@ namespace Maria.Core {
 				// TODO : hardcoded for empty space (which is read-only)
 			}
 		}
+
+		public void Map(ushort baseAddress, ushort sizeInBytes, IDevice device) {
+			ArgumentCheck.NotNull(device, "device");
+			// TODO : let's do the snooping business first...
+			// TODO : then let's do the remaining stuff...
+			if (device.RequestSnooping) {
+				// TODO : check only one is allowed...
+				if (snooper != null)
+					throw new InternalErrorException("Only one snooper is allowed.");
+				snooper = device;
+			}
+		}
 	}
 }
 
@@ -135,16 +147,6 @@ namespace Maria.Core {
 
 		public void Map(ushort basea, ushort size, Cart cart)
 		{
-			if (cart == null)
-			{
-				throw new ArgumentNullException("cart");
-			}
-			IDevice device = (IDevice)cart;
-			if (cart.RequestSnooping)
-			{
-				Snooper = device;
-			}
-			Map(basea, size, device);
 		}
 	}
 }
