@@ -1,43 +1,9 @@
-- The build process is still not terribly good. There are a number
-  of problems with it:
-  - rundir : build process copies stuff into rundir. This is not good,
-    because during a VPATH build the build process shouldn't write
-    anything into the source tree, but rundir IS in the source tree
-    => needs to be fixed
-  - rundir again : it's bullshit to keep it under version control
-  - rundir again : it's also crap to run every testassembly in the
-    same directory, as this will overwrite the previous TestResult.xml.
-    Not that I care much about this file, but nevertheless.
-  - Even if the copy operations when an assembly has been built would
-    copy into the build tree, they would somehow still suck.
-
-  Proposition : don't copy stuff anywhere. Run testassemblies in
-  the directory they have been built. Just add everxy directory in the
-  src tree to MONO_PATH before running nunit-console, and everything
-  should be fine :D
-
-  So:
-  - remove rundir from svn
-  - modify runtests. Now it should get an assembly name (basename only)
-    which it can expect to be found in the current directory.
-    before throwing it at nunit-console, it should put together the
-    MONO_PATH. In order for a VPATH build to work we must search
-    $(top_builddir)/src for subdirectories and add these to MONO_PATH.
-    This should get the job done for the moment, methinks.
-  - Fix the following Makefile.am's
-	./src/Maria.Core/Makefile.am
-	./src/Maria/Makefile.am
-	./src/Vtg.Util.Test/Makefile.am
-	./src/Vtg.Util/Makefile.am
-	./src/Maria.Core.Test/Makefile.am
-    => here we remove the copy operations and then adjust the runtest.sh
-    invocations
-
-- Next : finish AddressSpace class.
 - Build process:
-  - Add dependencies between referencing/referenced assemblies
-    Can do that when we have fixed the stuff with the output thingy.
-    Or so. Oh well, don't care too much, really.
+  - At some point we should perhaps keep referenced assemblies
+    as dependencies of the assembly that should be built.
+  - Rundir has the MONO_PATH hardcoded, which is not terribly
+    convenient. It should construct it itself from the src tree.
+- Next : finish AddressSpace class.
 - Look at AddressSpace class: are there places where
   ArgumentCheck might make sense ?
 - Port AddressSpace class now. This involves:

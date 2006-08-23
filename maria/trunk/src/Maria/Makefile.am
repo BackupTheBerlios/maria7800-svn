@@ -33,7 +33,6 @@ maria_build_sources = $(addprefix $(srcdir)/, $(maria_sources) $(maria_generated
 
 maria.exe : $(maria_build_sources)
 	$(MCS) -out:$@ $^
-	cp $@ $(top_srcdir)/rundir
 
 maria : $(srcdir)/createlauncherscript.sh
 	sh $(srcdir)/createlauncherscript.sh "$(MONO)" "$(pkglibdir)" "$(PACKAGE_NAME)".exe > $@

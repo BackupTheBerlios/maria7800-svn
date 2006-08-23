@@ -56,7 +56,6 @@ AM_CONDITIONAL([ENABLE_UNIT_TESTS], [test "x$NUNIT" != "xno" -a "x$NUNIT_CONSOLE
 
 AC_CONFIG_FILES([
 Makefile
-rundir/Makefile
 src/Makefile
 src/Maria/AssemblyInfo.cs
 src/Maria/Makefile

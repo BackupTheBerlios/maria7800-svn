@@ -32,4 +32,3 @@ Vtg_Util_build_sources = $(addprefix $(srcdir)/, $(Vtg_Util_sources) $(Vtg_Util_
 
 Vtg.Util.dll : $(Vtg_Util_build_sources)
 	$(MCS) -out:$@ -target:library $^
-	cp $@ $(top_srcdir)/rundir

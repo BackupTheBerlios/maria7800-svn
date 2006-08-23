@@ -19,7 +19,9 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 TESTS = $(top_srcdir)/runtests.sh
-TESTS_ENVIRONMENT = rundir=$(top_srcdir)/rundir testassembly=Maria.Core.Test.dll
+TESTS_ENVIRONMENT = \
+rt_top_builddir=$(top_builddir) \
+rt_assembly=Maria.Core.Test.dll
 
 check_SCRIPTS = Maria.Core.Test.dll
 EXTRA_DIST = $(Maria_Core_Test_sources) $(Maria_Core_Test_sources_in)
@@ -44,4 +46,3 @@ Maria_Core_Test_build_sources = $(addprefix $(srcdir)/, $(Maria_Core_Test_source
 
 Maria.Core.Test.dll : $(Maria_Core_Test_build_sources)
 	$(MCS) -out:$@ -target:library $(NUNIT_LIBS) $(OWN_ASSEMBLY_REFERENCES) $^
-	cp $@ $(top_srcdir)/rundir
