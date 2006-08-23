@@ -25,7 +25,6 @@ using System.Diagnostics;
 using Vtg.Util;
 
 namespace Maria.Core {
-	// TODO : implement, remove code below
 	[Serializable]
 	public sealed class AddressSpace {
 		private readonly Machine machine;
@@ -88,14 +87,23 @@ namespace Maria.Core {
 
 		public void Map(ushort baseAddress, ushort sizeInBytes, IDevice device) {
 			ArgumentCheck.NotNull(device, "device");
-			// TODO : let's do the snooping business first...
-			// TODO : then let's do the remaining stuff...
 			if (device.RequestSnooping) {
-				// TODO : check only one is allowed...
 				if (snooper != null)
 					throw new InternalErrorException("Only one snooper is allowed.");
 				snooper = device;
 			}
+			// TODO : add device to AddressSpace (and test it...)
+/*
+			for (int addr = basea; addr < basea + size; addr += PageSize)
+			{
+				int pageno = (addr & AddrSpaceMask) >> PageShift;
+				MemoryMap[pageno] = device;
+			}
+			device.Map(this);
+
+			Debug.WriteLine(String.Format("{0}: Mapped {1} to ${2:x4}:${3:x4}",
+				this, device, basea, basea + size));
+*/
 		}
 	}
 }
@@ -126,27 +134,6 @@ namespace Maria.Core {
 				IDevice dev = MemoryMap[pageno];
 				dev[addr] = _DataBusState;
 			}
-		}
-
-		public void Map(ushort basea, ushort size, IDevice device)
-		{
-			if (device == null)
-			{
-				throw new ArgumentNullException("device");
-			}
-			for (int addr = basea; addr < basea + size; addr += PageSize)
-			{
-				int pageno = (addr & AddrSpaceMask) >> PageShift;
-				MemoryMap[pageno] = device;
-			}
-			device.Map(this);
-
-			Debug.WriteLine(String.Format("{0}: Mapped {1} to ${2:x4}:${3:x4}",
-				this, device, basea, basea + size));
-		}
-
-		public void Map(ushort basea, ushort size, Cart cart)
-		{
 		}
 	}
 }

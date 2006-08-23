@@ -1,20 +1,17 @@
+- Addressspace:
+  - Finish
+    - Implement Map (finish it), and test it.
+      Need probably also ti work on read-indexer, because we need it to test mapping...
+    - Test read/write/wraparound (implement/test indexers)
+  - Are there places where ArgumentCheck might make sense ?
+  - Should we try to detect cases where devices are mapped over eachother ???
+    (We can detect them, and still stop doing so if we NEED to map devices over eachother)
+    (Exception : mapping over (=replacing a NullDevice) is ok ?  
 - Build process:
   - At some point we should perhaps keep referenced assemblies
     as dependencies of the assembly that should be built.
   - Rundir has the MONO_PATH hardcoded, which is not terribly
     convenient. It should construct it itself from the src tree.
-- Next : finish AddressSpace class.
-- Look at AddressSpace class: are there places where
-  ArgumentCheck might make sense ?
-- Port AddressSpace class now. This involves:
-  - Creating a dummy Machine class. This will work, since
-    the AddressSpace just stores the reference, but never
-    uses it (so it shouldn't have it at all, technically...)
-  - The two Map methods can be unified, since the interface
-    to support both of them is now unified in IDevice.
-  - Perhaps the snooper thingy could be more bulletproof, or more versatile:
-    - Either check wether already a snooper is set, and if so, throw (when setting it again)
-    - Or allow N snoopers. Don't know wether this will be necessary, though.
 - Learn how to tag stuff, and tag the ORIGINAL emu7800 source code
   in the repository with 0.71 or somesuch.
 - Raise warning level when compiling ?
@@ -26,4 +23,4 @@ Stuff to clean up:
 - Duplicated code (offset calculation) in MD5.cs and GameSettings.cs
 - Does GameSettings really need that many getters/setters ?
   (Nah. Probably it could happily be an immutable)
-
+- Odd that AddressSpace owns a Machine reference, because it never uses it...
