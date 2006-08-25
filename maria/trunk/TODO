@@ -1,12 +1,3 @@
-- Addressspace:
-  - Finish
-    - Implement Map (finish it), and test it.
-      Need probably also ti work on read-indexer, because we need it to test mapping...
-    - Test read/write/wraparound (implement/test indexers)
-  - Are there places where ArgumentCheck might make sense ?
-  - Should we try to detect cases where devices are mapped over eachother ???
-    (We can detect them, and still stop doing so if we NEED to map devices over eachother)
-    (Exception : mapping over (=replacing a NullDevice) is ok ?  
 - Build process:
   - At some point we should perhaps keep referenced assemblies
     as dependencies of the assembly that should be built.

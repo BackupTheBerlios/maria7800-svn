@@ -21,14 +21,23 @@ using NUnit.Framework;
 
 namespace Maria.Core {
 
-	internal class BogusSnooper : IDevice{
+	internal class BogusDevice : IDevice {
+		private readonly byte readValue;
+		
+		public BogusDevice(byte readValue) {
+			this.readValue = readValue;
+		}
+		
 		public void Reset() {}
 		public void Map(AddressSpace s) {}
+		
 		public byte this[ushort addr] {
-			get { return 0; }
+			get { return readValue; }
 			set {}
 		}
+		
 		public int Size { get { return -1; } }
+		
 		public bool RequestSnooping { get { return true; } }
 	}
 
@@ -67,9 +76,9 @@ namespace Maria.Core {
 		[Test]
 		public void TestOnlyOneSnooperAllowed() {
 			AddressSpace s = CreateAndCheck(new Machine(), 15, 14, 0x8000, 0x4000, 2);
-			s.Map(0, 0x4000, new BogusSnooper());
+			s.Map(0, 0x4000, new BogusDevice(1));
 			try {
-				s.Map(0x4000, 0x4000, new BogusSnooper());
+				s.Map(0x4000, 0x4000, new BogusDevice(1));
 				Assert.Fail("Map() should have thrown InternalErrorException().");
 			}
 			catch (InternalErrorException expected) {

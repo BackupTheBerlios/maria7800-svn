@@ -28,7 +28,6 @@ namespace Maria.Core {
 	[Serializable]
 	public sealed class AddressSpace {
 		private readonly Machine machine;
-		private readonly int addrSpaceShift;	// TODO : unused ?
 		private readonly int addrSpaceSize;
 		private readonly int addrSpaceMask;
 		private readonly int pageShift;
@@ -40,7 +39,6 @@ namespace Maria.Core {
 		public AddressSpace(Machine m, int addrSpaceShift, int pageShift) {
 			ArgumentCheck.NotNull(m, "m");
 			this.machine = m;
-			this.addrSpaceShift = addrSpaceShift;
 			this.addrSpaceSize = 1 << addrSpaceShift;
 			this.addrSpaceMask = addrSpaceSize - 1;
 			this.pageShift = pageShift;
@@ -77,11 +75,22 @@ namespace Maria.Core {
 
 		public byte this[ushort addr] {
 			get {
-				// TODO : hardcoded for empty space...
-				return 0;
+				if (snooper != null) {
+					ushort dummyRead = snooper[addr];
+				}
+				int pageno = (addr & addrSpaceMask) >> pageShift;
+				IDevice dev = memoryMap[pageno];
+				dataBusState = dev[addr];
+				return dataBusState;
 			}
-			set {
-				// TODO : hardcoded for empty space (which is read-only)
+			set
+			{
+				dataBusState = value;
+				if (snooper != null)
+					snooper[addr] = dataBusState;
+				int pageno = (addr & addrSpaceMask) >> pageShift;
+				IDevice dev = memoryMap[pageno];
+				dev[addr] = dataBusState;
 			}
 		}
 
@@ -92,49 +101,14 @@ namespace Maria.Core {
 					throw new InternalErrorException("Only one snooper is allowed.");
 				snooper = device;
 			}
-			// TODO : add device to AddressSpace (and test it...)
-/*
-			for (int addr = basea; addr < basea + size; addr += PageSize)
+			for (int addr = baseAddress; addr < baseAddress + sizeInBytes; addr += pageSize)
 			{
-				int pageno = (addr & AddrSpaceMask) >> PageShift;
-				MemoryMap[pageno] = device;
+				int pageno = (addr & addrSpaceMask) >> pageShift;
+				memoryMap[pageno] = device;
 			}
 			device.Map(this);
-
 			Debug.WriteLine(String.Format("{0}: Mapped {1} to ${2:x4}:${3:x4}",
-				this, device, basea, basea + size));
-*/
+				this, device, baseAddress, baseAddress + sizeInBytes));
 		}
 	}
 }
-
-// TODO : remove teh shit below.
-/*
-		public byte this[ushort addr]
-		{
-			get
-			{
-				if (Snooper != null)
-				{
-					ushort dummyRead = Snooper[addr];
-				}
-				int pageno = (addr & AddrSpaceMask) >> PageShift;
-				IDevice dev = MemoryMap[pageno];
-				_DataBusState = dev[addr];
-				return _DataBusState;
-			}
-			set
-			{
-				_DataBusState = value;
-				if (Snooper != null)
-				{
-					Snooper[addr] = _DataBusState;
-				}
-				int pageno = (addr & AddrSpaceMask) >> PageShift;
-				IDevice dev = MemoryMap[pageno];
-				dev[addr] = _DataBusState;
-			}
-		}
-	}
-}
-*/
