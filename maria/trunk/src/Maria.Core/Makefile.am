@@ -32,6 +32,7 @@ Controller.cs \
 Exceptions.cs \
 GameSettings.cs \
 IDevice.cs \
+M6502.cs \
 M6502DASM.cs \
 Machine.cs \
 MachineType.cs \
