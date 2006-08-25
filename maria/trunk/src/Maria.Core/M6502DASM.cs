@@ -71,6 +71,24 @@ namespace Maria.Core {
 			IMP,	// Implied
 			ACC,	// Accumulator
 		}
+		
+		public static string GetRegisters(M6502 cpu) {
+			const string flags = "nv0bdizcNV1BDIZC";
+			StringBuilder result = new StringBuilder();
+			// TODO : simplify by using AppendFormat
+			result.Append(
+				String.Format(
+					"PC:{0:x4} A:{1:x2} X:{2:x2} Y:{3:x2} S:{4:x2} P:",
+					cpu.PC, cpu.A, cpu.X, cpu.Y, cpu.S
+				)
+			);
+			// TODO : extract, simplify ?
+			for (int i = 0; i < 8; i++) {
+				result.Append(((cpu.P & (1 << (7 - i))) == 0)
+					? flags[i] : flags[i + 8]);
+			}
+			return result.ToString();
+		}
 	}
 }
 
@@ -83,23 +101,6 @@ namespace Maria.Core {
 		static a[] AddressingModeMatrix = {
 			get it from original src
 };
-
-		public static string GetRegisters(M6502 cpu)
-		{
-			dSB = new StringBuilder();
-			dSB.Append(String.Format(
-				"PC:{0:x4} A:{1:x2} X:{2:x2} Y:{3:x2} S:{4:x2} P:",
-				cpu.PC, cpu.A, cpu.X, cpu.Y, cpu.S));
-
-			string flags = "nv0bdizcNV1BDIZC";
-
-			for (int i = 0; i < 8; i++)
-			{
-				dSB.Append(((cpu.P & (1 << (7 - i))) == 0)
-					? flags[i] : flags[i + 8]);
-			}
-			return dSB.ToString();
-		}
 
 		public static string Disassemble(AddressSpace mem, ushort atAddr, ushort untilAddr)
 		{
