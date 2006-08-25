@@ -73,19 +73,22 @@ namespace Maria.Core {
 		}
 		
 		public static string GetRegisters(M6502 cpu) {
-			const string flags = "nv0bdizcNV1BDIZC";
 			StringBuilder result = new StringBuilder();
-			// TODO : simplify by using AppendFormat
-			result.Append(
-				String.Format(
-					"PC:{0:x4} A:{1:x2} X:{2:x2} Y:{3:x2} S:{4:x2} P:",
-					cpu.PC, cpu.A, cpu.X, cpu.Y, cpu.S
-				)
+			result.AppendFormat(
+				CultureInfo.InvariantCulture,
+				"PC:{0:x4} A:{1:x2} X:{2:x2} Y:{3:x2} S:{4:x2} P:{5}",
+				cpu.PC, cpu.A, cpu.X, cpu.Y, cpu.S, GetFlags(cpu.P)
 			);
-			// TODO : extract, simplify ?
-			for (int i = 0; i < 8; i++) {
-				result.Append(((cpu.P & (1 << (7 - i))) == 0)
-					? flags[i] : flags[i + 8]);
+			return result.ToString();
+		}
+		
+		public static string GetFlags(byte cpuFlags) {
+			const string flags = "nv0bdizcNV1BDIZC";
+			StringBuilder result = new StringBuilder();			
+			byte mask = 0x80;
+			for (int i = 0; i < 8; ++i) {
+				result.Append((cpuFlags & mask) == 0 ? flags[i] : flags[i+8]);
+				mask >>= 1;
 			}
 			return result.ToString();
 		}
