@@ -24,6 +24,7 @@ namespace Maria.Core {
 	[TestFixture]
 	public class M6502DASMTest {		
 		private M6502 cpu;
+		private IDevice ram;
 		
 		[SetUp]
 		public void SetUp() {
@@ -34,6 +35,9 @@ namespace Maria.Core {
 			cpu.Y = 3;
 			cpu.S = 4;
 			cpu.P = 0;
+			ram = new RAM6116();
+			for (ushort addr = 0; addr < ram.Size; ++addr)
+				ram[addr] = (byte) (addr & 255u);
 		}
 		
 		[Test]
@@ -53,8 +57,12 @@ namespace Maria.Core {
 		}
 		
 		[Test]
-		public void TestMemoryDump() {
-			// TODO : test something
+		public void TestMemDump() {
+			Assert.AreEqual(
+				"0000: 00 01 02 03  04 05 06 07 " + Environment.NewLine +
+				"0008: 08 09 0a 0b  0c 0d 0e 0f ",
+				M6502DASM.MemDump(ram, 0, 1)
+			);
 		}
 	}
 }
