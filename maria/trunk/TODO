@@ -1,3 +1,6 @@
+- Make/test disassebler. We have enough code to do so now, the
+  most important class is the AddressSpace class. The disassembler
+  needs the CPU, but we could provide a bogus implementation of that.
 - Build process:
   - At some point we should perhaps keep referenced assemblies
     as dependencies of the assembly that should be built.
@@ -6,9 +9,6 @@
 - Learn how to tag stuff, and tag the ORIGINAL emu7800 source code
   in the repository with 0.71 or somesuch.
 - Raise warning level when compiling ?
-- We could also go and port the disassembler...the thing doesn't
-  seem to use too much other stuff ?
-  => nope...needs the AddressSpace and the Machine/CPU classes (?)
 ---
 Stuff to clean up:
 - Duplicated code (offset calculation) in MD5.cs and GameSettings.cs
