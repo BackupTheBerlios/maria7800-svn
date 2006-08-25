@@ -1,3 +1,9 @@
+- It might make sense to introduce an IAddressable interface that is
+  both implemented by IDevice/AddressSpace. Well...technically AddressSpace
+  itself should be an IDevice, but who cares, let's do it like that
+  for the moment. It's probably simpler. The IAddressable interface
+  simply defines a setter/getter. Or so. Oh well. Don't care too much,
+  really.
 - Make/test disassebler. We have enough code to do so now, the
   most important class is the AddressSpace class. The disassembler
   needs the CPU, but we could provide a bogus implementation of that.

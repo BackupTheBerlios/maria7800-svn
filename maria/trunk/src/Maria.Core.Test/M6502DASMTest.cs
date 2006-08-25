@@ -51,5 +51,10 @@ namespace Maria.Core {
 			Assert.AreEqual("nv0bdizC", M6502DASM.GetFlags(1));
 			Assert.AreEqual("nV0bDIzc", M6502DASM.GetFlags(0x4C));
 		}
+		
+		[Test]
+		public void TestMemoryDump() {
+			// TODO : test something
+		}
 	}
 }

@@ -92,6 +92,25 @@ namespace Maria.Core {
 			}
 			return result.ToString();
 		}
+
+		public static string MemDump(AddressSpace mem, ushort atAddr, ushort untilAddr) {
+			StringBuilder result = new StringBuilder();
+			int length = untilAddr - atAddr;
+			while (length-- >= 0) {
+				// TODO : use appendformat...
+				result.Append(String.Format("{0:x4}: ", atAddr));
+				for (int i = 0; i < 8; i++) {
+					// TODO : use appendformat
+					result.Append(String.Format("{0:x2} ", mem[atAddr++]));
+					if (i == 3)
+						result.Append(" ");
+				}
+				result.Append(Environment.NewLine);
+			}
+			if (result.Length > 0)
+				--result.Length;	// Remove trailing newline
+			return result.ToString();
+		}
 	}
 }
 
@@ -130,31 +149,6 @@ namespace Maria.Core {
 				dSB.Append(String.Format("{0,-15:s}\n", OpCodeDecode(mem, dPC)));
 
 				dPC += (ushort)len;
-			}
-			if (dSB.Length > 0)
-			{
-				dSB.Length--;  // Trim trailing newline
-			}
-			return dSB.ToString();
-		}
-
-		public static string MemDump(AddressSpace mem, ushort atAddr, ushort untilAddr)
-		{
-			dSB = new StringBuilder();
-			int len = untilAddr - atAddr;
-
-			while (len-- >= 0)
-			{
-				dSB.Append(String.Format("{0:x4}: ", atAddr));
-				for (int i = 0; i < 8; i++)
-				{
-					dSB.Append(String.Format("{0:x2} ", mem[atAddr++]));
-					if (i == 3)
-					{
-						dSB.Append(" ");
-					}
-				}
-				dSB.Append("\n");
 			}
 			if (dSB.Length > 0)
 			{
