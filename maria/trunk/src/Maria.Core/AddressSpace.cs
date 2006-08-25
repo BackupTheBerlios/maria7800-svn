@@ -26,7 +26,7 @@ using Vtg.Util;
 
 namespace Maria.Core {
 	[Serializable]
-	public sealed class AddressSpace {
+	public sealed class AddressSpace : IAddressable {
 		private readonly Machine machine;
 		private readonly int addrSpaceSize;
 		private readonly int addrSpaceMask;

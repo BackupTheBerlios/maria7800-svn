@@ -1,6 +1,7 @@
 /*
- * Defines interface for devices accessable via the AddressSpace class.
- * Copyright (C) 2003 Mike Murphy
+ * Implemented by IDevice and AddressSpace, this interface shouldn't
+ * even exist. Instead, AddressSpace itself should be an IDevice.
+ *
  * Copyright (C) 2006 Thomas Mathys (tom42@users.berlios.de)
  *
  * This file is part of Maria.
@@ -22,10 +23,10 @@
 using System;
 
 namespace Maria.Core {
-	public interface IDevice : IAddressable {
-		void Reset();
-		void Map(AddressSpace adressSpace);
-		int Size { get; }
-		bool RequestSnooping { get; }
+	public interface IAddressable {
+		byte this[ushort addr] {
+			get;
+			set;
+		}
 	}
 }

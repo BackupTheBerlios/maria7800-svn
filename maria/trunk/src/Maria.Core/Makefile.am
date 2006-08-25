@@ -31,6 +31,7 @@ CartType.cs \
 Controller.cs \
 Exceptions.cs \
 GameSettings.cs \
+IAddressable.cs \
 IDevice.cs \
 M6502.cs \
 M6502DASM.cs \
