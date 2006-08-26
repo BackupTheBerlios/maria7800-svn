@@ -1,3 +1,6 @@
+- Pick next file and...well...port it. Perhaps we take the FontRenderer,
+  although I have no Idea how I'd want to test that...Well...perhaps
+  in the main gui, we could write a little WindowsForms app there.
 - Build process:
   - At some point we should perhaps keep referenced assemblies
     as dependencies of the assembly that should be built.
@@ -6,6 +9,8 @@
 - Learn how to tag stuff, and tag the ORIGINAL emu7800 source code
   in the repository with 0.71 or somesuch.
 - Raise warning level when compiling ?
+- At some point search for \n sequences in source code and
+  replace them by Environment.NewLine. Or so. Oh well.
 ---
 Stuff to clean up:
 - Duplicated code (offset calculation) in MD5.cs and GameSettings.cs
