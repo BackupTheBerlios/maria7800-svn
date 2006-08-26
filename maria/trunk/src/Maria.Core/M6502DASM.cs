@@ -25,8 +25,6 @@ using System.Globalization;
 using System.Text;
 
 namespace Maria.Core {
-	// TODO : finish, if we change stuff, by all means test it...
-	// TODO : make sure calls to xxxFormat() supply CultureInfo.InvariantCulture
 	public class M6502DASM {
 
 		// Instruction Mnemonics
@@ -73,7 +71,7 @@ namespace Maria.Core {
 		}
 
 		private static readonly m[] mnemonicMatrix = {
-//   		0     1     2     3    4     5     6     7     8     9     a     b     c     d    e     f
+//   		0      1      2      3      4      5      6      7      8      9      a      b      c      d      e      f
 /*0*/		m.BRK, m.ORA, m.kil, m.XXX, m.XXX, m.ORA, m.ASL, m.XXX, m.PHP, m.ORA, m.ASL, m.XXX, m.top, m.ORA, m.ASL, m.XXX,
 /*1*/		m.BPL, m.ORA, m.kil, m.XXX, m.XXX, m.ORA, m.ASL, m.XXX, m.CLC, m.ORA, m.XXX, m.XXX, m.top, m.ORA, m.ASL, m.XXX,
 /*2*/		m.JSR, m.AND, m.kil, m.XXX, m.BIT, m.AND, m.ROL, m.XXX, m.PLP, m.AND, m.ROL, m.XXX, m.BIT, m.AND, m.ROL, m.XXX,
@@ -149,54 +147,36 @@ namespace Maria.Core {
 				result.Length--; // Trim trailing newline
 			return result.ToString();
 		}
-	}
-}
 
-// TODO : old stuff below, port
-/*
-		public static string Disassemble(AddressSpace mem, ushort atAddr, ushort untilAddr)
-		{
-			dSB = new StringBuilder();
-
-			dPC = atAddr;
-			while (atAddr < untilAddr)
-			{
-				dSB.Append(String.Format("{0:x4}: ", dPC));
-
+		public static string Disassemble(IAddressable mem, ushort atAddr, ushort untilAddr) {
+			StringBuilder result = new StringBuilder();
+			ushort dPC = atAddr;
+			while (atAddr < untilAddr) {
+				result.AppendFormat(CultureInfo.InvariantCulture, "{0:x4}: ", dPC);
 				int len = InstructionLength(mem, dPC);
-
-				for (int i = 0; i < 3; i++)
-				{
+				for (int i = 0; i < 3; i++) {
 					if (i < len)
-					{
-						dSB.Append(String.Format("{0:x2} ", mem[atAddr++]));
-					}
+						result.AppendFormat(CultureInfo.InvariantCulture, "{0:x2} ", mem[atAddr++]);
 					else
-					{
-						dSB.Append("   ");
-					}
+						result.Append("   ");
 				}
-				dSB.Append(String.Format("{0,-15:s}\n", OpCodeDecode(mem, dPC)));
-
+				result.AppendFormat(CultureInfo.InvariantCulture, "{0,-15:s}{1}",
+					OpCodeDecode(mem, dPC), Environment.NewLine);
 				dPC += (ushort)len;
 			}
-			if (dSB.Length > 0)
-			{
-				dSB.Length--;  // Trim trailing newline
-			}
-			return dSB.ToString();
+			if (result.Length > 0)
+				result.Length--;  // Trim trailing newline
+			return result.ToString();
 		}
 
-		public static string OpCodeDecode(AddressSpace mem, ushort PC)
-		{
+		public static string OpCodeDecode(IAddressable mem, ushort PC) {
 			int num_operands = InstructionLength(mem, PC) - 1;
 			ushort PC1 = (ushort)(PC + 1);
 			string addrmodeStr;
-
-			switch (AddressingModeMatrix[mem[PC]])
-			{
+			switch (addressingModeMatrix[mem[PC]]) {
 				case a.REL:
-					addrmodeStr = String.Format("${0:x4}", (ushort)(PC + (sbyte)(mem[PC1]) + 2));
+					addrmodeStr = String.Format(CultureInfo.InvariantCulture,
+						"${0:x4}", (ushort)(PC + (sbyte)(mem[PC1]) + 2));
 					break;
 				case a.ZPG:
 				case a.ABS:
@@ -227,14 +207,24 @@ namespace Maria.Core {
 					addrmodeStr = "";
 					break;
 			}
-
-			return String.Format("{0} {1}", MnemonicMatrix[mem[PC]], addrmodeStr);
+			return String.Format(CultureInfo.InvariantCulture,
+				"{0} {1}", mnemonicMatrix[mem[PC]], addrmodeStr);
 		}
 
-		static int InstructionLength(AddressSpace mem, ushort PC)
-		{
-			switch (AddressingModeMatrix[mem[PC]])
-			{
+		private static string EA(IAddressable mem, ushort PC, int bytes) {
+			byte lsb = mem[PC];
+			byte msb = 0;
+			if (bytes == 2)
+				msb = mem[(ushort)(PC + 1)];
+			ushort ea = (ushort)(lsb | (msb << 8));
+			if (bytes == 1)
+				return String.Format(CultureInfo.InvariantCulture, "${0:x2}", ea);
+			else
+				return String.Format(CultureInfo.InvariantCulture, "${0:x4}", ea);
+		}
+
+		private static int InstructionLength(IAddressable mem, ushort PC) {
+			switch (addressingModeMatrix[mem[PC]]) {
 				case a.ACC:
 				case a.IMP:
 					return 1;
@@ -254,28 +244,5 @@ namespace Maria.Core {
 					return 3;
 			}
 		}
-
-		static string EA(AddressSpace mem, ushort PC, int bytes)
-		{
-			byte lsb = mem[PC];
-			byte msb = 0;
-
-			if (bytes == 2)
-			{
-				msb = mem[(ushort)(PC + 1)];
-			}
-
-			ushort ea = (ushort)(lsb | (msb << 8));
-
-			if (bytes == 1)
-			{
-				return String.Format("${0:x2}", ea);
-			}
-			else
-			{
-				return String.Format("${0:x4}", ea);
-			}
-		}
 	}
 }
-*/

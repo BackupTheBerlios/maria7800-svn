@@ -1,4 +1,3 @@
-- Finish disassembler. not much to do now, really...
 - Build process:
   - At some point we should perhaps keep referenced assemblies
     as dependencies of the assembly that should be built.
