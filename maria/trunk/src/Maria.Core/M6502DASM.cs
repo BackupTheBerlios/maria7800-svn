@@ -1,9 +1,9 @@
 /*
  * Provides disassembly services.
- * 
+ *
  * Copyright (c) 2003, 2004 Mike Murphy
  * Copyright (C) 2006 Thomas Mathys (tom42@users.berlios.de)
- * 
+ *
  * This file is part of Maria.
  *
  * Maria is free software; you can redistribute it and/or modify
@@ -28,7 +28,7 @@ namespace Maria.Core {
 	// TODO : finish, if we change stuff, by all means test it...
 	// TODO : make sure calls to xxxFormat() supply CultureInfo.InvariantCulture
 	public class M6502DASM {
-		
+
 		// Instruction Mnemonics
 		private enum m : uint {
 			XXX,
@@ -54,7 +54,7 @@ namespace Maria.Core {
 			sax,
 			top
 		}
-		
+
 		// Addressing Modes
 		private enum a : uint {
 			REL,	// Relative: $aa (branch instructions only)
@@ -64,14 +64,54 @@ namespace Maria.Core {
 			ABS,	// Absolute: $aaaa
 			ABX,	// Absolute Indexed X: $aaaa,X
 			ABY,	// Absolute Indexed Y: $aaaa,Y
-			IDX,	// Indexed Indirect: ($aa,X)		
-			IDY,	// Indirect Indexed: ($aa),Y	
+			IDX,	// Indexed Indirect: ($aa,X)
+			IDY,	// Indirect Indexed: ($aa),Y
 			IND,	// Indirect Absolute: ($aaaa) (JMP only)
 			IMM,	// Immediate: #aa
 			IMP,	// Implied
 			ACC,	// Accumulator
 		}
-		
+
+		private static readonly m[] mnemonicMatrix = {
+//   		0     1     2     3    4     5     6     7     8     9     a     b     c     d    e     f
+/*0*/		m.BRK, m.ORA, m.kil, m.XXX, m.XXX, m.ORA, m.ASL, m.XXX, m.PHP, m.ORA, m.ASL, m.XXX, m.top, m.ORA, m.ASL, m.XXX,
+/*1*/		m.BPL, m.ORA, m.kil, m.XXX, m.XXX, m.ORA, m.ASL, m.XXX, m.CLC, m.ORA, m.XXX, m.XXX, m.top, m.ORA, m.ASL, m.XXX,
+/*2*/		m.JSR, m.AND, m.kil, m.XXX, m.BIT, m.AND, m.ROL, m.XXX, m.PLP, m.AND, m.ROL, m.XXX, m.BIT, m.AND, m.ROL, m.XXX,
+/*3*/		m.BMI, m.AND, m.kil, m.XXX, m.XXX, m.AND, m.ROL, m.XXX, m.SEC, m.AND, m.XXX, m.XXX, m.top, m.AND, m.ROL, m.rla,
+/*4*/		m.RTI, m.EOR, m.kil, m.XXX, m.XXX, m.EOR, m.LSR, m.XXX, m.PHA, m.EOR, m.LSR, m.XXX, m.JMP, m.EOR, m.LSR, m.XXX,
+/*5*/		m.BVC, m.EOR, m.kil, m.XXX, m.XXX, m.EOR, m.LSR, m.XXX, m.CLI, m.EOR, m.XXX, m.XXX, m.top, m.EOR, m.LSR, m.XXX,
+/*6*/		m.RTS, m.ADC, m.kil, m.XXX, m.XXX, m.ADC, m.ROR, m.XXX, m.PLA, m.ADC, m.ROR, m.XXX, m.JMP, m.ADC, m.ROR, m.XXX,
+/*7*/		m.BVS, m.ADC, m.kil, m.XXX, m.XXX, m.ADC, m.ROR, m.XXX, m.SEI, m.ADC, m.XXX, m.XXX, m.top, m.ADC, m.ROR, m.XXX,
+/*8*/		m.XXX, m.STA, m.XXX, m.sax, m.STY, m.STA, m.STX, m.sax, m.DEY, m.XXX, m.TXA, m.XXX, m.STY, m.STA, m.STX, m.sax,
+/*9*/		m.BCC, m.STA, m.kil, m.XXX, m.STY, m.STA, m.STX, m.sax, m.TYA, m.STA, m.TXS, m.XXX, m.top, m.STA, m.XXX, m.XXX,
+/*a*/		m.LDY, m.LDA, m.LDX, m.lax, m.LDY, m.LDA, m.LDX, m.lax, m.TAY, m.LDA, m.TAX, m.XXX, m.LDY, m.LDA, m.LDX, m.lax,
+/*b*/		m.BCS, m.LDA, m.kil, m.lax, m.LDY, m.LDA, m.LDX, m.lax, m.CLV, m.LDA, m.TSX, m.XXX, m.LDY, m.LDA, m.LDX, m.lax,
+/*c*/		m.CPY, m.CMP, m.XXX, m.XXX, m.CPY, m.CMP, m.DEC, m.XXX, m.INY, m.CMP, m.DEX, m.XXX, m.CPY, m.CMP, m.DEC, m.XXX,
+/*d*/		m.BNE, m.CMP, m.kil, m.XXX, m.XXX, m.CMP, m.DEC, m.XXX, m.CLD, m.CMP, m.XXX, m.XXX, m.top, m.CMP, m.DEC, m.XXX,
+/*e*/		m.CPX, m.SBC, m.XXX, m.XXX, m.CPX, m.SBC, m.INC, m.XXX, m.INX, m.SBC, m.NOP, m.XXX, m.CPX, m.SBC, m.INC, m.isb,
+/*f*/		m.BEQ, m.SBC, m.kil, m.XXX, m.XXX, m.SBC, m.INC, m.XXX, m.SED, m.SBC, m.XXX, m.XXX, m.top, m.SBC, m.INC, m.isb
+		};
+
+		private static readonly a[] addressingModeMatrix = {
+//   		0      1      2      3      4      5      6      7      8      9      A      B      C      D      E      F
+/*0*/		a.IMP, a.IDX, a.IMP, a.REL, a.REL, a.ZPG, a.ZPG, a.REL, a.IMP, a.IMM, a.ACC, a.REL, a.ABS, a.ABS, a.ABS, a.REL,
+/*1*/		a.REL, a.IDY, a.IMP, a.REL, a.REL, a.ZPG, a.ZPG, a.REL, a.IMP, a.ABY, a.REL, a.REL, a.ABS, a.ABX, a.ABX, a.REL,
+/*2*/		a.ABS, a.IDX, a.IMP, a.REL, a.ZPG, a.ZPG, a.ZPG, a.REL, a.IMP, a.IMM, a.ACC, a.REL, a.ABS, a.ABS, a.ABS, a.REL,
+/*3*/		a.REL, a.IDY, a.IMP, a.REL, a.REL, a.ZPG, a.ZPG, a.REL, a.IMP, a.ABY, a.REL, a.REL, a.ABS, a.ABX, a.ABX, a.ABX,
+/*4*/		a.IMP, a.IDY, a.IMP, a.REL, a.REL, a.ZPG, a.ZPG, a.REL, a.IMP, a.IMM, a.ACC, a.REL, a.ABS, a.ABS, a.ABS, a.REL,
+/*5*/		a.REL, a.IDY, a.IMP, a.REL, a.REL, a.ZPG, a.ZPG, a.REL, a.IMP, a.ABY, a.REL, a.REL, a.ABS, a.ABX, a.ABX, a.REL,
+/*6*/		a.IMP, a.IDX, a.IMP, a.REL, a.REL, a.ZPG, a.ZPG, a.REL, a.IMP, a.IMM, a.ACC, a.REL, a.IND, a.ABS, a.ABS, a.REL,
+/*7*/		a.REL, a.IDY, a.IMP, a.REL, a.REL, a.ZPX, a.ZPX, a.REL, a.IMP, a.ABY, a.REL, a.REL, a.ABS, a.ABX, a.ABX, a.REL,
+/*8*/		a.REL, a.IDY, a.REL, a.IDX, a.ZPG, a.ZPG, a.ZPG, a.ZPG, a.IMP, a.REL, a.IMP, a.REL, a.ABS, a.ABS, a.ABS, a.ABS,
+/*9*/		a.REL, a.IDY, a.IMP, a.REL, a.ZPX, a.ZPX, a.ZPY, a.ZPY, a.IMP, a.ABY, a.IMP, a.REL, a.ABS, a.ABX, a.REL, a.REL,
+/*A*/		a.IMM, a.IND, a.IMM, a.IDX, a.ZPG, a.ZPG, a.ZPG, a.ZPX, a.IMP, a.IMM, a.IMP, a.REL, a.ABS, a.ABS, a.ABS, a.ABS,
+/*B*/		a.REL, a.IDY, a.IMP, a.IDY, a.ZPX, a.ZPX, a.ZPY, a.ZPY, a.IMP, a.ABY, a.IMP, a.REL, a.ABX, a.ABX, a.ABY, a.ABY,
+/*C*/		a.IMM, a.IDX, a.REL, a.REL, a.ZPG, a.ZPG, a.ZPG, a.REL, a.IMP, a.IMM, a.IMP, a.REL, a.ABS, a.ABS, a.ABS, a.REL,
+/*D*/		a.REL, a.IDY, a.IMP, a.REL, a.REL, a.ZPX, a.ZPX, a.REL, a.IMP, a.ABY, a.REL, a.REL, a.ABS, a.ABX, a.ABX, a.REL,
+/*E*/		a.IMM, a.IDX, a.REL, a.REL, a.ZPG, a.ZPG, a.ZPG, a.REL, a.IMP, a.IMM, a.IMP, a.REL, a.ABS, a.ABS, a.ABS, a.ABS,
+/*F*/		a.REL, a.IDY, a.IMP, a.REL, a.REL, a.ZPX, a.ZPX, a.REL, a.IMP, a.ABY, a.REL, a.REL, a.ABS, a.ABX, a.ABX, a.ABX
+		};
+
 		public static string GetRegisters(M6502 cpu) {
 			StringBuilder result = new StringBuilder();
 			result.AppendFormat(
@@ -81,10 +121,10 @@ namespace Maria.Core {
 			);
 			return result.ToString();
 		}
-		
+
 		public static string GetFlags(byte cpuFlags) {
 			const string flags = "nv0bdizcNV1BDIZC";
-			StringBuilder result = new StringBuilder();			
+			StringBuilder result = new StringBuilder();
 			byte mask = 0x80;
 			for (int i = 0; i < 8; ++i) {
 				result.Append((cpuFlags & mask) == 0 ? flags[i] : flags[i+8]);
@@ -114,10 +154,6 @@ namespace Maria.Core {
 
 // TODO : old stuff below, port
 /*
-		static m[] MnemonicMatrix = {
-			// Get it from original src
-};
-
 		static a[] AddressingModeMatrix = {
 			get it from original src
 };
