@@ -1,8 +1,4 @@
-- Make/test disassebler. We have enough code to do so now, the
-  most important class is the AddressSpace class. The disassembler
-  needs the CPU, but we could provide a bogus implementation of that.
-  - Ok, GetRegisters() is in place, but I want to refactor it, and
-    for that I need a test.
+- Finish disassembler. not much to do now, really...
 - Build process:
   - At some point we should perhaps keep referenced assemblies
     as dependencies of the assembly that should be built.

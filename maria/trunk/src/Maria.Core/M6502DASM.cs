@@ -154,10 +154,6 @@ namespace Maria.Core {
 
 // TODO : old stuff below, port
 /*
-		static a[] AddressingModeMatrix = {
-			get it from original src
-};
-
 		public static string Disassemble(AddressSpace mem, ushort atAddr, ushort untilAddr)
 		{
 			dSB = new StringBuilder();
