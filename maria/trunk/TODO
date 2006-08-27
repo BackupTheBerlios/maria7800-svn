@@ -1,6 +1,4 @@
-- Pick next file and...well...port it. Perhaps we take the FontRenderer,
-  although I have no Idea how I'd want to test that...Well...perhaps
-  in the main gui, we could write a little WindowsForms app there.
+- Port the CPU. Can't be that hard, actually. Methinks.
 - Build process:
   - At some point we should perhaps keep referenced assemblies
     as dependencies of the assembly that should be built.
