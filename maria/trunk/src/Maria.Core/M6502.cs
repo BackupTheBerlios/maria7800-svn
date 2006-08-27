@@ -53,6 +53,10 @@ namespace Maria.Core {
 		public byte S;
 		public byte P;
 
+		public override String ToString() {
+			return "M6502 CPU";
+		}
+
 		private static byte MSB(ushort u16) {
 			return (byte)(u16 >> 8);
 		}
@@ -81,11 +85,6 @@ namespace Maria.Core {
 
 			Trace.Write(this);
 			Trace.WriteLine(String.Format("(PC:${0:x4}) reset", PC));
-		}
-
-		public override String ToString()
-		{
-			return "M6502 CPU";
 		}
 
 		public void Execute()
