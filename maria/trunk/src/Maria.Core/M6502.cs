@@ -35,7 +35,7 @@ namespace Maria.Core {
 		private const ushort IRQ_VEC = 0xfffe;
 
 		private readonly AddressSpace mem;
-		private readonly Machine machine;
+		private readonly Machine machine;	// TODO : not really necessary, right ?
 		[NonSerialized]
 		private OpcodeHandler[] Opcodes;
 
@@ -52,6 +52,18 @@ namespace Maria.Core {
 		public byte Y;
 		public byte S;
 		public byte P;
+
+		private static byte MSB(ushort u16) {
+			return (byte)(u16 >> 8);
+		}
+
+		private static byte LSB(ushort u16) {
+			return (byte)u16;
+		}
+
+		private static ushort WORD(byte lsb, byte msb) {
+			return (ushort)(lsb | msb << 8);
+		}
 	}
 }
 
@@ -121,21 +133,6 @@ namespace Maria.Core {
 		public virtual void OnDeserialization(object sender)
 		{
 			InstallOpcodes();
-		}
-
-		byte MSB(ushort u16)
-		{
-			return (byte)(u16 >> 8);
-		}
-
-		byte LSB(ushort u16)
-		{
-			return (byte)u16;
-		}
-
-		ushort WORD(byte lsb, byte msb)
-		{
-			return (ushort)(lsb | msb << 8);
 		}
 
 		// Processor Status Flag Bits
