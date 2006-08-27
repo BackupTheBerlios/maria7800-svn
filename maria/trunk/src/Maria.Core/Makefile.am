@@ -33,6 +33,7 @@ Exceptions.cs \
 GameSettings.cs \
 IAddressable.cs \
 IDevice.cs \
+IHost.cs \
 M6502.cs \
 M6502DASM.cs \
 Machine.cs \
