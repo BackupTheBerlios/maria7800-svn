@@ -1,3 +1,7 @@
+- Possibly we can work on the Cart classes.
+  These should perhaps be divided up...or so. Oh well
+  - Well...started working on it. The abstract base Cart class
+    is inside src/Maria.Core/Cart.cs
 - Build process:
   - At some point we should perhaps keep referenced assemblies
     as dependencies of the assembly that should be built.

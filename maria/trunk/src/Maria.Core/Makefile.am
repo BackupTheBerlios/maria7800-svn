@@ -27,6 +27,7 @@ Maria_Core_sources_in = AssemblyInfo.cs.in
 Maria_Core_generated_sources = $(Maria_Core_sources_in:.in=)
 Maria_Core_sources = \
 AddressSpace.cs \
+Cart.cs \
 CartType.cs \
 Controller.cs \
 Exceptions.cs \
