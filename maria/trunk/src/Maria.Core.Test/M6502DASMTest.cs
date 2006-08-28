@@ -28,7 +28,7 @@ namespace Maria.Core {
 
 		[SetUp]
 		public void SetUp() {
-			cpu = new M6502();
+			cpu = new M6502(ram);
 			cpu.PC = 0x1234;
 			cpu.A = 1;
 			cpu.X = 2;

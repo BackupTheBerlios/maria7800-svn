@@ -52,6 +52,15 @@ namespace Maria.Core {
 		[NonSerialized]
 		private OpcodeHandler[] Opcodes;
 
+		public M6502(IAddressable mem) {
+			this.mem = mem;
+			InstallOpcodes();
+			Clock = 0;
+			RunClocks = 0;
+			RunClocksMultiple = 1;
+			P = 1 << 5;
+		}
+
 		public void Reset() {
 			Jammed = false;
 			S = 0xff;
@@ -83,6 +92,9 @@ namespace Maria.Core {
 		private static ushort WORD(byte lsb, byte msb) {
 			return (ushort)(lsb | msb << 8);
 		}
+		
+		private void InstallOpcodes() {
+		}
 	}
 }
 
@@ -113,21 +125,6 @@ namespace Maria.Core {
 					Opcodes[Mem[PC++]]();
 				}
 			}
-		}
-
-		public M6502(AddressSpace mem)
-		{
-			Mem = mem;
-			M = mem.M;
-
-			InstallOpcodes();
-
-			Clock = 0;
-			RunClocks = 0;
-			RunClocksMultiple = 1;
-
-			// initialize processor status, bit 5 is always set
-			P = 1 << 5;
 		}
 
 		public virtual void OnDeserialization(object sender)

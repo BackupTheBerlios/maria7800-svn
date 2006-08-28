@@ -23,12 +23,21 @@ using NUnit.Framework;
 namespace Maria.Core {
 	[TestFixture]
 	public class M6502Test {
-		
+		private IDevice ram;
 		private M6502 cpu;
 		
 		[SetUp]
 		public void SetUp() {
-			cpu = new M6502();
+			ram = new RAM6116();
+			cpu = new M6502(ram);
+		}
+		
+		[Test]
+		public void TestNewlyCreated() {
+			Assert.AreEqual(0, cpu.Clock);
+			Assert.AreEqual(0, cpu.RunClocks);
+			Assert.AreEqual(1, cpu.RunClocksMultiple);
+			Assert.AreEqual(32, cpu.P);
 		}
 		
 		[Test]
