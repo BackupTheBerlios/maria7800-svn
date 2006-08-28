@@ -32,6 +32,7 @@ Maria_Core_Test_generated_sources = $(Maria_Core_Test_sources_in:.in=)
 Maria_Core_Test_sources = \
 AddressSpaceTest.cs \
 GameSettingsTest.cs \
+M6502Test.cs \
 M6502DASMTest.cs \
 MD5Test.cs \
 NullDeviceTest.cs \

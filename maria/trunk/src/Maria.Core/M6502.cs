@@ -22,6 +22,7 @@
  */
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Text;
 using System.Runtime.Serialization;
 
@@ -29,15 +30,10 @@ namespace Maria.Core {
 	[Serializable]
 	// TODO : implement IDeserializationCallback !!!
 	public class M6502 {
+		public const ushort NMI_VEC = 0xfffa;
+		public const ushort RST_VEC = 0xfffc;
+		public const ushort IRQ_VEC = 0xfffe;
 		private delegate void OpcodeHandler();
-		private const ushort NMI_VEC = 0xfffa;
-		private const ushort RST_VEC = 0xfffc;
-		private const ushort IRQ_VEC = 0xfffe;
-
-		private readonly AddressSpace mem;
-		private readonly Machine machine;	// TODO : not really necessary, right ?
-		[NonSerialized]
-		private OpcodeHandler[] Opcodes;
 
 		public ulong Clock;
 		public int RunClocks;
@@ -52,6 +48,25 @@ namespace Maria.Core {
 		public byte Y;
 		public byte S;
 		public byte P;
+		private readonly AddressSpace mem;
+		[NonSerialized]
+		private OpcodeHandler[] Opcodes;
+
+		public void Reset() {
+			Jammed = false;
+			S = 0xff;
+			// TODO : reset program counter...
+			// (can't do before Mem is initialized, tho)
+			// PC = WORD(Mem[RST_VEC], Mem[RST_VEC + 1]); 
+			Trace.Write(this);
+			Trace.WriteLine(
+				String.Format(
+					CultureInfo.InvariantCulture,
+					"(PC:${0:x4}) reset",
+					PC
+				)
+			);
+		}
 
 		public override String ToString() {
 			return "M6502 CPU";
@@ -73,20 +88,6 @@ namespace Maria.Core {
 
 // TODO : port the shit below. Take care, I'm pretty sure it's butt ugly
 /*
-		public void Reset()
-		{
-			Jammed = false;
-
-			// clear the stack
-			S = 0xff;
-
-			// reset the program counter
-			PC = WORD(Mem[RST_VEC], Mem[RST_VEC + 1]);
-
-			Trace.Write(this);
-			Trace.WriteLine(String.Format("(PC:${0:x4}) reset", PC));
-		}
-
 		public void Execute()
 		{
 			EmulatorPreemptRequest = false;
