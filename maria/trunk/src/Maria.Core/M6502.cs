@@ -278,40 +278,26 @@ namespace Maria.Core {
 			return WORD(lsb, msb);
 		}
 
-		private void InstallOpcodes() {
-			// TODO : actually do something here...
-		}
-	}
-}
-
-// TODO : port the shit below. Take care, I'm pretty sure it's butt ugly
-/*
-
 		// ADC: Add with carry
-		void iADC(byte mem)
-		{
+		void iADC(byte mem) {
 			int c = fC ? 1 : 0;
-			if (fD)
-			{
+			if (fD) {
 				int lo = (A & 0x0f) + (mem & 0x0f) + c;
 				int hi = (A & 0xf0) + (mem & 0xf0);
 				fZ = ((lo + hi) & 0xff) == 0;
-				if (lo > 0x09)
-				{
+				if (lo > 0x09) {
 					lo += 0x06;
 					hi += 0x10;
 				}
 				fN = (hi & 0x80) != 0;
 				fV = (~(A^mem) & (A^hi) & 0x80) != 0;
-				if (hi > 0x90)
-				{
+				if (hi > 0x90) {
 					hi += 0x60;
 				}
 				fC = (hi & 0xff00) != 0;
 				A = (byte)((lo & 0x0f) | (hi & 0xf0));
 			}
-			else
-			{
+			else {
 				int sum = A + mem + c;
 				fV = (~(A^mem) & (A^sum) & 0x80) != 0;
 				fC = (sum & 0x100) != 0;
@@ -321,15 +307,13 @@ namespace Maria.Core {
 		}
 
 		// AND: Logical and
-		void iAND(byte mem)
-		{
+		void iAND(byte mem) {
 			A &= mem;
 			set_fNZ(A);
 		}
 
 		// ASL: Arithmetic shift left: C <- [7][6][5][4][3][2][1][0] <- 0
-		byte iASL(byte mem)
-		{
+		byte iASL(byte mem) {
 			fC = (mem & 0x80) != 0;
 			mem <<= 1;
 			set_fNZ(mem);
@@ -337,101 +321,95 @@ namespace Maria.Core {
 		}
 
 		// BIT: Bit test
-		void iBIT(byte mem)
-		{
+		void iBIT(byte mem) {
 			fN = (mem & 0x80) != 0;
 			fV = (mem & 0x40) != 0;
 			fZ = (mem & A) == 0;
 		}
 
 		// BRK Force Break  (cause software interrupt)
-		void iBRK()
-		{
+		void iBRK() {
 			interrupt(IRQ_VEC, false);
 		}
 
 		// CLC: Clear carry flag
-		void iCLC()
-		{
+		void iCLC() {
 			fC = false;
 		}
 
 		// CLD: Clear decimal mode
-		void iCLD()
-		{
+		void iCLD() {
 			fD = false;
 		}
 
 		// CLI: Clear interrupt disable
-		void iCLI()
-		{
+		void iCLI() {
 			fI = false;
 		}
 
 		// CLV: Clear overflow flag
-		void iCLV()
-		{
+		void iCLV() {
 			fV = false;
 		}
 
 		// CMP: Compare accumulator
-		void iCMP(byte mem)
-		{
+		void iCMP(byte mem) {
 			fC = A >= mem;
 			set_fNZ((byte)(A - mem));
 		}
 
 		// CPX: Compare index X
-		void iCPX(byte mem)
-		{
+		void iCPX(byte mem) {
 			fC = X >= mem;
 			set_fNZ((byte)(X - mem));
 		}
 
 		// CPY: Compare index Y
-		void iCPY(byte mem)
-		{
+		void iCPY(byte mem) {
 			fC = Y >= mem;
 			set_fNZ((byte)(Y - mem));
 		}
 
 		// DEC: Decrement memory
-		byte iDEC(byte mem)
-		{
+		byte iDEC(byte mem) {
 			mem--;
 			set_fNZ(mem);
 			return mem;
 		}
 
 		// DEX: Decrement index x
-		void iDEX()
-		{
+		void iDEX() {
 			X--;
 			set_fNZ(X);
 		}
 
 		// DEY: Decrement index y
-		void iDEY()
-		{
+		void iDEY() {
 			Y--;
 			set_fNZ(Y);
 		}
 
 		// EOR: Logical exclusive or
-		void iEOR(byte mem)
-		{
+		void iEOR(byte mem) {
 			A ^= mem;
 			set_fNZ(A);
 		}
 
 		// INC: Increment memory
-		byte iINC(byte mem)
-		{
+		byte iINC(byte mem) {
 			mem++;
 			set_fNZ(mem);
 			return mem;
 		}
 
+		private void InstallOpcodes() {
+			// TODO : actually do something here...
+		}
+	}
+}
+
+// TODO : port the shit below. Take care, I'm pretty sure it's butt ugly
+/*
 		// INX: Increment index x
 		void iINX()
 		{
