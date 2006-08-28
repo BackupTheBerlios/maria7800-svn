@@ -74,6 +74,26 @@ namespace Maria.Core {
 			);
 		}
 
+		public void Execute() {
+			EmulatorPreemptRequest = false;
+			while (RunClocks > 0 && !Jammed) {
+				if (EmulatorPreemptRequest) {
+					break;
+				}
+				else if (NMIInterruptRequest) {
+					NMIInterruptRequest = false;
+					interrupt(NMI_VEC, true);
+				}
+				else if (!fI && IRQInterruptRequest) {
+					IRQInterruptRequest = false;
+					interrupt(IRQ_VEC, true);
+				}
+				else {
+					Opcodes[mem[PC++]]();
+				}
+			}
+		}
+
 		public virtual void OnDeserialization(object sender) {
 			InstallOpcodes();
 		}
@@ -93,7 +113,96 @@ namespace Maria.Core {
 		private static ushort WORD(byte lsb, byte msb) {
 			return (ushort)(lsb | msb << 8);
 		}
-		
+	
+		private void fset(byte flag, bool value) {
+			P = (byte)(value ? P | flag : P & ~flag);
+		}
+
+		private bool fget(byte flag) {
+			return (P & flag) != 0;
+		}
+
+		private bool fC {
+			get { return fget(1 << 0); }
+			set { fset(1 << 0, value); }
+		}
+
+		private bool fZ {
+			get { return fget(1 << 1); }
+			set { fset(1 << 1, value); }
+		}
+
+		private bool fI {
+			get { return fget(1 << 2); }
+			set { fset(1 << 2, value); }
+		}
+
+		private bool fD {
+			get { return fget(1 << 3); }
+			set { fset(1 << 3, value); }
+		}
+
+		private bool fB {
+			get { return fget(1 << 4); }
+			set { fset(1 << 4, value); }
+		}
+
+		private bool fV {
+			get { return fget(1 << 6); }
+			set { fset(1 << 6, value); }
+		}
+
+		private bool fN {
+			get { return fget(1 << 7); }
+			set { fset(1 << 7, value); }
+		}
+
+		private void set_fNZ(byte u8) {
+			fN = (u8 & 0x80) != 0;
+			fZ = (u8 & 0xff) == 0;
+		}
+
+		private byte pull() {
+			S++;
+			return mem[(ushort)(0x0100 + S)];
+		}
+
+		private void push(byte data) {
+			mem[(ushort)(0x0100 + S)] = data;
+			S--;
+		}
+
+		private void clk(int ticks) {
+			Clock += (ulong)ticks;
+			RunClocks -= (ticks*RunClocksMultiple);
+		}
+
+		private void interrupt(ushort intr_vector, bool isExternal) {
+			if (isExternal) {
+				fB = false;
+				clk(7); // Charge clks for external interrupts
+			}
+			else {
+				fB = true;
+				PC++;
+			}
+			push(MSB(PC));
+			push(LSB(PC));
+			push(P);
+			fI = true;
+			byte lsb = mem[intr_vector];
+			intr_vector++;
+			byte msb = mem[intr_vector];
+			PC = WORD(lsb, msb);
+		}
+
+		private void br(bool cond, ushort ea) {
+			if (cond) {
+				clk( (MSB(PC) == MSB(ea)) ? 1 : 2 );
+				PC = ea;
+			}
+		}
+
 		private void InstallOpcodes() {
 			// TODO : actually do something here...
 		}
@@ -102,156 +211,6 @@ namespace Maria.Core {
 
 // TODO : port the shit below. Take care, I'm pretty sure it's butt ugly
 /*
-		public void Execute()
-		{
-			EmulatorPreemptRequest = false;
-
-			while (RunClocks > 0 && !Jammed)
-			{
-				if (EmulatorPreemptRequest)
-				{
-					break;
-				}
-				else if (NMIInterruptRequest)
-				{
-					NMIInterruptRequest = false;
-					interrupt(NMI_VEC, true);
-				}
-				else if (!fI && IRQInterruptRequest)
-				{
-					IRQInterruptRequest = false;
-					interrupt(IRQ_VEC, true);
-				}
-				else
-				{
-					Opcodes[Mem[PC++]]();
-				}
-			}
-		}
-
-		// Processor Status Flag Bits
-		//
-
-		// Flag bit setters and getters
-		void fset(byte flag, bool value)
-		{
-			P = (byte)(value ? P | flag : P & ~flag);
-		}
-
-		bool fget(byte flag)
-		{
-			return (P & flag) != 0;
-		}
-
-		// Carry: set if the add produced a carry, if the subtraction
-		//      produced a borrow.  Also used in shift instructions.
-		bool fC
-		{
-			get {   return fget(1 << 0);  }
-			set {   fset(1 << 0, value);  }
-		}
-
-		// Zero: set if the result of the last operation was zero
-		bool fZ
-		{
-			get {   return fget(1 << 1);  }
-			set {   fset(1 << 1, value);  }
-		}
-
-		// Irq Disable: set if maskable interrupts are disabled
-		bool fI
-		{
-			get {   return fget(1 << 2);  }
-			set {   fset(1 << 2, value);  }
-		}
-
-		// Decimal Mode: set if decimal mode active
-		bool fD
-		{
-			get {   return fget(1 << 3);  }
-			set {   fset(1 << 3, value);  }
-		}
-
-		// Brk: set if an interrupt caused by a BRK instruction,
-		//      reset if caused by an internal interrupt
-		bool fB
-		{
-			get {   return fget(1 << 4);  }
-			set {   fset(1 << 4, value);  }
-		}
-
-		// Overflow: set if the addition of two-like-signed numbers
-		//      or the subtraction of two unlike-signed numbers
-		//      produces a result greater than +127 or less than -128.
-		bool fV
-		{
-			get {   return fget(1 << 6);  }
-			set {   fset(1 << 6, value);  }
-		}
-
-		// Negative: set if bit 7 of the accumulator is set
-		bool fN
-		{
-			get {   return fget(1 << 7);  }
-			set {   fset(1 << 7, value);  }
-		}
-
-		void set_fNZ(byte u8)
-		{
-			fN = (u8 & 0x80) != 0;
-			fZ = (u8 & 0xff) == 0;
-		}
-
-		byte pull()
-		{
-			S++;
-			return Mem[(ushort)(0x0100 + S)];
-		}
-
-		void push(byte data)
-		{
-			Mem[(ushort)(0x0100 + S)] = data;
-			S--;
-		}
-
-		void clk(int ticks)
-		{
-			Clock += (ulong)ticks;
-			RunClocks -= (ticks*RunClocksMultiple);
-		}
-
-		void interrupt(ushort intr_vector, bool isExternal)
-		{
-			if (isExternal)
-			{
-				fB = false;
-				clk(7);   // charge clks for external interrupts
-			}
-			else
-			{
-				fB = true;
-				PC++;
-			}
-			push(MSB(PC));
-			push(LSB(PC));
-			push(P);
-			fI = true;
-			byte lsb = Mem[intr_vector];
-			intr_vector++;
-			byte msb = Mem[intr_vector];
-			PC = WORD(lsb, msb);
-		}
-
-		void br(bool cond, ushort ea)
-		{
-			if (cond)
-			{
-				clk( (MSB(PC) == MSB(ea)) ? 1 : 2 );
-				PC = ea;
-			}
-		}
-
-
 		// Relative: Bxx $aa  (branch instructions only)
 		ushort aREL()
 		{
