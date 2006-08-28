@@ -693,14 +693,7 @@ namespace Maria.Core {
 			Opcodes[0xb0] = delegate() { EA = aREL(); clk(2); br( fC, EA); }; // BCS
 			Opcodes[0xd0] = delegate() { EA = aREL(); clk(2); br(!fZ, EA); }; // BNE
 			Opcodes[0xf0] = delegate() { EA = aREL(); clk(2); br( fZ, EA); }; // BEQ
-		}
-	}
-}
 
-// TODO : port the shit below. Take care, I'm pretty sure it's butt ugly
-		/*
-		void InstallOpcodes()
-		{
 			Opcodes[0x00] = delegate() { clk(7); iBRK(); }; // aIMP
 
 			Opcodes[0x18] = delegate() { clk(2); iCLC(); }; // aIMP
@@ -710,7 +703,14 @@ namespace Maria.Core {
 			Opcodes[0x58] = delegate() { clk(2); iCLI(); }; // aIMP
 
 			Opcodes[0xb8] = delegate() { clk(2); iCLV(); }; // aIMP
+		}
+	}
+}
 
+// TODO : port the shit below. Take care, I'm pretty sure it's butt ugly
+		/*
+		void InstallOpcodes()
+		{
 			Opcodes[0xc5] = delegate() { EA = aZPG();  clk(3); iCMP(Mem[EA]); };
 			Opcodes[0xd5] = delegate() { EA = aZPX();  clk(4); iCMP(Mem[EA]); };
 			Opcodes[0xc1] = delegate() { EA = aIDX();  clk(6); iCMP(Mem[EA]); };
