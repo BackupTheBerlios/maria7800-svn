@@ -703,100 +703,93 @@ namespace Maria.Core {
 			Opcodes[0x58] = delegate() { clk(2); iCLI(); }; // aIMP
 
 			Opcodes[0xb8] = delegate() { clk(2); iCLV(); }; // aIMP
-		}
-	}
-}
 
-// TODO : port the shit below. Take care, I'm pretty sure it's butt ugly
-		/*
-		void InstallOpcodes()
-		{
-			Opcodes[0xc5] = delegate() { EA = aZPG();  clk(3); iCMP(Mem[EA]); };
-			Opcodes[0xd5] = delegate() { EA = aZPX();  clk(4); iCMP(Mem[EA]); };
-			Opcodes[0xc1] = delegate() { EA = aIDX();  clk(6); iCMP(Mem[EA]); };
-			Opcodes[0xd1] = delegate() { EA = aIDY(1); clk(5); iCMP(Mem[EA]); };
-			Opcodes[0xcd] = delegate() { EA = aABS();  clk(4); iCMP(Mem[EA]); };
-			Opcodes[0xdd] = delegate() { EA = aABX(1); clk(4); iCMP(Mem[EA]); };
-			Opcodes[0xd9] = delegate() { EA = aABY(1); clk(4); iCMP(Mem[EA]); };
-			Opcodes[0xc9] = delegate() { clk(2); iCMP(Mem[PC++]); }; // aIMM
+			Opcodes[0xc5] = delegate() { EA = aZPG(); clk(3); iCMP(mem[EA]); };
+			Opcodes[0xd5] = delegate() { EA = aZPX(); clk(4); iCMP(mem[EA]); };
+			Opcodes[0xc1] = delegate() { EA = aIDX(); clk(6); iCMP(mem[EA]); };
+			Opcodes[0xd1] = delegate() { EA = aIDY(1); clk(5); iCMP(mem[EA]); };
+			Opcodes[0xcd] = delegate() { EA = aABS(); clk(4); iCMP(mem[EA]); };
+			Opcodes[0xdd] = delegate() { EA = aABX(1); clk(4); iCMP(mem[EA]); };
+			Opcodes[0xd9] = delegate() { EA = aABY(1); clk(4); iCMP(mem[EA]); };
+			Opcodes[0xc9] = delegate() { clk(2); iCMP(mem[PC++]); }; // aIMM
 
-			Opcodes[0xe4] = delegate() { EA = aZPG();  clk(3); iCPX(Mem[EA]); };
-			Opcodes[0xec] = delegate() { EA = aABS();  clk(4); iCPX(Mem[EA]); };
-			Opcodes[0xe0] = delegate() { clk(2); iCPX(Mem[PC++]); }; // aIMM
+			Opcodes[0xe4] = delegate() { EA = aZPG(); clk(3); iCPX(mem[EA]); };
+			Opcodes[0xec] = delegate() { EA = aABS(); clk(4); iCPX(mem[EA]); };
+			Opcodes[0xe0] = delegate() { clk(2); iCPX(mem[PC++]); }; // aIMM
 
-			Opcodes[0xc4] = delegate() { EA = aZPG();  clk(3); iCPY(Mem[EA]); };
-			Opcodes[0xcc] = delegate() { EA = aABS();  clk(4); iCPY(Mem[EA]); };
-			Opcodes[0xc0] = delegate() { clk(2); iCPY(Mem[PC++]); }; // aIMM
+			Opcodes[0xc4] = delegate() { EA = aZPG(); clk(3); iCPY(mem[EA]); };
+			Opcodes[0xcc] = delegate() { EA = aABS(); clk(4); iCPY(mem[EA]); };
+			Opcodes[0xc0] = delegate() { clk(2); iCPY(mem[PC++]); }; // aIMM
 
-			Opcodes[0xc6] = delegate() { EA = aZPG();  clk(5); Mem[EA] = iDEC(Mem[EA]); };
-			Opcodes[0xd6] = delegate() { EA = aZPX();  clk(6); Mem[EA] = iDEC(Mem[EA]); };
-			Opcodes[0xce] = delegate() { EA = aABS();  clk(6); Mem[EA] = iDEC(Mem[EA]); };
-			Opcodes[0xde] = delegate() { EA = aABX(0); clk(7); Mem[EA] = iDEC(Mem[EA]); };
+			Opcodes[0xc6] = delegate() { EA = aZPG(); clk(5); mem[EA] = iDEC(mem[EA]); };
+			Opcodes[0xd6] = delegate() { EA = aZPX(); clk(6); mem[EA] = iDEC(mem[EA]); };
+			Opcodes[0xce] = delegate() { EA = aABS(); clk(6); mem[EA] = iDEC(mem[EA]); };
+			Opcodes[0xde] = delegate() { EA = aABX(0); clk(7); mem[EA] = iDEC(mem[EA]); };
 
 			Opcodes[0xca] = delegate() { clk(2); iDEX(); }; // aIMP
 
 			Opcodes[0x88] = delegate() { clk(2); iDEY(); }; // aIMP
 
-			Opcodes[0x45] = delegate() { EA = aZPG();  clk(3); iEOR(Mem[EA]); };
-			Opcodes[0x55] = delegate() { EA = aZPX();  clk(4); iEOR(Mem[EA]); };
-			Opcodes[0x41] = delegate() { EA = aIDX();  clk(6); iEOR(Mem[EA]); };
-			Opcodes[0x51] = delegate() { EA = aIDY(1); clk(5); iEOR(Mem[EA]); };
-			Opcodes[0x4d] = delegate() { EA = aABS();  clk(4); iEOR(Mem[EA]); };
-			Opcodes[0x5d] = delegate() { EA = aABX(1); clk(4); iEOR(Mem[EA]); };
-			Opcodes[0x59] = delegate() { EA = aABY(1); clk(4); iEOR(Mem[EA]); };
-			Opcodes[0x49] = delegate() { clk(2); iEOR(Mem[PC++]); }; // aIMM
+			Opcodes[0x45] = delegate() { EA = aZPG(); clk(3); iEOR(mem[EA]); };
+			Opcodes[0x55] = delegate() { EA = aZPX(); clk(4); iEOR(mem[EA]); };
+			Opcodes[0x41] = delegate() { EA = aIDX(); clk(6); iEOR(mem[EA]); };
+			Opcodes[0x51] = delegate() { EA = aIDY(1); clk(5); iEOR(mem[EA]); };
+			Opcodes[0x4d] = delegate() { EA = aABS(); clk(4); iEOR(mem[EA]); };
+			Opcodes[0x5d] = delegate() { EA = aABX(1); clk(4); iEOR(mem[EA]); };
+			Opcodes[0x59] = delegate() { EA = aABY(1); clk(4); iEOR(mem[EA]); };
+			Opcodes[0x49] = delegate() { clk(2); iEOR(mem[PC++]); }; // aIMM
 
-			Opcodes[0xe6] = delegate() { EA = aZPG();  clk(5); Mem[EA] = iINC(Mem[EA]); };
-			Opcodes[0xf6] = delegate() { EA = aZPX();  clk(6); Mem[EA] = iINC(Mem[EA]); };
-			Opcodes[0xee] = delegate() { EA = aABS();  clk(6); Mem[EA] = iINC(Mem[EA]); };
-			Opcodes[0xfe] = delegate() { EA = aABX(0); clk(7); Mem[EA] = iINC(Mem[EA]); };
+			Opcodes[0xe6] = delegate() { EA = aZPG(); clk(5); mem[EA] = iINC(mem[EA]); };
+			Opcodes[0xf6] = delegate() { EA = aZPX(); clk(6); mem[EA] = iINC(mem[EA]); };
+			Opcodes[0xee] = delegate() { EA = aABS(); clk(6); mem[EA] = iINC(mem[EA]); };
+			Opcodes[0xfe] = delegate() { EA = aABX(0); clk(7); mem[EA] = iINC(mem[EA]); };
 
 			Opcodes[0xe8] = delegate() { clk(2); iINX(); }; // aIMP
 
 			Opcodes[0xc8] = delegate() { clk(2); iINY(); }; // aIMP
 
-			Opcodes[0xa5] = delegate() { EA = aZPG();  clk(3); iLDA(Mem[EA]); };
-			Opcodes[0xb5] = delegate() { EA = aZPX();  clk(4); iLDA(Mem[EA]); };
-			Opcodes[0xa1] = delegate() { EA = aIDX();  clk(6); iLDA(Mem[EA]); };
-			Opcodes[0xb1] = delegate() { EA = aIDY(1); clk(5); iLDA(Mem[EA]); };
-			Opcodes[0xad] = delegate() { EA = aABS();  clk(4); iLDA(Mem[EA]); };
-			Opcodes[0xbd] = delegate() { EA = aABX(1); clk(4); iLDA(Mem[EA]); };
-			Opcodes[0xb9] = delegate() { EA = aABY(1); clk(4); iLDA(Mem[EA]); };
-			Opcodes[0xa9] = delegate() { clk(2); iLDA(Mem[PC++]); }; // aIMM
+			Opcodes[0xa5] = delegate() { EA = aZPG(); clk(3); iLDA(mem[EA]); };
+			Opcodes[0xb5] = delegate() { EA = aZPX(); clk(4); iLDA(mem[EA]); };
+			Opcodes[0xa1] = delegate() { EA = aIDX(); clk(6); iLDA(mem[EA]); };
+			Opcodes[0xb1] = delegate() { EA = aIDY(1); clk(5); iLDA(mem[EA]); };
+			Opcodes[0xad] = delegate() { EA = aABS(); clk(4); iLDA(mem[EA]); };
+			Opcodes[0xbd] = delegate() { EA = aABX(1); clk(4); iLDA(mem[EA]); };
+			Opcodes[0xb9] = delegate() { EA = aABY(1); clk(4); iLDA(mem[EA]); };
+			Opcodes[0xa9] = delegate() { clk(2); iLDA(mem[PC++]); }; // aIMM
 
-			Opcodes[0xa6] = delegate() { EA = aZPG();  clk(3); iLDX(Mem[EA]); };
-			Opcodes[0xb6] = delegate() { EA = aZPY();  clk(4); iLDX(Mem[EA]); };
-			Opcodes[0xae] = delegate() { EA = aABS();  clk(4); iLDX(Mem[EA]); };
-			Opcodes[0xbe] = delegate() { EA = aABY(1); clk(4); iLDX(Mem[EA]); };
-			Opcodes[0xa2] = delegate() { clk(2); iLDX(Mem[PC++]); }; // aIMM
+			Opcodes[0xa6] = delegate() { EA = aZPG(); clk(3); iLDX(mem[EA]); };
+			Opcodes[0xb6] = delegate() { EA = aZPY(); clk(4); iLDX(mem[EA]); };
+			Opcodes[0xae] = delegate() { EA = aABS(); clk(4); iLDX(mem[EA]); };
+			Opcodes[0xbe] = delegate() { EA = aABY(1); clk(4); iLDX(mem[EA]); };
+			Opcodes[0xa2] = delegate() { clk(2); iLDX(mem[PC++]); }; // aIMM
 
-			Opcodes[0xa4] = delegate() { EA = aZPG();  clk(3); iLDY(Mem[EA]); };
-			Opcodes[0xb4] = delegate() { EA = aZPX();  clk(4); iLDY(Mem[EA]); };
-			Opcodes[0xac] = delegate() { EA = aABS();  clk(4); iLDY(Mem[EA]); };
-			Opcodes[0xbc] = delegate() { EA = aABX(1); clk(4); iLDY(Mem[EA]); };
-			Opcodes[0xa0] = delegate() { clk(2); iLDY(Mem[PC++]); }; // aIMM
+			Opcodes[0xa4] = delegate() { EA = aZPG(); clk(3); iLDY(mem[EA]); };
+			Opcodes[0xb4] = delegate() { EA = aZPX(); clk(4); iLDY(mem[EA]); };
+			Opcodes[0xac] = delegate() { EA = aABS(); clk(4); iLDY(mem[EA]); };
+			Opcodes[0xbc] = delegate() { EA = aABX(1); clk(4); iLDY(mem[EA]); };
+			Opcodes[0xa0] = delegate() { clk(2); iLDY(mem[PC++]); }; // aIMM
 
-			Opcodes[0x46] = delegate() { EA = aZPG();  clk(5); Mem[EA] = iLSR(Mem[EA]); };
-			Opcodes[0x56] = delegate() { EA = aZPX();  clk(6); Mem[EA] = iLSR(Mem[EA]); };
-			Opcodes[0x4e] = delegate() { EA = aABS();  clk(6); Mem[EA] = iLSR(Mem[EA]); };
-			Opcodes[0x5e] = delegate() { EA = aABX(0); clk(7); Mem[EA] = iLSR(Mem[EA]); };
+			Opcodes[0x46] = delegate() { EA = aZPG(); clk(5); mem[EA] = iLSR(mem[EA]); };
+			Opcodes[0x56] = delegate() { EA = aZPX(); clk(6); mem[EA] = iLSR(mem[EA]); };
+			Opcodes[0x4e] = delegate() { EA = aABS(); clk(6); mem[EA] = iLSR(mem[EA]); };
+			Opcodes[0x5e] = delegate() { EA = aABX(0); clk(7); mem[EA] = iLSR(mem[EA]); };
 			Opcodes[0x4a] = delegate() { clk(2); A = iLSR(A); }; // aACC
 
-			Opcodes[0x4c] = delegate() { EA = aABS();  clk(3); iJMP(EA); };
-			Opcodes[0x6c] = delegate() { EA = aIND();  clk(5); iJMP(EA); };
+			Opcodes[0x4c] = delegate() { EA = aABS(); clk(3); iJMP(EA); };
+			Opcodes[0x6c] = delegate() { EA = aIND(); clk(5); iJMP(EA); };
 
-			Opcodes[0x20] = delegate() { EA = aABS();  clk(6); iJSR(EA); };
+			Opcodes[0x20] = delegate() { EA = aABS(); clk(6); iJSR(EA); };
 
 			Opcodes[0xea] = delegate() { clk(2); iNOP(); }; // aIMP
 
-			Opcodes[0x05] = delegate() { EA = aZPG();  clk(3); iORA(Mem[EA]); };
-			Opcodes[0x15] = delegate() { EA = aZPX();  clk(4); iORA(Mem[EA]); };
-			Opcodes[0x01] = delegate() { EA = aIDX();  clk(6); iORA(Mem[EA]); };
-			Opcodes[0x11] = delegate() { EA = aIDY(1); clk(5); iORA(Mem[EA]); };
-			Opcodes[0x0d] = delegate() { EA = aABS();  clk(4); iORA(Mem[EA]); };
-			Opcodes[0x1d] = delegate() { EA = aABX(1); clk(4); iORA(Mem[EA]); };
-			Opcodes[0x19] = delegate() { EA = aABY(1); clk(4); iORA(Mem[EA]); };
-			Opcodes[0x09] = delegate() { clk(2); iORA(Mem[PC++]); }; // aIMM
+			Opcodes[0x05] = delegate() { EA = aZPG(); clk(3); iORA(mem[EA]); };
+			Opcodes[0x15] = delegate() { EA = aZPX(); clk(4); iORA(mem[EA]); };
+			Opcodes[0x01] = delegate() { EA = aIDX(); clk(6); iORA(mem[EA]); };
+			Opcodes[0x11] = delegate() { EA = aIDY(1); clk(5); iORA(mem[EA]); };
+			Opcodes[0x0d] = delegate() { EA = aABS(); clk(4); iORA(mem[EA]); };
+			Opcodes[0x1d] = delegate() { EA = aABX(1); clk(4); iORA(mem[EA]); };
+			Opcodes[0x19] = delegate() { EA = aABY(1); clk(4); iORA(mem[EA]); };
+			Opcodes[0x09] = delegate() { clk(2); iORA(mem[PC++]); }; // aIMM
 
 			Opcodes[0x48] = delegate() { clk(3); iPHA(); }; // aIMP
 
@@ -806,30 +799,30 @@ namespace Maria.Core {
 
 			Opcodes[0x28] = delegate() { clk(4); iPLP(); }; // aIMP
 
-			Opcodes[0x26] = delegate() { EA = aZPG();  clk(5); Mem[EA] = iROL(Mem[EA]); };
-			Opcodes[0x36] = delegate() { EA = aZPX();  clk(6); Mem[EA] = iROL(Mem[EA]); };
-			Opcodes[0x2e] = delegate() { EA = aABS();  clk(6); Mem[EA] = iROL(Mem[EA]); };
-			Opcodes[0x3e] = delegate() { EA = aABX(0); clk(7); Mem[EA] = iROL(Mem[EA]); };
+			Opcodes[0x26] = delegate() { EA = aZPG(); clk(5); mem[EA] = iROL(mem[EA]); };
+			Opcodes[0x36] = delegate() { EA = aZPX(); clk(6); mem[EA] = iROL(mem[EA]); };
+			Opcodes[0x2e] = delegate() { EA = aABS(); clk(6); mem[EA] = iROL(mem[EA]); };
+			Opcodes[0x3e] = delegate() { EA = aABX(0); clk(7); mem[EA] = iROL(mem[EA]); };
 			Opcodes[0x2a] = delegate() { clk(2); A = iROL(A); }; // aACC
 
-			Opcodes[0x66] = delegate() { EA = aZPG();  clk(5); Mem[EA] = iROR(Mem[EA]); };
-			Opcodes[0x76] = delegate() { EA = aZPX();  clk(6); Mem[EA] = iROR(Mem[EA]); };
-			Opcodes[0x6e] = delegate() { EA = aABS();  clk(6); Mem[EA] = iROR(Mem[EA]); };
-			Opcodes[0x7e] = delegate() { EA = aABX(0); clk(7); Mem[EA] = iROR(Mem[EA]); };
+			Opcodes[0x66] = delegate() { EA = aZPG(); clk(5); mem[EA] = iROR(mem[EA]); };
+			Opcodes[0x76] = delegate() { EA = aZPX(); clk(6); mem[EA] = iROR(mem[EA]); };
+			Opcodes[0x6e] = delegate() { EA = aABS(); clk(6); mem[EA] = iROR(mem[EA]); };
+			Opcodes[0x7e] = delegate() { EA = aABX(0); clk(7); mem[EA] = iROR(mem[EA]); };
 			Opcodes[0x6a] = delegate() { clk(2); A = iROR(A); }; // aACC
 
 			Opcodes[0x40] = delegate() { clk(6); iRTI(); }; // aIMP
 
 			Opcodes[0x60] = delegate() { clk(6); iRTS(); }; // aIMP
 
-			Opcodes[0xe5] = delegate() { EA = aZPG();  clk(3); iSBC(Mem[EA]); };
-			Opcodes[0xf5] = delegate() { EA = aZPX();  clk(4); iSBC(Mem[EA]); };
-			Opcodes[0xe1] = delegate() { EA = aIDX();  clk(6); iSBC(Mem[EA]); };
-			Opcodes[0xf1] = delegate() { EA = aIDY(1); clk(5); iSBC(Mem[EA]); };
-			Opcodes[0xed] = delegate() { EA = aABS();  clk(4); iSBC(Mem[EA]); };
-			Opcodes[0xfd] = delegate() { EA = aABX(1); clk(4); iSBC(Mem[EA]); };
-			Opcodes[0xf9] = delegate() { EA = aABY(1); clk(4); iSBC(Mem[EA]); };
-			Opcodes[0xe9] = delegate() { clk(2); iSBC(Mem[PC++]); }; // aIMM
+			Opcodes[0xe5] = delegate() { EA = aZPG(); clk(3); iSBC(mem[EA]); };
+			Opcodes[0xf5] = delegate() { EA = aZPX(); clk(4); iSBC(mem[EA]); };
+			Opcodes[0xe1] = delegate() { EA = aIDX(); clk(6); iSBC(mem[EA]); };
+			Opcodes[0xf1] = delegate() { EA = aIDY(1); clk(5); iSBC(mem[EA]); };
+			Opcodes[0xed] = delegate() { EA = aABS(); clk(4); iSBC(mem[EA]); };
+			Opcodes[0xfd] = delegate() { EA = aABX(1); clk(4); iSBC(mem[EA]); };
+			Opcodes[0xf9] = delegate() { EA = aABY(1); clk(4); iSBC(mem[EA]); };
+			Opcodes[0xe9] = delegate() { clk(2); iSBC(mem[PC++]); }; // aIMM
 
 			Opcodes[0x38] = delegate() { clk(2); iSEC(); }; // aIMP
 
@@ -837,21 +830,21 @@ namespace Maria.Core {
 
 			Opcodes[0x78] = delegate() { clk(2); iSEI(); }; // aIMP
 
-			Opcodes[0x85] = delegate() { EA = aZPG();  clk(3); Mem[EA] = iSTA(); };
-			Opcodes[0x95] = delegate() { EA = aZPX();  clk(4); Mem[EA] = iSTA(); };
-			Opcodes[0x81] = delegate() { EA = aIDX();  clk(6); Mem[EA] = iSTA(); };
-			Opcodes[0x91] = delegate() { EA = aIDY(0); clk(6); Mem[EA] = iSTA(); };
-			Opcodes[0x8d] = delegate() { EA = aABS();  clk(4); Mem[EA] = iSTA(); };
-			Opcodes[0x99] = delegate() { EA = aABY(0); clk(5); Mem[EA] = iSTA(); };
-			Opcodes[0x9d] = delegate() { EA = aABX(0); clk(5); Mem[EA] = iSTA(); };
+			Opcodes[0x85] = delegate() { EA = aZPG(); clk(3); mem[EA] = iSTA(); };
+			Opcodes[0x95] = delegate() { EA = aZPX(); clk(4); mem[EA] = iSTA(); };
+			Opcodes[0x81] = delegate() { EA = aIDX(); clk(6); mem[EA] = iSTA(); };
+			Opcodes[0x91] = delegate() { EA = aIDY(0); clk(6); mem[EA] = iSTA(); };
+			Opcodes[0x8d] = delegate() { EA = aABS(); clk(4); mem[EA] = iSTA(); };
+			Opcodes[0x99] = delegate() { EA = aABY(0); clk(5); mem[EA] = iSTA(); };
+			Opcodes[0x9d] = delegate() { EA = aABX(0); clk(5); mem[EA] = iSTA(); };
 
-			Opcodes[0x86] = delegate() { EA = aZPG();  clk(3); Mem[EA] = iSTX(); };
-			Opcodes[0x96] = delegate() { EA = aZPY();  clk(4); Mem[EA] = iSTX(); };
-			Opcodes[0x8e] = delegate() { EA = aABS();  clk(4); Mem[EA] = iSTX(); };
+			Opcodes[0x86] = delegate() { EA = aZPG(); clk(3); mem[EA] = iSTX(); };
+			Opcodes[0x96] = delegate() { EA = aZPY(); clk(4); mem[EA] = iSTX(); };
+			Opcodes[0x8e] = delegate() { EA = aABS(); clk(4); mem[EA] = iSTX(); };
 
-			Opcodes[0x84] = delegate() { EA = aZPG();  clk(3); Mem[EA] = iSTY(); };
-			Opcodes[0x94] = delegate() { EA = aZPX();  clk(4); Mem[EA] = iSTY(); };
-			Opcodes[0x8c] = delegate() { EA = aABS();  clk(4); Mem[EA] = iSTY(); };
+			Opcodes[0x84] = delegate() { EA = aZPG(); clk(3); mem[EA] = iSTY(); };
+			Opcodes[0x94] = delegate() { EA = aZPX(); clk(4); mem[EA] = iSTY(); };
+			Opcodes[0x8c] = delegate() { EA = aABS(); clk(4); mem[EA] = iSTY(); };
 
 			Opcodes[0xaa] = delegate() { clk(2); iTAX(); }; // aIMP
 
@@ -866,42 +859,41 @@ namespace Maria.Core {
 			Opcodes[0x98] = delegate() { clk(2); iTYA(); }; // aIMP
 
 			// Illegal opcodes
-			foreach (int opCode in new ushort[] {0x02, 0x12, 0x22, 0x32, 0x42, 0x52, 0x62, 0x72, 0x92, 0xb2, 0xd2, 0xf2})
+			foreach (int opCode in new ushort[] {0x02, 0x12, 0x22, 0x32,
+				0x42, 0x52, 0x62, 0x72, 0x92, 0xb2, 0xd2, 0xf2})
 			{
 				Opcodes[opCode] = delegate() { clk(2); iKIL(); };
 			}
-			Opcodes[0x3f] = delegate() { EA = aABX(0); clk(4); iRLA(Mem[EA]); };
-			Opcodes[0xa7] = delegate() { EA = aZPX();  clk(3); iLAX(Mem[EA]); };
-			Opcodes[0xb3] = delegate() { EA = aIDY(0); clk(6); iLAX(Mem[EA]); };
-			Opcodes[0xef] = delegate() { EA = aABS();  clk(6); iISB(Mem[EA]); };
+			Opcodes[0x3f] = delegate() { EA = aABX(0); clk(4); iRLA(mem[EA]); };
+			Opcodes[0xa7] = delegate() { EA = aZPX();  clk(3); iLAX(mem[EA]); };
+			Opcodes[0xb3] = delegate() { EA = aIDY(0); clk(6); iLAX(mem[EA]); };
+			Opcodes[0xef] = delegate() { EA = aABS();  clk(6); iISB(mem[EA]); };
 			Opcodes[0x0c] = delegate() { EA = aABS();  clk(2); iNOP(); };
 			foreach (int opCode in new ushort[] {0x1c, 0x3c, 0x5c, 0x7c, 0x9c, 0xdc, 0xfc})
 			{
 				Opcodes[opCode] = delegate() { EA = aABX(0); clk(2); iNOP(); };
 			}
-			Opcodes[0x83] = delegate() { EA = aIDX();  clk(6); Mem[EA] = iSAX(); };
-			Opcodes[0x87] = delegate() { EA = aZPG();  clk(3); Mem[EA] = iSAX(); };
-			Opcodes[0x8f] = delegate() { EA = aABS();  clk(4); Mem[EA] = iSAX(); };
-			Opcodes[0x97] = delegate() { EA = aZPY();  clk(4); Mem[EA] = iSAX(); };
-			Opcodes[0xa3] = delegate() { EA = aIDX();  clk(6); iLAX(Mem[EA]); };
-			Opcodes[0xb7] = delegate() { EA = aZPY();  clk(4); iLAX(Mem[EA]); };
-			Opcodes[0xaf] = delegate() { EA = aABS();  clk(5); iLAX(Mem[EA]); };
-			Opcodes[0xbf] = delegate() { EA = aABY(0); clk(6); iLAX(Mem[EA]); };
-			Opcodes[0xff] = delegate() { EA = aABX(0); clk(7); iISB(Mem[EA]); };
+			Opcodes[0x83] = delegate() { EA = aIDX();  clk(6); mem[EA] = iSAX(); };
+			Opcodes[0x87] = delegate() { EA = aZPG();  clk(3); mem[EA] = iSAX(); };
+			Opcodes[0x8f] = delegate() { EA = aABS();  clk(4); mem[EA] = iSAX(); };
+			Opcodes[0x97] = delegate() { EA = aZPY();  clk(4); mem[EA] = iSAX(); };
+			Opcodes[0xa3] = delegate() { EA = aIDX();  clk(6); iLAX(mem[EA]); };
+			Opcodes[0xb7] = delegate() { EA = aZPY();  clk(4); iLAX(mem[EA]); };
+			Opcodes[0xaf] = delegate() { EA = aABS();  clk(5); iLAX(mem[EA]); };
+			Opcodes[0xbf] = delegate() { EA = aABY(0); clk(6); iLAX(mem[EA]); };
+			Opcodes[0xff] = delegate() { EA = aABX(0); clk(7); iISB(mem[EA]); };
 
-			OpcodeHandler opNULL = delegate()
-			{
-				Trace.WriteLine(String.Format("{0}:**UNKNOWN OPCODE: ${1:x2} at ${2:x4}\n", this, Mem[(ushort)(PC-1)], PC-1));
+			OpcodeHandler opNULL = delegate() {
+				Trace.WriteLine(
+					// TODO : reformat, provide IPromatProvider...
+					String.Format("{0}:**UNKNOWN OPCODE: ${1:x2} at ${2:x4}\n", this, mem[(ushort)(PC-1)], PC-1));
 			};
 
-			for (int i=0; i < Opcodes.Length; i++)
-			{
-				if (Opcodes[i] == null)
-				{
+			for (int i=0; i < Opcodes.Length; i++) {
+				if (Opcodes[i] == null) {
 					Opcodes[i] = opNULL;
 				}
 			}
 		}
 	}
 }
-*/
