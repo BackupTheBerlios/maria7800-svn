@@ -655,6 +655,44 @@ namespace Maria.Core {
 
 		private void InstallOpcodes() {
 			// TODO : actually do something here...
+			Opcodes = new OpcodeHandler[0x100];
+			ushort EA;
+
+			Opcodes[0x65] = delegate() { EA = aZPG();  clk(3); iADC(mem[EA]); };
+			Opcodes[0x75] = delegate() { EA = aZPX();  clk(4); iADC(mem[EA]); };
+			Opcodes[0x61] = delegate() { EA = aIDX();  clk(6); iADC(mem[EA]); };
+			Opcodes[0x71] = delegate() { EA = aIDY(1); clk(5); iADC(mem[EA]); };
+			Opcodes[0x79] = delegate() { EA = aABY(1); clk(4); iADC(mem[EA]); };
+			Opcodes[0x6d] = delegate() { EA = aABS();  clk(4); iADC(mem[EA]); };
+			Opcodes[0x7d] = delegate() { EA = aABX(1); clk(4); iADC(mem[EA]); };
+			Opcodes[0x69] = delegate() { clk(2); iADC(mem[PC++]); }; // aIMM
+
+			Opcodes[0x25] = delegate() { EA = aZPG();  clk(3); iAND(mem[EA]); };
+			Opcodes[0x35] = delegate() { EA = aZPX();  clk(4); iAND(mem[EA]); };
+			Opcodes[0x21] = delegate() { EA = aIDX();  clk(6); iAND(mem[EA]); };
+			Opcodes[0x31] = delegate() { EA = aIDY(1); clk(5); iAND(mem[EA]); };
+			Opcodes[0x2d] = delegate() { EA = aABS(); clk(4); iAND(mem[EA]); };
+			Opcodes[0x39] = delegate() { EA = aABY(1); clk(4); iAND(mem[EA]); };
+			Opcodes[0x3d] = delegate() { EA = aABX(1); clk(4); iAND(mem[EA]); };
+			Opcodes[0x29] = delegate() { clk(2); iAND(mem[PC++]); }; // aIMM
+
+			Opcodes[0x06] = delegate() { EA = aZPG(); clk(5); mem[EA] = iASL(mem[EA]); };
+			Opcodes[0x16] = delegate() { EA = aZPX(); clk(6); mem[EA] = iASL(mem[EA]); };
+			Opcodes[0x0e] = delegate() { EA = aABS(); clk(6); mem[EA] = iASL(mem[EA]); };
+			Opcodes[0x1e] = delegate() { EA = aABX(0); clk(7); mem[EA] = iASL(mem[EA]); };
+			Opcodes[0x0a] = delegate() { clk(2); A = iASL(A); }; // aACC
+
+			Opcodes[0x24] = delegate() { EA = aZPG(); clk(3); iBIT(mem[EA]); };
+			Opcodes[0x2c] = delegate() { EA = aABS(); clk(4); iBIT(mem[EA]); };
+
+			Opcodes[0x10] = delegate() { EA = aREL(); clk(2); br(!fN, EA); }; // BPL
+			Opcodes[0x30] = delegate() { EA = aREL(); clk(2); br( fN, EA); }; // BMI
+			Opcodes[0x50] = delegate() { EA = aREL(); clk(2); br(!fV, EA); }; // BVC
+			Opcodes[0x70] = delegate() { EA = aREL(); clk(2); br( fV, EA); }; // BVS
+			Opcodes[0x90] = delegate() { EA = aREL(); clk(2); br(!fC, EA); }; // BCC
+			Opcodes[0xb0] = delegate() { EA = aREL(); clk(2); br( fC, EA); }; // BCS
+			Opcodes[0xd0] = delegate() { EA = aREL(); clk(2); br(!fZ, EA); }; // BNE
+			Opcodes[0xf0] = delegate() { EA = aREL(); clk(2); br( fZ, EA); }; // BEQ
 		}
 	}
 }
@@ -663,45 +701,6 @@ namespace Maria.Core {
 		/*
 		void InstallOpcodes()
 		{
-			Opcodes = new OpcodeHandler[0x100];
-			ushort EA;
-
-			Opcodes[0x65] = delegate() { EA = aZPG();  clk(3); iADC(Mem[EA]); };
-			Opcodes[0x75] = delegate() { EA = aZPX();  clk(4); iADC(Mem[EA]); };
-			Opcodes[0x61] = delegate() { EA = aIDX();  clk(6); iADC(Mem[EA]); };
-			Opcodes[0x71] = delegate() { EA = aIDY(1); clk(5); iADC(Mem[EA]); };
-			Opcodes[0x79] = delegate() { EA = aABY(1); clk(4); iADC(Mem[EA]); };
-			Opcodes[0x6d] = delegate() { EA = aABS();  clk(4); iADC(Mem[EA]); };
-			Opcodes[0x7d] = delegate() { EA = aABX(1); clk(4); iADC(Mem[EA]); };
-			Opcodes[0x69] = delegate() { clk(2); iADC(Mem[PC++]); }; // aIMM
-
-			Opcodes[0x25] = delegate() { EA = aZPG();  clk(3); iAND(Mem[EA]); };
-			Opcodes[0x35] = delegate() { EA = aZPX();  clk(4); iAND(Mem[EA]); };
-			Opcodes[0x21] = delegate() { EA = aIDX();  clk(6); iAND(Mem[EA]); };
-			Opcodes[0x31] = delegate() { EA = aIDY(1); clk(5); iAND(Mem[EA]); };
-			Opcodes[0x2d] = delegate() { EA = aABS();  clk(4); iAND(Mem[EA]); };
-			Opcodes[0x39] = delegate() { EA = aABY(1); clk(4); iAND(Mem[EA]); };
-			Opcodes[0x3d] = delegate() { EA = aABX(1); clk(4); iAND(Mem[EA]); };
-			Opcodes[0x29] = delegate() { clk(2); iAND(Mem[PC++]); }; // aIMM
-
-			Opcodes[0x06] = delegate() { EA = aZPG();  clk(5); Mem[EA] = iASL(Mem[EA]); };
-			Opcodes[0x16] = delegate() { EA = aZPX();  clk(6); Mem[EA] = iASL(Mem[EA]); };
-			Opcodes[0x0e] = delegate() { EA = aABS();  clk(6); Mem[EA] = iASL(Mem[EA]); };
-			Opcodes[0x1e] = delegate() { EA = aABX(0); clk(7); Mem[EA] = iASL(Mem[EA]); };
-			Opcodes[0x0a] = delegate() { clk(2); A = iASL(A); }; // aACC
-
-			Opcodes[0x24] = delegate() { EA = aZPG();  clk(3); iBIT(Mem[EA]); };
-			Opcodes[0x2c] = delegate() { EA = aABS();  clk(4); iBIT(Mem[EA]); };
-
-			Opcodes[0x10] = delegate() { EA = aREL();  clk(2); br(!fN, EA); }; // BPL
-			Opcodes[0x30] = delegate() { EA = aREL();  clk(2); br( fN, EA); }; // BMI
-			Opcodes[0x50] = delegate() { EA = aREL();  clk(2); br(!fV, EA); }; // BVC
-			Opcodes[0x70] = delegate() { EA = aREL();  clk(2); br( fV, EA); }; // BVS
-			Opcodes[0x90] = delegate() { EA = aREL();  clk(2); br(!fC, EA); }; // BCC
-			Opcodes[0xb0] = delegate() { EA = aREL();  clk(2); br( fC, EA); }; // BCS
-			Opcodes[0xd0] = delegate() { EA = aREL();  clk(2); br(!fZ, EA); }; // BNE
-			Opcodes[0xf0] = delegate() { EA = aREL();  clk(2); br( fZ, EA); }; // BEQ
-
 			Opcodes[0x00] = delegate() { clk(7); iBRK(); }; // aIMP
 
 			Opcodes[0x18] = delegate() { clk(2); iCLC(); }; // aIMP
