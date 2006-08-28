@@ -45,10 +45,12 @@ namespace Maria.Core {
 			cpu.Jammed = true;
 			cpu.S = 0x42;
 			cpu.PC = 0x1234;			
+			ram[M6502.RST_VEC] = 0x78;
+			ram[M6502.RST_VEC + 1] = 0x56;
 			cpu.Reset();
 			Assert.IsFalse(cpu.Jammed, "Reset didn't unjam CPU.");
-			Assert.AreEqual(0xff, cpu.S, "Stack pointer not reset.");
-			// TODO : check PC is reset correctly. Need ctor for that, though.
+			Assert.AreEqual(0xff, cpu.S, "Stack pointer incorrectly reset.");
+			Assert.AreEqual(0x5678, cpu.PC, "Program counter incorrectly reset.");
 		}
 	}
 }

@@ -63,9 +63,7 @@ namespace Maria.Core {
 		public void Reset() {
 			Jammed = false;
 			S = 0xff;
-			// TODO : reset program counter...
-			// (can't do before Mem is initialized, tho)
-			// PC = WORD(Mem[RST_VEC], Mem[RST_VEC + 1]); 
+			PC = WORD(mem[RST_VEC], mem[RST_VEC + 1]); 
 			Trace.Write(this);
 			Trace.WriteLine(
 				String.Format(
