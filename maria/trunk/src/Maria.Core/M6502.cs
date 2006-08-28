@@ -63,7 +63,7 @@ namespace Maria.Core {
 		public void Reset() {
 			Jammed = false;
 			S = 0xff;
-			PC = WORD(mem[RST_VEC], mem[RST_VEC + 1]); 
+			PC = WORD(mem[RST_VEC], mem[RST_VEC + 1]);
 			Trace.Write(this);
 			Trace.WriteLine(
 				String.Format(
@@ -113,7 +113,7 @@ namespace Maria.Core {
 		private static ushort WORD(byte lsb, byte msb) {
 			return (ushort)(lsb | msb << 8);
 		}
-	
+
 		private void fset(byte flag, bool value) {
 			P = (byte)(value ? P | flag : P & ~flag);
 		}
@@ -203,6 +203,81 @@ namespace Maria.Core {
 			}
 		}
 
+		// Relative: Bxx $aa  (branch instructions only)
+		ushort aREL() {
+			sbyte bo = (sbyte) mem[PC];
+			PC++;
+			return (ushort)(PC + bo);
+		}
+
+		// Zero Page: $aa
+		ushort aZPG() {
+			return WORD(mem[PC++], 0x00);
+		}
+
+		// Zero Page Indexed,X: $aa,X
+		ushort aZPX() {
+			return WORD((byte)(mem[PC++] + X), 0x00);
+		}
+
+		// Zero Page Indexed,Y: $aa,Y
+		ushort aZPY() {
+			return WORD((byte)(mem[PC++] + Y), 0x00);
+		}
+
+		// Absolute: $aaaa
+		ushort aABS() {
+			byte lsb = mem[PC++];
+			byte msb = mem[PC++];
+			return WORD(lsb, msb);
+		}
+
+		// Absolute Indexed,X: $aaaa,X
+		ushort aABX(int eclk) {
+			ushort ea = aABS();
+			if (LSB(ea) + X > 0xff) {
+				clk(eclk);
+			}
+			return (ushort)(ea + X);
+		}
+
+		// Absolute Indexed,Y: $aaaa,Y
+		ushort aABY(int eclk) {
+			ushort ea = aABS();
+			if (LSB(ea) + Y > 0xff) {
+				clk(eclk);
+			}
+			return (ushort)(ea + Y);
+		}
+
+		// Indexed Indirect: ($aa,X)
+		ushort aIDX() {
+			byte zpa = (byte) (mem[PC++] + X);
+			byte lsb = mem[zpa++];
+			byte msb = mem[zpa];
+			return WORD(lsb, msb);
+		}
+
+		// Indirect Indexed: ($aa),Y
+		ushort aIDY(int eclk) {
+			byte zpa = mem[PC++];
+			byte lsb = mem[zpa++];
+			byte msb = mem[zpa];
+			if (lsb + Y > 0xff) {
+				clk(eclk);
+			}
+			return (ushort)(WORD(lsb, msb) + Y);
+		}
+
+		// Indirect Absolute: ($aaaa) (only used by JMP)
+		ushort aIND() {
+			ushort ea = aABS();
+			byte lsb = mem[ea];
+			ea = WORD((byte)(LSB(ea) + 1), MSB(ea)); // emulate bug
+			byte msb = mem[ea];
+			return WORD(lsb, msb);
+		}
+
 		private void InstallOpcodes() {
 			// TODO : actually do something here...
 		}
@@ -211,105 +286,6 @@ namespace Maria.Core {
 
 // TODO : port the shit below. Take care, I'm pretty sure it's butt ugly
 /*
-		// Relative: Bxx $aa  (branch instructions only)
-		ushort aREL()
-		{
-			sbyte bo = (sbyte)Mem[PC];
-			PC++;
-			return (ushort)(PC + bo);
-		}
-
-		// Zero Page: $aa
-		ushort aZPG()
-		{
-			return WORD(Mem[PC++], 0x00);
-		}
-
-		// Zero Page Indexed,X: $aa,X
-		ushort aZPX()
-		{
-			return WORD((byte)(Mem[PC++] + X), 0x00);
-		}
-
-		// Zero Page Indexed,Y: $aa,Y
-		ushort aZPY()
-		{
-			return WORD((byte)(Mem[PC++] + Y), 0x00);
-		}
-
-		// Absolute: $aaaa
-		ushort aABS()
-		{
-			byte lsb = Mem[PC++];
-			byte msb = Mem[PC++];
-			return WORD(lsb, msb);
-		}
-
-		// Absolute Indexed,X: $aaaa,X
-		ushort aABX(int eclk)
-		{
-			ushort ea = aABS();
-
-			if (LSB(ea) + X > 0xff)
-			{
-				clk(eclk);
-			}
-			return (ushort)(ea + X);
-		}
-
-		// Absolute Indexed,Y: $aaaa,Y
-		ushort aABY(int eclk)
-		{
-			ushort ea = aABS();
-
-			if (LSB(ea) + Y > 0xff)
-			{
-				clk(eclk);
-			}
-
-			return (ushort)(ea + Y);
-		}
-
-		// Indexed Indirect: ($aa,X)
-		ushort aIDX()
-		{
-			;
-			byte zpa = (byte)(Mem[PC++] + X);
-			byte lsb = Mem[zpa++];
-			byte msb = Mem[zpa];
-			return WORD(lsb, msb);
-
-		}
-
-		// Indirect Indexed: ($aa),Y
-		ushort aIDY(int eclk)
-		{
-			byte zpa = Mem[PC++];
-			byte lsb = Mem[zpa++];
-			byte msb = Mem[zpa];
-
-			if (lsb + Y > 0xff)
-			{
-				clk(eclk);
-			}
-
-			return (ushort)(WORD(lsb, msb) + Y);
-		}
-
-		// Indirect Absolute: ($aaaa)    (only used by JMP)
-		ushort aIND()
-		{
-			ushort ea = aABS();
-			byte lsb = Mem[ea];
-			ea = WORD((byte)(LSB(ea) + 1), MSB(ea));  // emulate bug
-			byte msb = Mem[ea];
-			return WORD(lsb, msb);
-		}
-
-		// aACC = Accumulator
-		// aIMM = Immediate
-		// aIMP = Implied
-
 
 		// ADC: Add with carry
 		void iADC(byte mem)
