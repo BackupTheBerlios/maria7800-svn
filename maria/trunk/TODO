@@ -1,4 +1,6 @@
 - Port the CPU. Can't be that hard, actually. Methinks.
+  - Next : port ctor. Make it take an IAddressable rather than
+    an AddressSpace, though.
 - Build process:
   - At some point we should perhaps keep referenced assemblies
     as dependencies of the assembly that should be built.
