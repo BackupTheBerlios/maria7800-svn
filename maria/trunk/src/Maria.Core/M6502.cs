@@ -204,36 +204,36 @@ namespace Maria.Core {
 		}
 
 		// Relative: Bxx $aa  (branch instructions only)
-		ushort aREL() {
+		private ushort aREL() {
 			sbyte bo = (sbyte) mem[PC];
 			PC++;
 			return (ushort)(PC + bo);
 		}
 
 		// Zero Page: $aa
-		ushort aZPG() {
+		private ushort aZPG() {
 			return WORD(mem[PC++], 0x00);
 		}
 
 		// Zero Page Indexed,X: $aa,X
-		ushort aZPX() {
+		private ushort aZPX() {
 			return WORD((byte)(mem[PC++] + X), 0x00);
 		}
 
 		// Zero Page Indexed,Y: $aa,Y
-		ushort aZPY() {
+		private ushort aZPY() {
 			return WORD((byte)(mem[PC++] + Y), 0x00);
 		}
 
 		// Absolute: $aaaa
-		ushort aABS() {
+		private ushort aABS() {
 			byte lsb = mem[PC++];
 			byte msb = mem[PC++];
 			return WORD(lsb, msb);
 		}
 
 		// Absolute Indexed,X: $aaaa,X
-		ushort aABX(int eclk) {
+		private ushort aABX(int eclk) {
 			ushort ea = aABS();
 			if (LSB(ea) + X > 0xff) {
 				clk(eclk);
@@ -242,7 +242,7 @@ namespace Maria.Core {
 		}
 
 		// Absolute Indexed,Y: $aaaa,Y
-		ushort aABY(int eclk) {
+		private ushort aABY(int eclk) {
 			ushort ea = aABS();
 			if (LSB(ea) + Y > 0xff) {
 				clk(eclk);
@@ -251,7 +251,7 @@ namespace Maria.Core {
 		}
 
 		// Indexed Indirect: ($aa,X)
-		ushort aIDX() {
+		private ushort aIDX() {
 			byte zpa = (byte) (mem[PC++] + X);
 			byte lsb = mem[zpa++];
 			byte msb = mem[zpa];
@@ -259,7 +259,7 @@ namespace Maria.Core {
 		}
 
 		// Indirect Indexed: ($aa),Y
-		ushort aIDY(int eclk) {
+		private ushort aIDY(int eclk) {
 			byte zpa = mem[PC++];
 			byte lsb = mem[zpa++];
 			byte msb = mem[zpa];
@@ -270,7 +270,7 @@ namespace Maria.Core {
 		}
 
 		// Indirect Absolute: ($aaaa) (only used by JMP)
-		ushort aIND() {
+		private ushort aIND() {
 			ushort ea = aABS();
 			byte lsb = mem[ea];
 			ea = WORD((byte)(LSB(ea) + 1), MSB(ea)); // emulate bug
@@ -279,7 +279,7 @@ namespace Maria.Core {
 		}
 
 		// ADC: Add with carry
-		void iADC(byte mem) {
+		private void iADC(byte mem) {
 			int c = fC ? 1 : 0;
 			if (fD) {
 				int lo = (A & 0x0f) + (mem & 0x0f) + c;
@@ -307,13 +307,13 @@ namespace Maria.Core {
 		}
 
 		// AND: Logical and
-		void iAND(byte mem) {
+		private void iAND(byte mem) {
 			A &= mem;
 			set_fNZ(A);
 		}
 
 		// ASL: Arithmetic shift left: C <- [7][6][5][4][3][2][1][0] <- 0
-		byte iASL(byte mem) {
+		private byte iASL(byte mem) {
 			fC = (mem & 0x80) != 0;
 			mem <<= 1;
 			set_fNZ(mem);
@@ -321,106 +321,106 @@ namespace Maria.Core {
 		}
 
 		// BIT: Bit test
-		void iBIT(byte mem) {
+		private void iBIT(byte mem) {
 			fN = (mem & 0x80) != 0;
 			fV = (mem & 0x40) != 0;
 			fZ = (mem & A) == 0;
 		}
 
 		// BRK Force Break  (cause software interrupt)
-		void iBRK() {
+		private void iBRK() {
 			interrupt(IRQ_VEC, false);
 		}
 
 		// CLC: Clear carry flag
-		void iCLC() {
+		private void iCLC() {
 			fC = false;
 		}
 
 		// CLD: Clear decimal mode
-		void iCLD() {
+		private void iCLD() {
 			fD = false;
 		}
 
 		// CLI: Clear interrupt disable
-		void iCLI() {
+		private void iCLI() {
 			fI = false;
 		}
 
 		// CLV: Clear overflow flag
-		void iCLV() {
+		private void iCLV() {
 			fV = false;
 		}
 
 		// CMP: Compare accumulator
-		void iCMP(byte mem) {
+		private void iCMP(byte mem) {
 			fC = A >= mem;
 			set_fNZ((byte)(A - mem));
 		}
 
 		// CPX: Compare index X
-		void iCPX(byte mem) {
+		private void iCPX(byte mem) {
 			fC = X >= mem;
 			set_fNZ((byte)(X - mem));
 		}
 
 		// CPY: Compare index Y
-		void iCPY(byte mem) {
+		private void iCPY(byte mem) {
 			fC = Y >= mem;
 			set_fNZ((byte)(Y - mem));
 		}
 
 		// DEC: Decrement memory
-		byte iDEC(byte mem) {
+		private byte iDEC(byte mem) {
 			mem--;
 			set_fNZ(mem);
 			return mem;
 		}
 
 		// DEX: Decrement index x
-		void iDEX() {
+		private void iDEX() {
 			X--;
 			set_fNZ(X);
 		}
 
 		// DEY: Decrement index y
-		void iDEY() {
+		private void iDEY() {
 			Y--;
 			set_fNZ(Y);
 		}
 
 		// EOR: Logical exclusive or
-		void iEOR(byte mem) {
+		private void iEOR(byte mem) {
 			A ^= mem;
 			set_fNZ(A);
 		}
 
 		// INC: Increment memory
-		byte iINC(byte mem) {
+		private byte iINC(byte mem) {
 			mem++;
 			set_fNZ(mem);
 			return mem;
 		}
 
 		// INX: Increment index x
-		void iINX() {
+		private void iINX() {
 			X++;
 			set_fNZ(X);
 		}
 
 		// INY: Increment index y
-		void iINY() {
+		private void iINY() {
 			Y++;
 			set_fNZ(Y);
 		}
 
 		// JMP Jump to address
-		void iJMP(ushort ea) {
+		private void iJMP(ushort ea) {
 			PC = ea;
 		}
 
 		// JSR Jump to subroutine
-		void iJSR(ushort ea) {
+		private void iJSR(ushort ea) {
 			PC--;           // Yes, the 6502/7 really does this
 			push(MSB(PC));
 			push(LSB(PC));
@@ -428,25 +428,25 @@ namespace Maria.Core {
 		}
 
 		// LDA: Load accumulator
-		void iLDA(byte mem) {
+		private void iLDA(byte mem) {
 			A = mem;
 			set_fNZ(A);
 		}
 
 		// LDX: Load index X
-		void iLDX(byte mem) {
+		private void iLDX(byte mem) {
 			X = mem;
 			set_fNZ(X);
 		}
 
 		// LDY: Load index Y
-		void iLDY(byte mem) {
+		private void iLDY(byte mem) {
 			Y = mem;
 			set_fNZ(Y);
 		}
 
 		// LSR: Logic shift right: 0 -> [7][6][5][4][3][2][1][0] -> C
-		byte iLSR(byte mem) {
+		private byte iLSR(byte mem) {
 			fC = (mem & 0x01) != 0;
 			mem >>= 1;
 			set_fNZ(mem);
@@ -454,7 +454,7 @@ namespace Maria.Core {
 		}
 
 		// NOP: No operation
-		void iNOP() {
+		private void iNOP() {
 			// TODO : what do we do about this (I'd say we delete it...)
 			/*if (EMU7800App.Instance.Settings.NOPRegisterDumping) {
 				Trace.Write("NOP: ");
@@ -463,35 +463,35 @@ namespace Maria.Core {
 		}
 
 		// ORA: Logical inclusive or
-		void iORA(byte mem) {
+		private void iORA(byte mem) {
 			A |= mem;
 			set_fNZ(A);
 		}
 
 		// PHA: Push accumulator
-		void iPHA() {
+		private void iPHA() {
 			push(A);
 		}
 
 		// PHP: Push processor status (flags)
-		void iPHP() {
+		private void iPHP() {
 			push(P);
 		}
 
 		// PLA: Pull accumuator
-		void iPLA() {
+		private void iPLA() {
 			A = pull();
 			set_fNZ(A);
 		}
 
 		// PLP: Pull processor status (flags)
-		void iPLP() {
+		private void iPLP() {
 			P = pull();
 			fB = true;
 		}
 
 		// ROL: Rotate left: new C <- [7][6][5][4][3][2][1][0] <- C
-		byte iROL(byte mem) {
+		private byte iROL(byte mem) {
 			byte d0 = (byte)(fC ? 0x01 : 0x00);
 			fC = (mem & 0x80) != 0;
 			mem <<= 1;
@@ -501,7 +501,7 @@ namespace Maria.Core {
 		}
 
 		// ROR: Rotate right: C -> [7][6][5][4][3][2][1][0] -> new C
-		byte iROR(byte mem) {
+		private byte iROR(byte mem) {
 			byte d7 = (byte)(fC ? 0x80 : 0x00);
 			fC = (mem & 0x01) != 0;
 			mem >>= 1;
@@ -511,7 +511,7 @@ namespace Maria.Core {
 		}
 
 		// RTI: Return from interrupt
-		void iRTI() {
+		private void iRTI() {
 			P = pull();
 			byte lsb = pull();
 			byte msb = pull();
@@ -520,7 +520,7 @@ namespace Maria.Core {
 		}
 
 		// RTS: Return from subroutine
-		void iRTS() {
+		private void iRTS() {
 			byte lsb = pull();
 			byte msb = pull();
 			PC = WORD(lsb, msb);
@@ -528,7 +528,7 @@ namespace Maria.Core {
 		}
 
 		// SBC: Subtract with carry (borrow)
-		void iSBC(byte mem) {
+		private void iSBC(byte mem) {
 			int c   = fC ? 0 : 1;
 			int sum = A - mem - c;
 			if (fD) {
@@ -553,93 +553,93 @@ namespace Maria.Core {
 		}
 
 		// SEC: Set carry flag
-		void iSEC() {
+		private void iSEC() {
 			fC = true;
 		}
 
 		// SED: Set decimal mode
-		void iSED() {
+		private void iSED() {
 			fD = true;
 		}
 
 		// SEI: Set interrupt disable
-		void iSEI() {
+		private void iSEI() {
 			fI = true;
 		}
 
 		// STA: Store accumulator
-		byte iSTA() {
+		private byte iSTA() {
 			return A;
 		}
 
 		// STX: Store index X
-		byte iSTX() {
+		private byte iSTX() {
 			return X;
 		}
 
 		// STY: Store index Y
-		byte iSTY() {
+		private byte iSTY() {
 			return Y;
 		}
 
 		// TAX: Transfer accumlator to index X
-		void iTAX() {
+		private void iTAX() {
 			X = A;
 			set_fNZ(X);
 		}
 
 		// TAY: Transfer accumlator to index Y
-		void iTAY() {
+		private void iTAY() {
 			Y = A;
 			set_fNZ(Y);
 		}
 
 		// TSX: Transfer stack to index X
-		void iTSX() {
+		private void iTSX() {
 			X = S;
 			set_fNZ(X);
 		}
 
 		// TXA: Transfer index X to accumlator
-		void iTXA() {
+		private void iTXA() {
 			A = X;
 			set_fNZ(A);
 		}
 
 		// TXS: Transfer index X to stack
-		void iTXS() {
+		private void iTXS() {
 			S = X;
 			// No flags set.
 		}
 
 		// TYA: Transfer index Y to accumulator
-		void iTYA() {
+		private void iTYA() {
 			A = Y;
 			set_fNZ(A);
 		}
 
 		// KIL: Jam the processor
-		void iKIL() {
+		private void iKIL() {
 			Jammed = true;
 			Trace.Write(this);
 			Trace.WriteLine(": Processor Jammed");
 		}
 
 		// LAX: Load accumulator and index x
-		void iLAX(byte mem) {
+		private void iLAX(byte mem) {
 			A = X = mem;
 			set_fNZ(A);
 		}
 
 		// ISB: Increment and subtract with carry
-		void iISB(byte mem) {
+		private void iISB(byte mem) {
 			mem++;
 			iSBC(mem);
 		}
 
 		// RLA: Rotate left and logical and accumulator
 		// new C <- [7][6][5][4][3][2][1][0] <- C
-		void iRLA(byte mem) {
+		private void iRLA(byte mem) {
 			byte d0 = (byte)(fC ? 0x01 : 0x00);
 			fC = (mem & 0x80) != 0;
 			mem <<= 1;
@@ -649,7 +649,7 @@ namespace Maria.Core {
 		}
 
 		// SAX: logical and accumulator with index X and store
-		byte iSAX() {
+		private byte iSAX() {
 			return (byte)(A & X);
 		}
 
