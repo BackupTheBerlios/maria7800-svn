@@ -582,6 +582,77 @@ namespace Maria.Core {
 			return Y;
 		}
 
+		// TAX: Transfer accumlator to index X
+		void iTAX() {
+			X = A;
+			set_fNZ(X);
+		}
+
+		// TAY: Transfer accumlator to index Y
+		void iTAY() {
+			Y = A;
+			set_fNZ(Y);
+		}
+
+		// TSX: Transfer stack to index X
+		void iTSX() {
+			X = S;
+			set_fNZ(X);
+		}
+
+		// TXA: Transfer index X to accumlator
+		void iTXA() {
+			A = X;
+			set_fNZ(A);
+		}
+
+		// TXS: Transfer index X to stack
+		void iTXS() {
+			S = X;
+			// No flags set.
+		}
+
+		// TYA: Transfer index Y to accumulator
+		void iTYA() {
+			A = Y;
+			set_fNZ(A);
+		}
+
+		// KIL: Jam the processor
+		void iKIL() {
+			Jammed = true;
+			Trace.Write(this);
+			Trace.WriteLine(": Processor Jammed");
+		}
+
+		// LAX: Load accumulator and index x
+		void iLAX(byte mem) {
+			A = X = mem;
+			set_fNZ(A);
+		}
+
+		// ISB: Increment and subtract with carry
+		void iISB(byte mem) {
+			mem++;
+			iSBC(mem);
+		}
+
+		// RLA: Rotate left and logical and accumulator
+		// new C <- [7][6][5][4][3][2][1][0] <- C
+		void iRLA(byte mem) {
+			byte d0 = (byte)(fC ? 0x01 : 0x00);
+			fC = (mem & 0x80) != 0;
+			mem <<= 1;
+			mem |= d0;
+			A &= mem;
+			set_fNZ(A);
+		}
+
+		// SAX: logical and accumulator with index X and store
+		byte iSAX() {
+			return (byte)(A & X);
+		}
+
 		private void InstallOpcodes() {
 			// TODO : actually do something here...
 		}
@@ -590,92 +661,6 @@ namespace Maria.Core {
 
 // TODO : port the shit below. Take care, I'm pretty sure it's butt ugly
 		/*
-		// TAX: Transfer accumlator to index X
-		void iTAX()
-		{
-			X = A;
-			set_fNZ(X);
-		}
-
-		// TAY: Transfer accumlator to index Y
-		void iTAY()
-		{
-			Y = A;
-			set_fNZ(Y);
-		}
-
-		// TSX: Transfer stack to index X
-		void iTSX()
-		{
-			X = S;
-			set_fNZ(X);
-		}
-
-		// TXA: Transfer index X to accumlator
-		void iTXA()
-		{
-			A = X;
-			set_fNZ(A);
-		}
-
-		// TXS: Transfer index X to stack
-		void iTXS()
-		{
-			S = X;
-			// No flags set..!  Weird, huh?
-		}
-
-		// TYA: Transfer index Y to accumulator
-		void iTYA()
-		{
-			A = Y;
-			set_fNZ(A);
-		}
-
-		// Illegal opcodes
-
-		// KIL: Jam the processor
-		void iKIL()
-		{
-			Jammed = true;
-            Trace.Write(this);
-			Trace.WriteLine(": Processor Jammed");
-		}
-
-		// LAX: Load accumulator and index x
-		void iLAX(byte mem)
-		{
-			A = X = mem;
-			set_fNZ(A);
-		}
-
-		// ISB: Increment and subtract with carry
-		void iISB(byte mem)
-		{
-			mem++;
-			iSBC(mem);
-		}
-
-		// RLA: Rotate left and logical and accumulator
-		// new C <- [7][6][5][4][3][2][1][0] <- C
-		void iRLA(byte mem)
-		{
-			byte d0 = (byte)(fC ? 0x01 : 0x00);
-
-			fC = (mem & 0x80) != 0;
-			mem <<= 1;
-			mem |= d0;
-
-			A &= mem;
-			set_fNZ(A);
-		}
-
-		// SAX: logical and accumulator with index X and store
-		byte iSAX()
-		{
-			return (byte)(A & X);
-		}
-
 		void InstallOpcodes()
 		{
 			Opcodes = new OpcodeHandler[0x100];
