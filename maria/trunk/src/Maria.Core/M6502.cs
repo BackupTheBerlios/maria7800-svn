@@ -28,8 +28,7 @@ using System.Runtime.Serialization;
 
 namespace Maria.Core {
 	[Serializable]
-	// TODO : implement IDeserializationCallback !!!
-	public class M6502 {
+	public class M6502 : IDeserializationCallback {
 		public const ushort NMI_VEC = 0xfffa;
 		public const ushort RST_VEC = 0xfffc;
 		public const ushort IRQ_VEC = 0xfffe;
@@ -77,6 +76,10 @@ namespace Maria.Core {
 			);
 		}
 
+		public virtual void OnDeserialization(object sender) {
+			InstallOpcodes();
+		}
+
 		public override String ToString() {
 			return "M6502 CPU";
 		}
@@ -94,6 +97,7 @@ namespace Maria.Core {
 		}
 		
 		private void InstallOpcodes() {
+			// TODO : actually do something here...
 		}
 	}
 }
@@ -125,11 +129,6 @@ namespace Maria.Core {
 					Opcodes[Mem[PC++]]();
 				}
 			}
-		}
-
-		public virtual void OnDeserialization(object sender)
-		{
-			InstallOpcodes();
 		}
 
 		// Processor Status Flag Bits
