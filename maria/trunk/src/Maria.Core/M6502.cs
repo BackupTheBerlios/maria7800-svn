@@ -402,37 +402,25 @@ namespace Maria.Core {
 			return mem;
 		}
 
-		private void InstallOpcodes() {
-			// TODO : actually do something here...
-		}
-	}
-}
-
-// TODO : port the shit below. Take care, I'm pretty sure it's butt ugly
-/*
 		// INX: Increment index x
-		void iINX()
-		{
+		void iINX() {
 			X++;
 			set_fNZ(X);
 		}
 
 		// INY: Increment index y
-		void iINY()
-		{
+		void iINY() {
 			Y++;
 			set_fNZ(Y);
 		}
 
 		// JMP Jump to address
-		void iJMP(ushort ea)
-		{
+		void iJMP(ushort ea) {
 			PC = ea;
 		}
 
 		// JSR Jump to subroutine
-		void iJSR(ushort ea)
-		{
+		void iJSR(ushort ea) {
 			PC--;           // Yes, the 6502/7 really does this
 			push(MSB(PC));
 			push(LSB(PC));
@@ -440,29 +428,25 @@ namespace Maria.Core {
 		}
 
 		// LDA: Load accumulator
-		void iLDA(byte mem)
-		{
+		void iLDA(byte mem) {
 			A = mem;
 			set_fNZ(A);
 		}
 
 		// LDX: Load index X
-		void iLDX(byte mem)
-		{
+		void iLDX(byte mem) {
 			X = mem;
 			set_fNZ(X);
 		}
 
 		// LDY: Load index Y
-		void iLDY(byte mem)
-		{
+		void iLDY(byte mem) {
 			Y = mem;
 			set_fNZ(Y);
 		}
 
 		// LSR: Logic shift right: 0 -> [7][6][5][4][3][2][1][0] -> C
-		byte iLSR(byte mem)
-		{
+		byte iLSR(byte mem) {
 			fC = (mem & 0x01) != 0;
 			mem >>= 1;
 			set_fNZ(mem);
@@ -470,53 +454,45 @@ namespace Maria.Core {
 		}
 
 		// NOP: No operation
-		void iNOP()
-		{
-			if (EMU7800App.Instance.Settings.NOPRegisterDumping)
-			{
+		void iNOP() {
+			// TODO : what do we do about this (I'd say we delete it...)
+			/*if (EMU7800App.Instance.Settings.NOPRegisterDumping) {
 				Trace.Write("NOP: ");
 				Trace.WriteLine(M6502DASM.GetRegisters(this));
-			}
+			}*/
 		}
 
 		// ORA: Logical inclusive or
-		void iORA(byte mem)
-		{
+		void iORA(byte mem) {
 			A |= mem;
 			set_fNZ(A);
 		}
 
 		// PHA: Push accumulator
-		void iPHA()
-		{
+		void iPHA() {
 			push(A);
 		}
 
 		// PHP: Push processor status (flags)
-		void iPHP()
-		{
+		void iPHP() {
 			push(P);
 		}
 
 		// PLA: Pull accumuator
-		void iPLA()
-		{
+		void iPLA() {
 			A = pull();
 			set_fNZ(A);
 		}
 
 		// PLP: Pull processor status (flags)
-		void iPLP()
-		{
+		void iPLP() {
 			P = pull();
 			fB = true;
 		}
 
 		// ROL: Rotate left: new C <- [7][6][5][4][3][2][1][0] <- C
-		byte iROL(byte mem)
-		{
+		byte iROL(byte mem) {
 			byte d0 = (byte)(fC ? 0x01 : 0x00);
-
 			fC = (mem & 0x80) != 0;
 			mem <<= 1;
 			mem |= d0;
@@ -525,10 +501,8 @@ namespace Maria.Core {
 		}
 
 		// ROR: Rotate right: C -> [7][6][5][4][3][2][1][0] -> new C
-		byte iROR(byte mem)
-		{
+		byte iROR(byte mem) {
 			byte d7 = (byte)(fC ? 0x80 : 0x00);
-
 			fC = (mem & 0x01) != 0;
 			mem >>= 1;
 			mem |= d7;
@@ -537,8 +511,7 @@ namespace Maria.Core {
 		}
 
 		// RTI: Return from interrupt
-		void iRTI()
-		{
+		void iRTI() {
 			P = pull();
 			byte lsb = pull();
 			byte msb = pull();
@@ -547,38 +520,31 @@ namespace Maria.Core {
 		}
 
 		// RTS: Return from subroutine
-		void iRTS()
-		{
+		void iRTS() {
 			byte lsb = pull();
 			byte msb = pull();
 			PC = WORD(lsb, msb);
-			PC++;                   // Yes, the 6502/7 really does this
+			PC++; // Yes, the 6502/7 really does this
 		}
 
 		// SBC: Subtract with carry (borrow)
-		void iSBC(byte mem)
-		{
+		void iSBC(byte mem) {
 			int c   = fC ? 0 : 1;
 			int sum = A - mem - c;
-
-			if (fD)
-			{
+			if (fD) {
 				int lo  = (A & 0x0f) - (mem & 0x0f) - c;
 				int hi  = (A & 0xf0) - (mem & 0xf0);
-				if ((lo & 0x10) != 0)
-				{
+				if ((lo & 0x10) != 0) {
 					lo -= 0x06;
 					hi -= 0x01;
 				}
 				fV = ((A^mem) & 0x80) != 0 && ((sum^mem) & 0x80) == 0;
-				if ((hi & 0x0100) != 0)
-				{
+				if ((hi & 0x0100) != 0) {
 					hi -= 0x60;
 				}
 				A = (byte)((lo & 0x0f) | (hi & 0xf0));
 			}
-			else
-			{
+			else {
 				fV = ((A^mem) & 0x80) != 0 && ((sum^mem) & 0x80) == 0;
 				A = (byte)sum;
 			}
@@ -587,41 +553,43 @@ namespace Maria.Core {
 		}
 
 		// SEC: Set carry flag
-		void iSEC()
-		{
+		void iSEC() {
 			fC = true;
 		}
 
 		// SED: Set decimal mode
-		void iSED()
-		{
+		void iSED() {
 			fD = true;
 		}
 
 		// SEI: Set interrupt disable
-		void iSEI()
-		{
+		void iSEI() {
 			fI = true;
 		}
 
 		// STA: Store accumulator
-		byte iSTA()
-		{
+		byte iSTA() {
 			return A;
 		}
 
 		// STX: Store index X
-		byte iSTX()
-		{
+		byte iSTX() {
 			return X;
 		}
 
 		// STY: Store index Y
-		byte iSTY()
-		{
+		byte iSTY() {
 			return Y;
 		}
 
+		private void InstallOpcodes() {
+			// TODO : actually do something here...
+		}
+	}
+}
+
+// TODO : port the shit below. Take care, I'm pretty sure it's butt ugly
+		/*
 		// TAX: Transfer accumlator to index X
 		void iTAX()
 		{
