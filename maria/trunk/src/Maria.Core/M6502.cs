@@ -455,11 +455,7 @@ namespace Maria.Core {
 
 		// NOP: No operation
 		private void iNOP() {
-			// TODO : what do we do about this (I'd say we delete it...)
-			/*if (EMU7800App.Instance.Settings.NOPRegisterDumping) {
-				Trace.Write("NOP: ");
-				Trace.WriteLine(M6502DASM.GetRegisters(this));
-			}*/
+			// Nothing to do.
 		}
 
 		// ORA: Logical inclusive or
@@ -654,7 +650,6 @@ namespace Maria.Core {
 		}
 
 		private void InstallOpcodes() {
-			// TODO : actually do something here...
 			Opcodes = new OpcodeHandler[0x100];
 			ushort EA;
 
@@ -885,8 +880,15 @@ namespace Maria.Core {
 
 			OpcodeHandler opNULL = delegate() {
 				Trace.WriteLine(
-					// TODO : reformat, provide IPromatProvider...
-					String.Format("{0}:**UNKNOWN OPCODE: ${1:x2} at ${2:x4}\n", this, mem[(ushort)(PC-1)], PC-1));
+					String.Format(
+						CultureInfo.InvariantCulture,
+						"{0}:**UNKNOWN OPCODE: ${1:x2} at ${2:x4}{3}",
+						this,
+						mem[(ushort)(PC-1)],
+						PC-1,
+						Environment.NewLine
+					)
+				);
 			};
 
 			for (int i=0; i < Opcodes.Length; i++) {
