@@ -48,7 +48,7 @@ namespace Maria.Core {
 		public abstract byte this[ushort addr] {
 			get;
 			set;
-		};
+		}
 
 		// TODO : a bit difficult to decide what to return here.
 		// for carts it should probably be their size *in the address space*,
