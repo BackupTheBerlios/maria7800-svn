@@ -48,7 +48,7 @@ namespace Maria.Core {
 		public byte Y;
 		public byte S;
 		public byte P;
-		private readonly AddressSpace mem;
+		private readonly IAddressable mem;
 		[NonSerialized]
 		private OpcodeHandler[] Opcodes;
 
