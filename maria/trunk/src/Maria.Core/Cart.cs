@@ -67,6 +67,9 @@ namespace Maria.Core {
 		private static Cart New(BinaryReader rom, CartType cartType) {
 			Cart c;			
 			switch (cartType) {
+				case CartType.A2K:
+					c = new CartA2K(rom);
+					break;
 				default:
 					throw new UnknownCartTypeException("Unknown cart type: " +
 						cartType.ToString());
@@ -74,9 +77,6 @@ namespace Maria.Core {
 			return c;
 			// TODO : move everything up into real switch...
 			/*switch (cartType) {
-				case CartType.A2K:
-					c = new CartA2K(rom);
-					break;
 				case CartType.A4K:
 					c = new CartA4K(rom);
 					break;
