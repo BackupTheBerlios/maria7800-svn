@@ -20,7 +20,7 @@ dnl along with Maria; if not, write to the Free Software
 dnl Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 AC_INIT([maria], [0.71], [tom42@users.berlios.de])
-AC_PREREQ([2.60])
+AC_PREREQ([2.59])
 AM_INIT_AUTOMAKE
 AM_MAINTAINER_MODE
 
