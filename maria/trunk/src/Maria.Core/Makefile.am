@@ -32,6 +32,7 @@ CartA2K.cs \
 CartA4K.cs \
 Cart7808.cs \
 Cart7816.cs \
+Cart7832.cs \
 CartType.cs \
 Controller.cs \
 Exceptions.cs \

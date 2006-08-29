@@ -23,21 +23,21 @@ using System.IO;
 
 namespace Maria.Core {
 	/*
-	 * Atari 7800 non-bankswitched 8KB cartridge
+	 * Atari 7800 non-bankswitched 32KB cartridge
 	 *
 	 * Cart Format                Mapping to ROM Address Space
-	 * 0x0000:0x2000              0xE000:0x2000
+	 * 0x0000:0x8000              0x8000:0x8000
 	 */
 	[Serializable]
-	public sealed class Cart7808 : Cart {
-		public const int RomSize = 0x2000; // Must be a power of 2
-
+	public sealed class Cart7832 : Cart {
+		public const int RomSize = 0x8000;
+		
 		public override byte this[ushort addr] {
 			get { return ROM[addr & (RomSize - 1)]; }
 			set {}
 		}
 
-		public Cart7808(BinaryReader br) {
+		public Cart7832(BinaryReader br) {
 			LoadRom(br, RomSize);
 		}
 	}
