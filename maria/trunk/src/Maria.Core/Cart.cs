@@ -26,7 +26,11 @@ using System.IO;
 using Vtg.Util;
 
 namespace Maria.Core {
-	// TODO : implement IDevice here...
+	
+	public class UnknownCartTypeException : MariaCoreException {
+		public UnknownCartTypeException(string msg) : base(msg) {}
+	}
+	
 	[Serializable]
 	public abstract class Cart : IDevice {
 		private Machine machine;
@@ -50,9 +54,8 @@ namespace Maria.Core {
 			set;
 		}
 
-		// TODO : a bit difficult to decide what to return here.
-		// for carts it should probably be their size *in the address space*,
-		// and not their total amount of storage...we'll decide later.
+		// Carts must return their size in the address space, and not
+		// their total amount of storage.
 		public abstract int Size { get; }
 
 		protected Machine Machine {
@@ -64,62 +67,17 @@ namespace Maria.Core {
 			get { return rom; }
 			set { rom = value; }
 		}
-	}
-}
 
-	// TODO : port shit below
-/*
-		public static Cart New(GameSettings gs)
-		{
-			BinaryReader rom = new BinaryReader(File.OpenRead(gs.FileInfo.FullName));
-			rom.BaseStream.Seek(gs.Offset, SeekOrigin.Begin);
-
-			// TODO : as far as I can tell this whole CartType guessing business
-			//        should probably be part of the GameSettings class. Well.
-			//        Not really neither, but still better than having it lingering
-			//        around here. What I find especially disturbing is that CartType
-			//        is modified...
-			if (gs.CartType == CartType.Default)
-			{
-				FileInfo fi = new FileInfo(gs.FileInfo.FullName);
-				switch (gs.MachineType)
-				{
-					case MachineType.A2600NTSC:
-					case MachineType.A2600PAL:
-						switch (fi.Length - gs.Offset)
-						{
-							case 2048:  gs.CartType = CartType.A2K;  break;
-							case 4096:  gs.CartType = CartType.A4K;  break;
-							case 8192:  gs.CartType = CartType.A8K;  break;
-							case 16384: gs.CartType = CartType.A16K; break;
-							default:
-								throw new Exception("Unexpected CartType: " + gs.CartType.ToString());
-						}
-						break;
-					case MachineType.A7800NTSC:
-					case MachineType.A7800PAL:
-						switch (fi.Length - gs.Offset)
-						{
-							case 8192:  gs.CartType = CartType.A7808; break;
-							case 16384: gs.CartType = CartType.A7816; break;
-							case 32768: gs.CartType = CartType.A7832; break;
-							case 49152: gs.CartType = CartType.A7848; break;
-							default:
-								throw new Exception("Unexpected CartType: " + gs.CartType.ToString());
-						}
-						break;
-				}
+		private static Cart New(BinaryReader rom, CartType cartType) {
+			Cart c;			
+			switch (cartType) {
+				default:
+					throw new UnknownCartTypeException("Unknown cart type: " +
+						cartType.ToString());
 			}
-
-			return Cart.New(rom, gs.CartType);
-		}
-
-		static Cart New(BinaryReader rom, CartType cartType)
-		{
-			Cart c;
-
-			switch (cartType)
-			{
+			return c;
+			// TODO : move everything up into real switch...
+			/*switch (cartType) {
 				case CartType.A2K:
 					c = new CartA2K(rom);
 					break;
@@ -199,24 +157,55 @@ namespace Maria.Core {
 					break;
 				default:
 					throw new Exception("Unexpected CartType: " + cartType.ToString());
-			}
-			return c;
+			}*/			
 		}
 
-		protected void LoadRom(BinaryReader br, int minSize)
-		{
-			// TODO : stream is closed here, but opened somewhere else
-			// => ugly. And perhaps it should be closed in a finally clausle
-			if (br == null)
-			{
-				throw new ArgumentNullException("br");
+		public static Cart New(GameSettings gs) {
+			BinaryReader rom = new BinaryReader(File.OpenRead(gs.FileInfo.FullName));
+			rom.BaseStream.Seek(gs.Offset, SeekOrigin.Begin);
+			if (gs.CartType == CartType.Default)
+				FixCartType(gs);
+			return Cart.New(rom, gs.CartType);
+		}
+		
+		// TODO : should probably be in the GameSettings class
+		private static void FixCartType(GameSettings gs) {
+			FileInfo fi = new FileInfo(gs.FileInfo.FullName);
+			switch (gs.MachineType) {
+				case MachineType.A2600NTSC:
+				case MachineType.A2600PAL:
+					switch (fi.Length - gs.Offset) {
+						case 2048: gs.CartType = CartType.A2K; break;
+						case 4096: gs.CartType = CartType.A4K; break;
+						case 8192: gs.CartType = CartType.A8K; break;
+						case 16384: gs.CartType = CartType.A16K; break;
+						default:
+							throw new UnknownCartTypeException("Couldn't guess type of cart image " +
+								fi.FullName);
+					}
+					break;
+				case MachineType.A7800NTSC:
+				case MachineType.A7800PAL:
+					switch (fi.Length - gs.Offset) {
+						case 8192: gs.CartType = CartType.A7808; break;
+						case 16384: gs.CartType = CartType.A7816; break;
+						case 32768: gs.CartType = CartType.A7832; break;
+						case 49152: gs.CartType = CartType.A7848; break;
+						default:
+							throw new UnknownCartTypeException("Couldn't guess type of cart image " +
+								fi.FullName);
+					}
+					break;
 			}
+		}
+		
+		protected void LoadRom(BinaryReader br, int minSize) {
+			ArgumentCheck.NotNull(br, "br");
 			int flen = (int)(br.BaseStream.Length - br.BaseStream.Position);
 			int size = minSize > flen ? minSize : flen;
 			ROM = new byte[size];
 			br.Read(ROM, 0, size);
 			br.Close();
-		}
+		}		
 	}
-
-*/
+}
