@@ -65,6 +65,7 @@ src/Maria.Core.Test/Makefile
 src/Vtg.Util/AssemblyInfo.cs
 src/Vtg.Util/Makefile
 src/Vtg.Util.Test/Makefile
+tao/Makefile
 ])
 AC_OUTPUT
 

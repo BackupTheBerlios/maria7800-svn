@@ -17,5 +17,11 @@
 # along with Maria; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-SUBDIRS = tao src
-
+EXTRA_DIST = \
+LICENSE.txt \
+Tao.Sdl.dll \
+Tao.Sdl.dll.config \
+Tao.Sdl.dll.config.debian \
+Tao.Sdl.dll.config.fedora \
+Tao.Sdl.dll.config.osx \
+Tao.Sdl.dll.config.ubuntu
