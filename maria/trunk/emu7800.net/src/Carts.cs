@@ -12,31 +12,6 @@ using System.IO;
 
 namespace EMU7800 
 {
-	/**
-	  Atari standard 2KB carts (no bankswitching)
-  
-	  Cart Format                Mapping to ROM Address Space
-	  0x0000:0x0800              0x1000:0x0800
-								 0x1800:0x0800  (1st 2k bank repeated)
-
-	 */
-	[Serializable]
-	public sealed class CartA2K : Cart, IDevice 
-	{
-		public byte this[ushort addr]
-		{
-			get 
-			{
-				return ROM[addr & 0x07ff];
-			}
-			set { }
-		}
-
-		public CartA2K(BinaryReader br)
-		{
-			LoadRom(br, 0x0800);
-		}
-	}
 
 	/**
 	  Atari standard 4KB carts (no bankswitching)
