@@ -54,10 +54,6 @@ namespace Maria.Core {
 			set;
 		}
 
-		// Carts must return their size in the address space, and not
-		// their total amount of storage.
-		public abstract int Size { get; }
-
 		protected Machine Machine {
 			get { return machine; }
 			set { machine = value; }

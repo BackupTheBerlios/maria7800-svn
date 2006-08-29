@@ -22,23 +22,23 @@ using NUnit.Framework;
 namespace Maria.Core {
 	[TestFixture]
 	public class RAM6116Test {
-		private IDevice fRAM;
+		private RAM6116 fRAM;
 
 		[SetUp]
 		public void SetUp() {
 			fRAM = new RAM6116();
-			for (ushort adx=0; adx<fRAM.Size; ++adx)
+			for (ushort adx = 0; adx < RAM6116.Size; ++adx)
 				fRAM[adx] = 0;
 		}
 
 		[Test]
 		public void TestSize() {
-			Assert.AreEqual(0x800, fRAM.Size);
+			Assert.AreEqual(0x800, RAM6116.Size);
 		}
 
 		[Test]
 		public void TestNormalReadWrite() {
-			for (ushort adx=0; adx<fRAM.Size; ++adx) {
+			for (ushort adx = 0; adx < RAM6116.Size; ++adx) {
 				Assert.AreEqual(0, fRAM[adx]);
 				fRAM[adx] = 42;
 				Assert.AreEqual(42, fRAM[adx]);
@@ -49,14 +49,14 @@ namespace Maria.Core {
 		public void TestReadWraparound() {
 			fRAM[0] = 42;
 			fRAM[1] = 23;
-			Assert.AreEqual(42, fRAM[(ushort) fRAM.Size]);
-			Assert.AreEqual(23, fRAM[(ushort) (fRAM.Size * 2 + 1)]);
+			Assert.AreEqual(42, fRAM[(ushort) RAM6116.Size]);
+			Assert.AreEqual(23, fRAM[(ushort) (RAM6116.Size * 2 + 1)]);
 		}
 
 		[Test]
 		public void TestWriteWraparound() {
-			fRAM[(ushort) fRAM.Size] = 42;
-			fRAM[(ushort) (fRAM.Size * 2 + 1)] = 23;
+			fRAM[(ushort) RAM6116.Size] = 42;
+			fRAM[(ushort) (RAM6116.Size * 2 + 1)] = 23;
 			Assert.AreEqual(42, fRAM[0]);
 			Assert.AreEqual(23, fRAM[1]);
 		}

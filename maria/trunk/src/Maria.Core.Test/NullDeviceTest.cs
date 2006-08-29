@@ -36,11 +36,6 @@ namespace Maria.Core {
 		}
 
 		[Test]
-		public void TestSize() {
-			Assert.AreEqual(-1, nullDevice.Size);
-		}
-
-		[Test]
 		public void TestReadWrite() {
 			for (uint address=0; address<0x10000; address++) {
 				Assert.AreEqual(0, nullDevice[(ushort) address]);

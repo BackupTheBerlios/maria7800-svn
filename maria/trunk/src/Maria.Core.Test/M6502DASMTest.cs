@@ -36,8 +36,8 @@ namespace Maria.Core {
 			cpu.S = 4;
 			cpu.P = 0;
 			ram = new RAM6116();
-			for (ushort addr = 0; addr < ram.Size; ++addr)
-				ram[addr] = (byte) (addr & 255u);
+			for (ushort addr = 0; addr < 256; ++addr)
+				ram[addr] = (byte) addr;
 		}
 
 		[Test]

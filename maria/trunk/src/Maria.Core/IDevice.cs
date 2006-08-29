@@ -25,7 +25,6 @@ namespace Maria.Core {
 	public interface IDevice : IAddressable {
 		void Reset();
 		void Map(AddressSpace adressSpace);
-		int Size { get; }
 		bool RequestSnooping { get; }
 	}
 }

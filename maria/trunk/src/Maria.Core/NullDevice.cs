@@ -46,10 +46,6 @@ namespace Maria.Core {
 			}
 		}
 
-		public int Size {
-			get { return -1; }
-		}
-
 		public bool RequestSnooping {
 			get { return false; }
 		}
