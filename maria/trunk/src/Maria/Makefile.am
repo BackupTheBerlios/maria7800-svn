@@ -31,8 +31,11 @@ maria_sources = Maria.cs
 
 maria_build_sources = $(addprefix $(srcdir)/, $(maria_sources) $(maria_generated_sources))
 
+OWN_ASSEMBLIES = $(top_srcdir)/tao/Tao.Sdl.dll
+OWN_ASSEMBLY_REFERENCES = $(addprefix -r:,$(OWN_ASSEMBLIES))
+
 maria.exe : $(maria_build_sources)
-	$(MCS) -out:$@ $^
+	$(MCS) -out:$@ $(OWN_ASSEMBLY_REFERENCES) $^
 
 maria : $(srcdir)/createlauncherscript.sh
 	sh $(srcdir)/createlauncherscript.sh "$(MONO)" "$(pkglibdir)" "$(PACKAGE_NAME)".exe > $@
