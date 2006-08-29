@@ -2,7 +2,7 @@
  * An abstraction of a game cart.  Attributable to Kevin Horton's Bankswitching
  * document, the Stella source code, and Eckhard Stolberg's 7800 Bankswitching Guide.
  *
- * Copyright (c) 2003, 2004 Mike Murphy
+ * Copyright (C) 2003, 2004 Mike Murphy
  * Copyright (C) 2006 Thomas Mathys (tom42@users.berlios.de)
  *
  * This file is part of Maria.

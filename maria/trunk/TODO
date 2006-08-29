@@ -1,3 +1,6 @@
+- Until we find any real use/definition for IDevice#Size
+  we should probably remove it...
+  => remove Size from IDevice and implementing classes.
 - Possibly we can work on the Cart classes.
   These should perhaps be divided up...or so. Oh well
   - Port a few concrete cart classes, this might help
