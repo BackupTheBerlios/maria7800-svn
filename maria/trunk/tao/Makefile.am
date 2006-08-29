@@ -17,6 +17,9 @@
 # along with Maria; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+taodir = $(pkglibdir)
+tao_SCRIPTS = Tao.Sdl.dll
+
 EXTRA_DIST = \
 LICENSE.txt \
 Tao.Sdl.dll \

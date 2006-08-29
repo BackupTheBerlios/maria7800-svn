@@ -1,10 +1,8 @@
-- At some point I think we could start worrying about SDL.
-  Probably it will be Tao, seems to be the most straightforward.
-  It's more or less an 1:1 mapping of SDL's C API, which is exactly
-  what I want.
-  - As long as there's no real Tao installer / debian package
-    we can aswell go and put the Tao source into our own
-    autoconf/automake build process...
+- Currently we keep compiled Tao binaries around. This is OK,
+  I even found a way to get them installed without having to
+  compile them.
+  => Now get an actual sample running. Perhaps we find some
+  docs/sample somewhere ? (Tao distro...)
 - Possibly we can work on the Cart classes.
   - I think I'll port the remaining carts and then
     worry about refactoring them.
