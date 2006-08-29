@@ -1,10 +1,13 @@
+- At some point I think we could start worrying about SDL.
+  Probably it will be Tao, seems to be the most straightforward.
+  It's more or less an 1:1 mapping of SDL's C API, which is exactly
+  what I want.
+  - As long as there's no real Tao installer / debian package
+    we can aswell go and put the Tao source into our own
+    autoconf/automake build process...
 - Possibly we can work on the Cart classes.
-  These should perhaps be divided up...or so. Oh well
-  - Port a few concrete cart classes, this might help
-    to see how things could be improved...
-  - Don't port all of them though...if we change things
-    this will just give us a shitload of changes.
-    Perhaps port the 4k 2600 cart and the 16k/32k 7800 carts...
+  - I think I'll port the remaining carts and then
+    worry about refactoring them.
 - Build process:
   - At some point we should perhaps keep referenced assemblies
     as dependencies of the assembly that should be built.
