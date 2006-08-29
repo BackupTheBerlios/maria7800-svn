@@ -70,6 +70,9 @@ namespace Maria.Core {
 				case CartType.A2K:
 					c = new CartA2K(rom);
 					break;
+				case CartType.A4K:
+					c = new CartA4K(rom);
+					break;
 				default:
 					throw new UnknownCartTypeException("Unknown cart type: " +
 						cartType.ToString());
@@ -77,9 +80,6 @@ namespace Maria.Core {
 			return c;
 			// TODO : move everything up into real switch...
 			/*switch (cartType) {
-				case CartType.A4K:
-					c = new CartA4K(rom);
-					break;
 				case CartType.A8K:
 					c = new CartA8K(rom);
 					break;
