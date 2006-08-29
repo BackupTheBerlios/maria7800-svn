@@ -1081,32 +1081,6 @@ namespace EMU7800
 		}
 	}
 
-	/**
-	  Atari 7800 non-bankswitched 8KB cartridge
-  
-	  Cart Format                Mapping to ROM Address Space
-	  0x0000:0x2000              0xE000:0x2000
-  
-	*/
-	[Serializable]
-	public sealed class Cart7808 : Cart, IDevice
-	{
-		public override void Reset() { }
-	
-		public byte this[ushort addr]
-		{
-			get
-			{
-				return ROM[addr & 0x1fff];
-			}
-			set { }
-		}
-
-		public Cart7808(BinaryReader br)
-		{
-			LoadRom(br, 0x2000);
-		}
-	}
 
 	/**
 	  Atari 7800 non-bankswitched 16KB cartridge

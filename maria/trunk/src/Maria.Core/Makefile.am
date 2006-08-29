@@ -30,6 +30,7 @@ AddressSpace.cs \
 Cart.cs \
 CartA2K.cs \
 CartA4K.cs \
+Cart7808.cs \
 CartType.cs \
 Controller.cs \
 Exceptions.cs \
