@@ -2,6 +2,9 @@
   These should perhaps be divided up...or so. Oh well
   - Port a few concrete cart classes, this might help
     to see how things could be improved...
+  - Don't port all of them though...if we change things
+    this will just give us a shitload of changes.
+    Perhaps port the 4k 2600 cart and the 16k/32k 7800 carts...
 - Build process:
   - At some point we should perhaps keep referenced assemblies
     as dependencies of the assembly that should be built.

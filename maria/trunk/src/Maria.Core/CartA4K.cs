@@ -21,24 +21,18 @@
 using System;
 using System.IO;
 
-namespace Maria.Core {	
+namespace Maria.Core {
 	/*
-	 * Atari 2600 standard 2KB carts (no bankswitching)
-	 *
-	 * Cart Format                Mapping to ROM Address Space
-	 * 0x0000:0x0800              0x1000:0x0800
-	 *                            0x1800:0x0800  (1st 2k bank repeated)
+	 * Atari 2600 standard 4KB carts (no bankswitching)
 	 */
 	[Serializable]
-	public sealed class CartA2K : Cart {
-		public int RomSize = 0x800; // Must be a power of 2
-		
+	public sealed class CartA4K : Cart {
+		public const int RomSize = 0x1000; // Must be a power of 2
 		public override byte this[ushort addr] {
 			get { return ROM[addr & (RomSize - 1)]; }
 			set {}
 		}
-
-		public CartA2K(BinaryReader br) {
+		public CartA4K(BinaryReader br) {
 			LoadRom(br, RomSize);
 		}
 	}

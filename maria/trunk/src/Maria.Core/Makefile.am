@@ -29,6 +29,7 @@ Maria_Core_sources = \
 AddressSpace.cs \
 Cart.cs \
 CartA2K.cs \
+CartA4K.cs \
 CartType.cs \
 Controller.cs \
 Exceptions.cs \

@@ -1,39 +1,6 @@
-/*
- * Cart.cs
- *
- * An abstraction of a game cart.  Attributable to Kevin Horton's Bankswitching
- * document, the Stella source code, and Eckhard Stolberg's 7800 Bankswitching Guide. 
- *
- * Copyright (c) 2003, 2004 Mike Murphy
- *
- */
-using System;
-using System.IO;
-
 namespace EMU7800 
 {
 
-	/**
-	  Atari standard 4KB carts (no bankswitching)
-
-	 */
-	[Serializable]
-	public sealed class CartA4K : Cart, IDevice
-	{
-		public byte this[ushort addr]
-		{
-			get 
-			{
-				return ROM[addr & 0x0fff];
-			}
-			set { }
-		}
-
-		public CartA4K(BinaryReader br)
-		{
-			LoadRom(br, 0x1000);
-		}
-	}
 
 	/**
 	  Tigervision 8KB bankswitched carts
