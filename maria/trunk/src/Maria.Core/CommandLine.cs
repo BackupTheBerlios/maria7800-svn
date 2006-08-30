@@ -47,31 +47,7 @@ namespace Maria.Core {
 			}
 			ArrayList al = new ArrayList();
 			for (int i = 1; i < toks.Length; i++) {
-				string tok = toks[i];
-				Parameter p = new Parameter();
-				p.StrValue = tok;
-				p.IsInteger = false;
-				if (tok.Substring(0, 1) == "$") {
-					try {
-						p.IntValue = Int32.Parse(tok.Substring(1), NumberStyles.HexNumber);
-						p.IsInteger = true;
-					}
-					catch (Exception) { }
-				}
-				else if (tok.Length >= 2 && tok.Substring(0, 2) == "0x") {
-					try {
-						p.IntValue = Int32.Parse(tok.Substring(2), NumberStyles.HexNumber);
-						p.IsInteger = true;
-					}
-					catch (Exception) { }
-				}
-				else {
-					try {
-						p.IntValue = Int32.Parse(tok, NumberStyles.Number);
-						p.IsInteger = true;
-					}
-					catch (Exception) { }
-				}
+				Parameter p = new Parameter(toks[i]);
 				al.Add(p);
 			}
 			parms = new Parameter[al.Count];
@@ -106,11 +82,37 @@ namespace Maria.Core {
 			return retval;
 		}
 
-		// TODO : make fields readonly, initialization goes via ctor. methinks.
 		public struct Parameter {
-			public string StrValue;
-			public int IntValue;
-			public bool IsInteger;
+			public readonly string StrValue;
+			public readonly int IntValue;
+			public readonly bool IsInteger;
+
+			public Parameter(string tok) {
+				StrValue = tok;
+				IntValue = 0;
+				IsInteger = false;
+				if (tok.Substring(0, 1) == "$") {
+					try {
+						IntValue = Int32.Parse(tok.Substring(1), NumberStyles.HexNumber);
+						IsInteger = true;
+					}
+					catch (Exception) { }
+				}
+				else if (tok.Length >= 2 && tok.Substring(0, 2) == "0x") {
+					try {
+						IntValue = Int32.Parse(tok.Substring(2), NumberStyles.HexNumber);
+						IsInteger = true;
+					}
+					catch (Exception) { }
+				}
+				else {
+					try {
+						IntValue = Int32.Parse(tok, NumberStyles.Number);
+						IsInteger = true;
+					}
+					catch (Exception) { }
+				}
+			}
 		}
 	}
 }
