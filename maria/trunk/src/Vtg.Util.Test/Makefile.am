@@ -19,13 +19,12 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 TESTS = $(top_srcdir)/runtests.sh
-TESTS_ENVIRONMENT = \
-rt_top_builddir=$(top_builddir) \
-rt_assembly=Vtg.Util.Test.dll
+TESTS_ENVIRONMENT = runtests_assembly=Vtg.Util.Test.dll
 
 check_SCRIPTS = Vtg.Util.Test.dll
 EXTRA_DIST = $(Vtg_Util_Test_sources) $(Vtg_Util_Test_sources_in)
-CLEANFILES = Vtg.Util.Test.dll Vtg.Util.Test.dll.mdb TestResult.xml
+CLEANFILES = Vtg.Util.Test.dll Vtg.Util.Test.dll.mdb TestResult.xml \
+Vtg.Util.dll
 
 Vtg_Util_Test_sources_in =
 Vtg_Util_Test_generated_sources = $(Vtg_Util_Test_sources_in:.in=)
@@ -41,3 +40,4 @@ Vtg_Util_Test_build_sources = $(addprefix $(srcdir)/, $(Vtg_Util_Test_sources) $
 
 Vtg.Util.Test.dll : $(Vtg_Util_Test_build_sources)
 	$(MCS) -out:$@ -target:library $(NUNIT_LIBS) $(OWN_ASSEMBLY_REFERENCES) $^
+	cp $(OWN_ASSEMBLIES) .

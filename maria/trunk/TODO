@@ -10,14 +10,6 @@
 - Build process:
   - At some point we should perhaps keep referenced assemblies
     as dependencies of the assembly that should be built.
-  - Running tests:
-    for maria.exe we simply copy $(OWN_ASSEMBLIES) to the
-    current build directory. This could be done for all
-    test suites too, which makes setting MONO_PATH unnecessary.
-    Next time we screw around with the test running business,
-    change that. runtests.sh will dthen do no more than throwing
-    a test assembly at nunit-console, and we never have to worry
-    about MONO_PATH anymore.
 - Learn how to tag stuff, and tag the ORIGINAL emu7800 source code
   in the repository with 0.71 or somesuch.
 - Raise warning level when compiling ?

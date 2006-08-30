@@ -19,13 +19,12 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 TESTS = $(top_srcdir)/runtests.sh
-TESTS_ENVIRONMENT = \
-rt_top_builddir=$(top_builddir) \
-rt_assembly=Maria.Core.Test.dll
+TESTS_ENVIRONMENT = runtests_assembly=Maria.Core.Test.dll
 
 check_SCRIPTS = Maria.Core.Test.dll
 EXTRA_DIST = $(Maria_Core_Test_sources) $(Maria_Core_Test_sources_in)
-CLEANFILES = Maria.Core.Test.dll Maria.Core.Test.dll.mdb TestResult.xml
+CLEANFILES = Maria.Core.Test.dll Maria.Core.Test.dll.mdb TestResult.xml \
+Maria.Core.dll Vtg.Util.dll
 
 Maria_Core_Test_sources_in =
 Maria_Core_Test_generated_sources = $(Maria_Core_Test_sources_in:.in=)
@@ -41,10 +40,12 @@ RAM6116Test.cs
 
 OWN_ASSEMBLIES = \
 $(top_builddir)/src/Maria.Core/Maria.Core.dll
-
+ADDITIONAL_ASSEMBLIES = \
+$(top_builddir)/src/Vtg.Util/Vtg.Util.dll
 OWN_ASSEMBLY_REFERENCES = $(addprefix -r:, $(OWN_ASSEMBLIES))
 
 Maria_Core_Test_build_sources = $(addprefix $(srcdir)/, $(Maria_Core_Test_sources) $(Maria_Core_Test_generated_sources))
 
 Maria.Core.Test.dll : $(Maria_Core_Test_build_sources)
 	$(MCS) -out:$@ -target:library $(NUNIT_LIBS) $(OWN_ASSEMBLY_REFERENCES) $^
+	cp $(OWN_ASSEMBLIES) $(ADDITIONAL_ASSEMBLIES) .

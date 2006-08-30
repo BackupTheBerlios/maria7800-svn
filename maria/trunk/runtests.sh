@@ -19,8 +19,4 @@
 # along with Maria; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
-export MONO_PATH=\
-"$rt_top_builddir/src/Vtg.Util:"\
-"$rt_top_builddir/src/Maria.Core:"\
-"$rt_top_builddir/src/Maria"
-nunit-console "$rt_assembly" /labels
+nunit-console "$runtests_assembly" /labels
