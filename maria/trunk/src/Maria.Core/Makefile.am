@@ -34,6 +34,7 @@ Cart7808.cs \
 Cart7816.cs \
 Cart7832.cs \
 CartType.cs \
+CommandLine.cs \
 Controller.cs \
 Exceptions.cs \
 GameSettings.cs \
