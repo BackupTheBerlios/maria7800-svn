@@ -1,10 +1,11 @@
-- Our Maria application is now a simple SDL test. This is ok.
-  Next problem: Currently there's no real simple way of running
-  the thing, except by installing it. Now...perhaps we can make
-  some kind of runmaria script. However, this in turn requires
-  MONO_PATH to be set. Can we extract that somehow from runtests.sh ?
-  => Let's try...
-  => Additionally, the tao directory needs to be added to MONO_PATH...
+- Running tests:
+  for maria.exe we simply copy $(OWN_ASSEMBLIES) to the
+  current build directory. This could be done for all
+  test suites too, which makes setting MONO_PATH unnecessary.
+  Next time we screw around with the test running business,
+  change that. runtests.sh will dthen do no more than throwing
+  a test assembly at nunit-console, and we never have to worry
+  about MONO_PATH anymore.
 - Possibly we can work on the Cart classes.
   - I think I'll port the remaining carts and then
     worry about refactoring them.

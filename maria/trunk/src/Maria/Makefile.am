@@ -23,7 +23,7 @@ maria_SCRIPTS = maria.exe
 bin_SCRIPTS = maria
 
 EXTRA_DIST = $(maria_sources) $(maria_sources_in) createlauncherscript.sh
-CLEANFILES = maria maria.exe maria.exe.mdb
+CLEANFILES = maria maria.exe maria.exe.mdb Tao.Sdl.dll
 
 maria_sources_in = AssemblyInfo.cs.in
 maria_generated_sources = $(maria_sources_in:.in=)
@@ -36,6 +36,7 @@ OWN_ASSEMBLY_REFERENCES = $(addprefix -r:,$(OWN_ASSEMBLIES))
 
 maria.exe : $(maria_build_sources)
 	$(MCS) -out:$@ $(OWN_ASSEMBLY_REFERENCES) $^
+	cp $(OWN_ASSEMBLIES) .
 
 maria : $(srcdir)/createlauncherscript.sh
 	sh $(srcdir)/createlauncherscript.sh "$(MONO)" "$(pkglibdir)" "$(PACKAGE_NAME)".exe > $@
