@@ -16,14 +16,6 @@ using System.Text;
 
 namespace EMU7800
 {
-	public enum MachineType
-	{
-		A2600NTSC,
-		A2600PAL,
-		A7800NTSC,
-		A7800PAL
-	};
-
 	[Serializable]
 	public abstract class Machine
 	{

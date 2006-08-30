@@ -14,11 +14,6 @@ using System.Runtime.Serialization;
 
 namespace EMU7800
 {
-	public enum Controller
-	{
-		None, Joystick, Paddles, Keypad, Driving, BoosterGrip, ProLineJoystick, Lightgun
-	}
-
 	public enum ConsoleSwitch
 	{
 		GameReset, GameSelect, GameBW, LDifficultyA, RDifficultyA

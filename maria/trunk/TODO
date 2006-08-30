@@ -18,4 +18,7 @@ Stuff to clean up:
 - Does GameSettings really need that many getters/setters ?
   (Nah. Probably it could happily be an immutable)
 - Odd that AddressSpace owns a Machine reference, because it never uses it...
-
+- The CommandLine class looks odd too:
+  - Why isn't Parameter a class ? Would make things simpler.
+  - Why isn't CommandLine.Parms an IList instead of an array ?
+    CommandLine class itself could have a strongly typed string indexer...
