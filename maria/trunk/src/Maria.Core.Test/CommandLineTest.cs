@@ -74,6 +74,7 @@ namespace Maria.Core {
 		[Test]
 		public void TestCheckParms() {
 			Assert.IsTrue(new CommandLine("").CheckParms(""));
+			Assert.IsFalse(new CommandLine("verb a b").CheckParms("sss"));
 			Assert.IsTrue(new CommandLine("verb a").CheckParms("s"));
 			Assert.IsFalse(new CommandLine("verb a").CheckParms("i"));
 			Assert.IsTrue(new CommandLine("verb 1").CheckParms("s"));

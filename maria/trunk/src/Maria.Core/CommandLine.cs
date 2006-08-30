@@ -30,31 +30,21 @@ using Vtg.Util;
 
 namespace Maria.Core {
 	public class CommandLine {
-		private string verb;
-		private Parameter[] parms;
+		private readonly string verb;
+		private readonly Parameter[] parms;
 
 		public CommandLine(string commandLine) {
 			ArgumentCheck.NotNull(commandLine, "commandLine");
-			string[] toks0 = commandLine.Split(new char[] {' '});
-			ArrayList toks1 = new ArrayList();
-			foreach (string s in toks0) {
-				if (s.Length > 0)
-					toks1.Add(s);
-			}
-			string[] toks = (string[]) toks1.ToArray(typeof(string));
-			if (toks.Length > 0) {
-				verb = toks[0];
+			ArrayList toks = Tokenize(commandLine);
+			if (toks.Count > 0) {
+				verb = (string) toks[0];
 			}
 			ArrayList al = new ArrayList();
-			for (int i = 1; i < toks.Length; i++) {
-				Parameter p = new Parameter(toks[i]);
+			for (int i = 1; i < toks.Count; i++) {
+				Parameter p = new Parameter((string) toks[i]);
 				al.Add(p);
 			}
-			parms = new Parameter[al.Count];
-			object[] objs = al.ToArray();
-			for (int i = 0; i < al.Count; i++) {
-				parms[i] = (Parameter) objs[i];
-			}
+			parms = (Parameter[]) al.ToArray(typeof(Parameter));
 		}
 
 		public string Verb {
@@ -67,19 +57,23 @@ namespace Maria.Core {
 
 		public bool CheckParms(string chkstr) {
 			ArgumentCheck.NotNull(chkstr, "chkstr");
-			bool retval = true;
-			if (chkstr.Length != Parms.Length) {
-				retval = false;
+			if (chkstr.Length != Parms.Length)
+				return false;
+			for (int i = 0; i < chkstr.Length; i++) {
+				if (chkstr.Substring(i, 1) == "i" && !Parms[i].IsInteger)
+					return false;
 			}
-			else {
-				for (int i = 0; i < chkstr.Length; i++) {
-					if (chkstr.Substring(i, 1) == "i" && !Parms[i].IsInteger) {
-						retval = false;
-						break;
-					}
-				}
+			return true;
+		}
+
+		private ArrayList Tokenize(string commandLine) {
+			string[] tokens = commandLine.Split(new char[] {' '});
+			ArrayList result = new ArrayList();
+			foreach (string s in tokens) {
+				if (s.Length > 0)
+					result.Add(s);
 			}
-			return retval;
+			return result;
 		}
 
 		public struct Parameter {

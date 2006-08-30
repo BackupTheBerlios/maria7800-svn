@@ -1,7 +1,3 @@
-- Do the CommandLine class. Should be fairly simple
-  (and possibly we aren't even gonna use it, which isn't
-  really much of a problem neither. The thing is braindead
-  anyway)
 - Currently we simply use Tao assemblies built for 1.1
   is this a good thing (what if the target framework is 2.0 ?)
 - Possibly we can work on the Cart classes.
