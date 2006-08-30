@@ -49,6 +49,7 @@ MariaTables.cs \
 MD5.cs \
 NullDevice.cs \
 NUnitTest.cs \
+PIA.cs \
 RAM6116.cs
 
 OWN_ASSEMBLIES = \
