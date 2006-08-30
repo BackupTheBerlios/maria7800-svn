@@ -2,6 +2,8 @@
   (and possibly we aren't even gonna use it, which isn't
   really much of a problem neither. The thing is braindead
   anyway)
+- Currently we simply use Tao assemblies built for 1.1
+  is this a good thing (what if the target framework is 2.0 ?)
 - Running tests:
   for maria.exe we simply copy $(OWN_ASSEMBLIES) to the
   current build directory. This could be done for all
