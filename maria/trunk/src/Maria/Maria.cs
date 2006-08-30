@@ -65,7 +65,7 @@ namespace Maria {
 						(byte)rand.Next(255)
 					);
 					Sdl.SDL_Flip(surfacePtr);
-					Thread.Sleep(100);
+					Thread.Sleep(1);
 				}
 			}
 			finally {
