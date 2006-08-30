@@ -1,3 +1,4 @@
+- Next : InputAdapter, then uncomment (and fix ?) PIA.cs
 - Currently we simply use Tao assemblies built for 1.1
   is this a good thing (what if the target framework is 2.0 ?)
 - Possibly we can work on the Cart classes.
