@@ -35,10 +35,13 @@ namespace Maria.Core {
 
 		public CommandLine(string commandLine) {
 			ArgumentCheck.NotNull(commandLine, "commandLine");
-			string[] toks = commandLine.Split(
-				new char[] { ' ' }
-				//, StringSplitOptions.RemoveEmptyEntries // TODO : C# 2.0 ?
-			);
+			string[] toks0 = commandLine.Split(new char[] {' '});
+			ArrayList toks1 = new ArrayList();
+			foreach (string s in toks0) {
+				if (s.Length > 0)
+					toks1.Add(s);
+			}
+			string[] toks = (string[]) toks1.ToArray(typeof(string));
 			if (toks.Length > 0) {
 				verb = toks[0];
 			}
@@ -78,15 +81,15 @@ namespace Maria.Core {
 			}
 		}
 
-		internal string Verb {
+		public string Verb {
 			get { return verb; }
 		}
 
-		internal Parameter[] Parms {
+		public Parameter[] Parms {
 			get { return parms; }
 		}
 
-		internal bool CheckParms(string chkstr) {
+		public bool CheckParms(string chkstr) {
 			ArgumentCheck.NotNull(chkstr, "chkstr");
 			bool retval = true;
 			if (chkstr.Length != Parms.Length) {
@@ -103,7 +106,8 @@ namespace Maria.Core {
 			return retval;
 		}
 
-		internal struct Parameter {
+		// TODO : make fields readonly, initialization goes via ctor. methinks.
+		public struct Parameter {
 			public string StrValue;
 			public int IntValue;
 			public bool IsInteger;
