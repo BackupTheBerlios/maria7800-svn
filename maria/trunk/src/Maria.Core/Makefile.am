@@ -53,7 +53,9 @@ NUnitTest.cs \
 PIA.cs \
 PlaybackInputAdapter.cs \
 RAM6116.cs \
-RecordInputAdapter.cs
+RecordInputAdapter.cs \
+TIA.cs \
+TIATables.cs
 
 OWN_ASSEMBLIES = \
 $(top_builddir)/src/Vtg.Util/Vtg.Util.dll
