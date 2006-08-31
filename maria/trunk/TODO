@@ -1,5 +1,13 @@
 - The RomProperties class might be a neat candidate too.
   Here we should add a few unixish things:
+  - One of the first things we could do is adding
+    ROMProperties to the maria dir, and 'make install'
+    should put it into the pkglibdir. Methinks.
+    - Also, convert the file to unix stile line endings
+  - Can we ensure we can read under linux/win32 both
+    Unix/Windows/Whatever style files ? (Well, actually
+    this is not really a problem atm, I'm not gonna support
+    Windows myself anyway...)
   - We keep a system wide and a user RomProperties.csv file.
   - The system-wide file is in the pkglibdir, so we can find
     it by getting maria.exe's directory.
