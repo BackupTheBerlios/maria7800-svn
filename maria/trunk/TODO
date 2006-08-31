@@ -1,3 +1,21 @@
+- The RomProperties class might be a neat candidate too.
+  Here we should add a few unixish things:
+  - We keep a system wide and a user RomProperties.csv file.
+  - The system-wide file is in the pkglibdir, so we can find
+    it by getting maria.exe's directory.
+  - The user file is in the user's home directory, don't know
+    where exactly, though. perhaps in a ~/.maria directory ?
+  - At startup we first read in the system-wide RomProperties.
+    When we have it, we read the user RomProperties file. Any
+    entries in the user-file that have the same MD5 sum as
+    entries in the system-wide file will override those in
+    the system-wide file. Pretty simple, isn't it ?
+    => actually we don't do it at startup, lazy construction
+       might make more sense in this particular case.
+  - It might be a good idea not to crash the application
+    when reading romproperties goes wrong. config files 
+    disappear all the time, so if they aren't there, we
+    should try to run without them...
 - Next : InputAdapter, then uncomment (and fix ?) PIA.cs
 - Currently we simply use Tao assemblies built for 1.1
   is this a good thing (what if the target framework is 2.0 ?)
