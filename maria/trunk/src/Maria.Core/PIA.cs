@@ -25,8 +25,6 @@ using System;
 using System.Diagnostics;
 
 namespace Maria.Core {
-	// TODO : can't work yet, the InputAdapter class is missing...
-	/*
 	[Serializable]
 	public sealed class PIA : IDevice {
 		private const int RamSize = 128;
@@ -69,7 +67,7 @@ namespace Maria.Core {
 		public bool RequestSnooping { get { return false; } }
 
 		public byte peek(ushort addr) {
-			InputAdapter ia = M.InputAdapter;
+			InputAdapter ia = machine.InputAdapter;
 			if ((addr & 0x200) == 0) {
 				return RAM[addr & 0x7f];
 			}
@@ -97,7 +95,7 @@ namespace Maria.Core {
 		}
 
 		public void poke(ushort addr, byte data) {
-			InputAdapter ia = M.InputAdapter;
+			InputAdapter ia = machine.InputAdapter;
 			if ((addr & 0x200) == 0) {
 				RAM[addr & 0x7f] = data;
 				return;
@@ -160,5 +158,4 @@ namespace Maria.Core {
 			}
 		}
 	}
-	*/
 }
