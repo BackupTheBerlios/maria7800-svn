@@ -1,3 +1,4 @@
+- Quickly add in TIATables.cs ?
 - The RomProperties class might be a neat candidate too.
   Here we should add a few unixish things:
   - One of the first things we could do is adding
