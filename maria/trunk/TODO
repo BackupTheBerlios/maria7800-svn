@@ -28,6 +28,8 @@
   - Tao.Sdl.dll
   - For windows, if we distirbute dll binaries, we must also
     distribute the SDL-license.txt (or however it is called again.)
+  => Blah...we keep a doc dir around or somesuch which we'll install
+    to...well...wherever docs go...
 - Currently we simply use Tao assemblies built for 1.1
   is this a good thing (what if the target framework is 2.0 ?)
 - Possibly we can work on the Cart classes.
