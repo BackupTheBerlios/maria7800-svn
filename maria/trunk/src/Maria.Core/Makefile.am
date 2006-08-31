@@ -51,6 +51,7 @@ MD5.cs \
 NullDevice.cs \
 NUnitTest.cs \
 PIA.cs \
+PlaybackInputAdapter.cs \
 RAM6116.cs
 
 OWN_ASSEMBLIES = \
