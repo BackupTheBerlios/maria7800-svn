@@ -41,6 +41,7 @@ GameSettings.cs \
 IAddressable.cs \
 IDevice.cs \
 IHost.cs \
+InputAdapter.cs \
 M6502.cs \
 M6502DASM.cs \
 Machine.cs \
