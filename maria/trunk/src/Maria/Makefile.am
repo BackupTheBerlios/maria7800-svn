@@ -20,6 +20,7 @@
 
 mariadir = $(pkglibdir)
 maria_SCRIPTS = maria.exe
+dist_maria_DATA = romproperties.csv
 bin_SCRIPTS = maria
 
 EXTRA_DIST = $(maria_sources) $(maria_sources_in) createlauncherscript.sh
