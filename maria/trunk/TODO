@@ -1,3 +1,4 @@
+- Give Machine class a try ?
 - maria.exe will probably just a small stub that invokes
   the real main program inside Maria.Core. The main purpose
   for Maria.Core is anyway to have things in a class library,
