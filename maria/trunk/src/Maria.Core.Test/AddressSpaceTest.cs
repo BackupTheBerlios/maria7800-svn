@@ -58,13 +58,13 @@ namespace Maria.Core {
 
 		[Test]
 		public void TestCreation() {
-			CreateAndCheck(new Machine(), 16, 12, 0x10000, 0x1000, 16);
-			CreateAndCheck(new Machine(), 8, 6, 256, 64, 4);
+			CreateAndCheck(null, 16, 12, 0x10000, 0x1000, 16);
+			CreateAndCheck(null, 8, 6, 256, 64, 4);
 		}
 
 		[Test]
 		public void TestEmpty() {
-			AddressSpace s = CreateAndCheck(new Machine(), 16, 13, 0x10000, 0x2000, 8);
+			AddressSpace s = CreateAndCheck(null, 16, 13, 0x10000, 0x2000, 8);
 			int addr;
 			for (addr = 0; addr < s.AddrSpaceSize; ++addr) {
 				s[(ushort) addr] = 0x42;
@@ -75,7 +75,7 @@ namespace Maria.Core {
 
 		[Test]
 		public void TestOnlyOneSnooperAllowed() {
-			AddressSpace s = CreateAndCheck(new Machine(), 15, 14, 0x8000, 0x4000, 2);
+			AddressSpace s = CreateAndCheck(null, 15, 14, 0x8000, 0x4000, 2);
 			s.Map(0, 0x4000, new BogusDevice(1));
 			try {
 				s.Map(0x4000, 0x4000, new BogusDevice(1));

@@ -1,6 +1,4 @@
 - Give Machine class a try ?
-  - Done, but now tests don't compile anymore:
-    FIX: Introduce small ifaces such as IMachineProperty...
   - construction method (Maria.New) not yet complete...
 - maria.exe will probably just a small stub that invokes
   the real main program inside Maria.Core. The main purpose

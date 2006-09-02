@@ -37,7 +37,6 @@ namespace Maria.Core {
 		private byte dataBusState;
 
 		public AddressSpace(Machine m, int addrSpaceShift, int pageShift) {
-			ArgumentCheck.NotNull(m, "m");
 			this.machine = m;
 			this.addrSpaceSize = 1 << addrSpaceShift;
 			this.addrSpaceMask = addrSpaceSize - 1;
