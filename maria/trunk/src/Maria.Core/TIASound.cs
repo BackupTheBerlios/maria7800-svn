@@ -48,7 +48,7 @@ namespace Maria.Core {
 	[Serializable]
 	public sealed class TIASound {
 		// [Ron] believe[s] the input clock for the audio is a division of the main
-		// system clock.  With this assumption, [he] determined that the input clock 
+		// system clock.  With this assumption, [he] determined that the input clock
 		// for the audio is equal to the 3.58MHz system clock divided by 114.
 		// Note that this produces an actual audio clock of 31.4 KHz.
 		// This value closely matches the frequencies [he] recorded from [his] unit.
@@ -72,7 +72,7 @@ namespace Maria.Core {
 		// Further, it appears that we get two audio samples per scanline: 114*2 = 228
 		// ...getting a single audio sample every 38 cpu clocks
 		private const int CPUCLOCKS_PER_SAMPLE = 114 / 3;  // = 38
-		
+
 		private Machine machine;
 		//                                 Clock Source   Clock Modifier   Source Pattern
 		private const int
@@ -81,11 +81,11 @@ namespace Maria.Core {
 		DIV31_POLY4 = 0x02,  //  0 0 1 0   3.58 Mhz/114   divide by 31     4-bit poly
 		POLY5_POLY4 = 0x03,  //  0 0 1 1   3.58 Mhz/114   5-bit poly       4-bit poly
 		PURE = 0x04,         //  0 1 0 0   3.58 Mhz/114   none (pure)      pure (~Q)
-		PURE2 = 0x05,        //  0 1 0 1   3.58 Mhz/114   none (pure)      pure (~Q)   
+		PURE2 = 0x05,        //  0 1 0 1   3.58 Mhz/114   none (pure)      pure (~Q)
 		DIV31_PURE = 0x06,   //  0 1 1 0   3.58 Mhz/114   divide by 31     pure (~Q)
 		POLY5_2 = 0x07,      //  0 1 1 1   3.58 Mhz/114   5-bit poly       pure (~Q)
 		POLY9 = 0x08,        //  1 0 0 0   3.58 Mhz/114   none (pure)      9-bit poly
-		POLY5 = 0x09,        //  1 0 0 1   3.58 Mhz/114   none (pure)      5-bit poly  
+		POLY5 = 0x09,        //  1 0 0 1   3.58 Mhz/114   none (pure)      5-bit poly
 		DIV31_POLY5 = 0x0a,  //  1 0 1 0   3.58 Mhz/114   divide by 31     5-bit poly
 		POLY5_POLY5 = 0x0b,  //  1 0 1 1   3.58 Mhz/114   5-bit poly       5-bit poly
 		DIV3_PURE = 0x0c,    //  1 1 0 0   1.19 Mhz/114   none (pure)      pure (~Q)
@@ -136,6 +136,17 @@ namespace Maria.Core {
 		private int[] DivByNCounter = new int[2];  // Divide by n counter, one for each channel
 		private int[] DivByNMaximum = new int[2];  // Divide by n maximum, one for each channel
 
+		public TIASound(Machine machine) {
+			this.machine = machine;
+			Buffer = new byte[machine.Scanlines * 2];
+			Random r = new Random();
+			r.NextBytes(Bit9);
+			for (int i = 0; i < Bit9.Length; i++) {
+				Bit9[i] &= 0x01;
+			}
+			Reset();
+		}
+
 		public void Reset() {
 			for (int chan = 0; chan < 2; chan++) {
 				OutputVol[chan] = 0;
@@ -154,9 +165,15 @@ namespace Maria.Core {
 			LastUpdateCPUClock = machine.CPU.Clock;
 			BufferIndex = 0;
 		}
-		
-		private void RenderSamples(int count)
-		{
+
+		public void EndFrame() {
+			RenderSamples(Buffer.Length - BufferIndex);
+			if (machine.Host != null) {
+				machine.Host.UpdateSound(Buffer);
+			}
+		}
+
+		private void RenderSamples(int count) {
 			for (; BufferIndex < Buffer.Length && count-- > 0; BufferIndex++) {
 				if (DivByNCounter[0] > 1) {
 					DivByNCounter[0]--;
@@ -208,45 +225,21 @@ namespace Maria.Core {
 					OutputVol[chan] = (Bit4[P4[chan]] == 1) ? AUDV[chan] : (byte)0;
 				}
 			}
-		}		
+		}
 	}
 }
 
 	// TODO : enable stuff below
 /*
-		public TIASound(Machine m) {
-			machine = m;
-			Buffer = new byte[M.Scanlines * 2];
-			Random r = new Random();
-			r.NextBytes(Bit9);
-			for (int i = 0; i < Bit9.Length; i++) {
-				Bit9[i] &= 0x01;
-			}
-			Reset();
-		}
-
-
-		public void EndFrame() {
-			RenderSamples(Buffer.Length - BufferIndex);
-			if (M.H != null) {
-				M.H.UpdateSound(Buffer);
-			}
-		}
-
-		public void Update(ushort addr, byte data)
-		{
-			if (M.CPU.Clock > LastUpdateCPUClock)
-			{
-				int updCPUClocks = (int)(M.CPU.Clock - LastUpdateCPUClock);
+		public void Update(ushort addr, byte data) {
+			if (machine.CPU.Clock > LastUpdateCPUClock) {
+				int updCPUClocks = (int)(machine.CPU.Clock - LastUpdateCPUClock);
 				int samples = updCPUClocks / CPUCLOCKS_PER_SAMPLE;
 				RenderSamples(samples);
 				LastUpdateCPUClock += (ulong)(samples * CPUCLOCKS_PER_SAMPLE);
 			}
-
 			byte chan;
-
-			switch (addr)
-			{
+			switch (addr) {
 				case AUDC0:
 					AUDC[0] = (byte)(data & 0x0f);
 					chan = 0;
@@ -274,30 +267,24 @@ namespace Maria.Core {
 				default:
 					return;
 			}
-
 			byte new_divn_max = 0;
-
-			if (AUDC[chan] == SET_TO_1)
-			{
+			if (AUDC[chan] == SET_TO_1) {
 				// indicate the clock is zero so no process will occur
 				new_divn_max = 0;
 				// and set the output to the selected volume
 				OutputVol[chan] = AUDV[chan];
 			}
-			else
-			{
+			else {
 				// otherwise calculate the 'divide by N' value
 				new_divn_max = (byte)(AUDF[chan] + 1);
 				// if bits D2 & D3 are set, then multiply the 'div by n' count by 3
-				if ((AUDC[chan] & 0x0c) == 0x0c)
-				{
+				if ((AUDC[chan] & 0x0c) == 0x0c) {
 					new_divn_max *= 3;
 				}
 			}
 
 			// only reset those channels that have changed
-			if (new_divn_max != DivByNMaximum[chan])
-			{
+			if (new_divn_max != DivByNMaximum[chan]) {
 				DivByNMaximum[chan] = new_divn_max;
 
 				// if the channel is now volume only or was volume only...
