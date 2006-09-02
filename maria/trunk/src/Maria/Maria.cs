@@ -19,62 +19,17 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 using System;
-using System.Threading;
-using Tao.Sdl;
 
 namespace Maria {
 	public class Maria {
-
-		public void Run() {
-			bool quitFlag = false;
-			int flags = Sdl.SDL_HWSURFACE | Sdl.SDL_DOUBLEBUF | Sdl.SDL_ANYFORMAT;
-			int bpp = 16;
-			int width = 640;
-			int height = 480;
-			Console.WriteLine("Just some SDL test...");
-			// We don't do any error checking here, which isn't particularly good...
+		public static int Main(string[] args) {
 			try {
-				Sdl.SDL_Init(Sdl.SDL_INIT_VIDEO);
-				Sdl.SDL_WM_SetCaption("Just some SDL test...", "");
-				IntPtr surfacePtr = Sdl.SDL_SetVideoMode(width, height, bpp, flags);
-				Sdl.SDL_Rect rect2 =
-					new Sdl.SDL_Rect(0,0, (short) width, (short) height);
-				Sdl.SDL_SetClipRect(surfacePtr, ref rect2);
-				Random rand = new Random();
-				Sdl.SDL_Event evt;
-				while (quitFlag == false) {
-					while (0 != Sdl.SDL_PollEvent(out evt)) {
-						if (evt.type == Sdl.SDL_QUIT) {
-							quitFlag = true;
-						}
-						else if (evt.type == Sdl.SDL_KEYDOWN) {
-							if ((evt.key.keysym.sym == (int)Sdl.SDLK_ESCAPE) ||
-								(evt.key.keysym.sym == (int)Sdl.SDLK_q)) {
-								quitFlag = true;
-							}
-						}
-					}
-					SdlGfx.filledCircleRGBA(
-						surfacePtr,
-						(short)rand.Next(10,width - 100),
-						(short)rand.Next(10, height - 100),
-						(short)rand.Next(10,100),
-						(byte)rand.Next(255),
-						(byte)rand.Next(255),
-						(byte)rand.Next(255),
-						(byte)rand.Next(255)
-					);
-					Sdl.SDL_Flip(surfacePtr);
-					Thread.Sleep(1);
-				}
+				return 0;
 			}
-			finally {
-				Sdl.SDL_Quit();
+			catch (Exception e) {
+				Console.Error.WriteLine("Error: " + e.Message);
+				return 1;
 			}
-		}
-
-		public static void Main(string[] args) {
-			new Maria().Run();
 		}
 	}
 }
