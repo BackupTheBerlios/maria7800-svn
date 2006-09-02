@@ -17,6 +17,16 @@
  * along with Maria; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+using System;
 using System.Reflection;
 
+[assembly: AssemblyTitle("@PACKAGE_NAME@")]
+[assembly: AssemblyProduct("@PACKAGE_NAME@")]
+[assembly: AssemblyDescription("An Atari 2600/7800 .NET-based Emulator")]
+[assembly: AssemblyCopyright(
+	"Copyright (C) 2003-2006 Mike Murphy\n" +
+	"Copyright (C) 2006 Thomas Mathys (tom42@users.berlios.de)"
+)
+]
 [assembly: AssemblyVersion("@VERSION@")]
+[assembly: CLSCompliant(false)]

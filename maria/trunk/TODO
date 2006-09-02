@@ -1,3 +1,6 @@
+- Look around for a GetOptLong style parser for .NET
+  (or port a Java implementation. There are sure enough of them
+  around)
 - We have our EmuTraceListener, but it doesn't do anything.
   => Read about how Trace/Debug are supposed to work. Then come
   back.
