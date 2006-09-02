@@ -38,6 +38,9 @@ namespace Maria {
 				if (options.RemainingArguments.Length != 1) {
 					throw new ApplicationException("You need to specify exactly one ROM image.");
 				}
+				// TODO : pull settings from system/user mariarc
+				// TODO : pull rom info from system/user db
+				// TODO : run the SDL host
 				return 0;
 			}
 			catch (Exception e) {

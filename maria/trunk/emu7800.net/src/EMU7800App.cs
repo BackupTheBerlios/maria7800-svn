@@ -74,12 +74,6 @@ namespace EMU7800
 			_ROMProperties = new ROMProperties();
 		}
 
-		void LaunchGUI()
-		{
-			Trace.WriteLine("Launching GUI interface");
-			Application.Run(new ControlPanelForm());
-		}
-
 		void LaunchFromCL(string[] args)
 		{
 			try
@@ -91,9 +85,7 @@ namespace EMU7800
 			}
 			catch (Exception ex)
 			{
-				Trace.Write("Error running machine: ");
-				Trace.WriteLine(ex);
-				EMU7800App.Instance.LaunchGUI();
+				// this branch used to launch the gui.
 			}
 		}
 
@@ -106,7 +98,7 @@ namespace EMU7800
 			}
 			else
 			{
-				EMU7800App.Instance.LaunchGUI();
+				throw new Exception("We don't care about this branch. Really.");
 			}
 		}
 	}
