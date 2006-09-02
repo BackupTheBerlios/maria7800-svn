@@ -38,7 +38,7 @@ OWN_ASSEMBLIES = $(top_srcdir)/tao/Tao.Sdl.dll
 OWN_ASSEMBLY_REFERENCES = $(addprefix -r:,$(OWN_ASSEMBLIES))
 
 maria.exe : $(maria_build_sources)
-	$(MCS) -out:$@ $(OWN_ASSEMBLY_REFERENCES) $^
+	$(MCS) -out:$@ $(OWN_ASSEMBLY_REFERENCES) -r:Mono.GetOptions $^
 	cp $(OWN_ASSEMBLIES) .
 
 maria : $(srcdir)/createlauncherscript.sh

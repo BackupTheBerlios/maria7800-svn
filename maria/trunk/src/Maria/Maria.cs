@@ -20,53 +20,24 @@
  */
 using System;
 using System.Reflection;
+using Mono.GetOptions;
 
 namespace Maria {
+
+ 	internal class MariaOptions : Options {
+		public MariaOptions() {
+			base.ParsingMode = OptionsParsingMode.GNU_DoubleDash;
+		}
+	}
+
 	public class Maria {
-
-		public static string Title {
-			get {
-				Assembly myAss = Assembly.GetExecutingAssembly();
-				object[] obj = myAss.GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
-				AssemblyTitleAttribute attr = (AssemblyTitleAttribute)obj[0];
-				return attr.Title;
-			}
-		}
-
-		public static string Version {
-			get {
-				Assembly myAss = Assembly.GetExecutingAssembly();
-				return myAss.GetName().Version.ToString();
-			}
-		}
-
-		public static string Copyright {
-			get {
-				Assembly myAss = Assembly.GetExecutingAssembly();
-				object[] obj = myAss.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
-				AssemblyCopyrightAttribute attr = (AssemblyCopyrightAttribute)obj[0];
-				return attr.Copyright;
-			}
-		}
-
-		public static Version ClrVersion {
-			get { return Environment.Version; }
-		}
-
-		public static OperatingSystem OSVersion {
-			get { return Environment.OSVersion; }
-		}
-
 		public static int Main(string[] args) {
 			try {
-				// TODO : only the --version switch should output the nonsense below
-				Console.WriteLine("{0} {1}", Title, Version);
-				Console.WriteLine(Copyright);
-				Console.WriteLine("CLR Version : {0}", ClrVersion);
-				Console.WriteLine("OS Version : {0}", OSVersion);
-				// TODO : parse command line
-				// TODO : get global settings from somewhere (system-wide/user-specific)
-				// TODO : get rom properties from somewhere (system-wide/user-specific)
+				MariaOptions options = new MariaOptions();
+				options.ProcessArgs(args);
+				if (options.RemainingArguments.Length != 1) {
+					throw new ApplicationException("You need to specify exactly one ROM image.");
+				}
 				return 0;
 			}
 			catch (Exception e) {

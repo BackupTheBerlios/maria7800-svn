@@ -30,5 +30,5 @@ pkglibdir="$2"
 exename="$3"
 
 echo "#!/bin/sh"
-echo exec "$monobinary" "$pkglibdir"/"$exename" '$MONO_EXTRA_ARGS' '"$@"'
+echo exec "$monobinary" "$pkglibdir"/"$exename" '"$@"'
 
