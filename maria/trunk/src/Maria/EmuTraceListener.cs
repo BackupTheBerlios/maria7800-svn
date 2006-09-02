@@ -1,5 +1,5 @@
 /*
- * Maria main program.
+ * TraceListener for the application
  * Copyright (C) 2006 Thomas Mathys (tom42@users.berlios.de)
  *
  * This file is part of Maria.
@@ -20,25 +20,23 @@
  */
 using System;
 using System.Diagnostics;
+using System.IO;
 
 namespace Maria {
-	public class Maria {
-		public static int Main(string[] args) {
-			try {
-				Trace.AutoFlush = true;
-				EmuTraceListener etl = new EmuTraceListener(Console.Out);
-				Trace.Listeners.Add(etl);
-				Trace.WriteLine("Hello, this is a trace message.");
-				Trace.WriteLine("Hello, this is a trace message.");
-				Trace.WriteLine("Hello, this is a trace message.");
-				etl.WriteLine("Passed directly to EmuTraceListener.");
-				return 0;
-			}
-			catch (Exception e) {
-				Console.Error.WriteLine("Error: " + e.Message);
-				return 1;
-			}
+	public class EmuTraceListener : TraceListener {
+		private readonly TextWriter output;
+
+		public EmuTraceListener(TextWriter output) {
+			this.output = output;
+		}
+
+		public override void Write(string message) {
+			output.Write(message);
+		}
+
+		public override void WriteLine(string message) {
+			Write(message);
+			Write(Environment.NewLine);
 		}
 	}
 }
-

@@ -1,5 +1,6 @@
-- Do EmuTraceListener (could probably just dump stuff
-  to System.Console)
+- We have our EmuTraceListener, but it doesn't do anything.
+  => Read about how Trace/Debug are supposed to work. Then come
+  back.
 - At some point we should look at all those Trace and Debug
   outputs and should decide which should be Trace and which
   should be Debug and which should go directly to

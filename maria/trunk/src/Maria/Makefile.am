@@ -28,7 +28,9 @@ CLEANFILES = maria maria.exe maria.exe.mdb Tao.Sdl.dll
 
 maria_sources_in = AssemblyInfo.cs.in
 maria_generated_sources = $(maria_sources_in:.in=)
-maria_sources = Maria.cs
+maria_sources = \
+EmuTraceListener.cs \
+Maria.cs
 
 maria_build_sources = $(addprefix $(srcdir)/, $(maria_sources) $(maria_generated_sources))
 
