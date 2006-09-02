@@ -1,9 +1,13 @@
-- Give Machine class a try ?
-  - construction method (Maria.New) not yet complete...
 - maria.exe will probably just a small stub that invokes
   the real main program inside Maria.Core. The main purpose
   for Maria.Core is anyway to have things in a class library,
   which is needed for nunit testing...
+  => should probably do that soonish...maria.exe will then
+  just create/run MariaApp, which does the real work.
+  Oh well. The whole shebang is just so difficult to modify,
+  since everything is friggingly hooked together...
+- Give Machine class a try ?
+  - construction method (Maria.New) not yet complete...
 - The RomProperties class might be a neat candidate too.
   Here we should add a few unixish things:
   - Can we ensure we can read under linux/win32 both
