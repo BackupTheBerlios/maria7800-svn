@@ -57,13 +57,8 @@ namespace EMU7800
 			}
 			M = Machine.New(gs, Cart.New(gs), ia);
 			M.Reset();
-			RunMachine();
-			M.Done();
-		}
-
-		public void RunMachine()
-		{
 			Host.New(Settings.HostSelect).Run(M);
+			M.Done();
 		}
 
 		public static readonly EMU7800App Instance = new EMU7800App();
