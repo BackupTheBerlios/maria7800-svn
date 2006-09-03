@@ -1,6 +1,10 @@
 - We have our EmuTraceListener, but it doesn't do anything.
   => Read about how Trace/Debug are supposed to work. Then come
   back.
+  => Or we just ditch the Trace/Debug thingy and use log4net
+  instead...In case log4net is not present we can still provide
+  an alternative logging framework which doesn't do anything.
+  Oh well.
 - At some point we should look at all those Trace and Debug
   outputs and should decide which should be Trace and which
   should be Debug and which should go directly to
