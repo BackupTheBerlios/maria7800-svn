@@ -1,3 +1,5 @@
+- Instead of "Error: blahblah" report "maria: blahblah"
+  in the main program.
 - We have our EmuTraceListener, but it doesn't do anything.
   => Read about how Trace/Debug are supposed to work. Then come
   back.
@@ -9,14 +11,6 @@
   outputs and should decide which should be Trace and which
   should be Debug and which should go directly to
   stdout/stderr...
-- maria.exe will probably just a small stub that invokes
-  the real main program inside Maria.Core. The main purpose
-  for Maria.Core is anyway to have things in a class library,
-  which is needed for nunit testing...
-  => should probably do that soonish...maria.exe will then
-  just create/run MariaApp, which does the real work.
-  Oh well. The whole shebang is just so difficult to modify,
-  since everything is friggingly hooked together...
 - Give Machine class a try ?
   - construction method (Maria.New) not yet complete...
 - The RomProperties class might be a neat candidate too.
