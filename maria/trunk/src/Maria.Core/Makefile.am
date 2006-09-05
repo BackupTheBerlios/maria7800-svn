@@ -54,6 +54,7 @@ PIA.cs \
 PlaybackInputAdapter.cs \
 RAM6116.cs \
 RecordInputAdapter.cs \
+ROMProperties.cs \
 TIA.cs \
 TIASound.cs \
 TIATables.cs
