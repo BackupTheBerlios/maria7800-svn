@@ -1,3 +1,7 @@
+- Perhaps add a fake EMU7800App class that will soon
+  disappear again and that will be used to provide
+  the missing properties currently held by...well...
+  the real EMU7800App ?
 - Instead of "Error: blahblah" report "maria: blahblah"
   in the main program.
 - We have our EmuTraceListener, but it doesn't do anything.
