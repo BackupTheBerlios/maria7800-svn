@@ -36,8 +36,10 @@ Cart7832.cs \
 CartType.cs \
 CommandLine.cs \
 Controller.cs \
+EMU7800App.cs \
 Exceptions.cs \
 GameSettings.cs \
+GlobalSettings.cs \
 IAddressable.cs \
 IDevice.cs \
 IHost.cs \

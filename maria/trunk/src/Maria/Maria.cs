@@ -31,6 +31,7 @@ namespace Maria {
 	}
 
 	public class Maria {
+		[STAThread]
 		public static int Main(string[] args) {
 			try {
 				MariaOptions options = new MariaOptions();
