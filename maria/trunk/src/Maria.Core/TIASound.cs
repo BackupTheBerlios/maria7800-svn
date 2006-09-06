@@ -44,7 +44,6 @@
 using System;
 
 namespace Maria.Core {
-	// TODO : finish (too much stuff was missing at the first attempt...)
 	[Serializable]
 	public sealed class TIASound {
 		// [Ron] believe[s] the input clock for the audio is a division of the main
@@ -173,64 +172,6 @@ namespace Maria.Core {
 			}
 		}
 
-		private void RenderSamples(int count) {
-			for (; BufferIndex < Buffer.Length && count-- > 0; BufferIndex++) {
-				if (DivByNCounter[0] > 1) {
-					DivByNCounter[0]--;
-				}
-				else if (DivByNCounter[0] == 1) {
-					DivByNCounter[0] = DivByNMaximum[0];
-					ProcessChannel(0);
-				}
-				if (DivByNCounter[1] > 1) {
-					DivByNCounter[1]--;
-				}
-				else if (DivByNCounter[1] == 1) {
-					DivByNCounter[1] = DivByNMaximum[1];
-					ProcessChannel(1);
-				}
-				Buffer[BufferIndex] = (byte)(OutputVol[0] + OutputVol[1]);
-			}
-		}
-
-		private void ProcessChannel(int chan) {
-			// the P5 counter has multiple uses, so we inc it here
-			if (++P5[chan] >= 31) {  // POLY5 size: 2^5 - 1 = 31
-				P5[chan] = 0;
-			}
-
-			// check clock modifier for clock tick
-			if ((AUDC[chan] & 0x02) == 0 ||
-			   ((AUDC[chan] & 0x01) == 0 && Div31[P5[chan]] == 1) ||
-			   ((AUDC[chan] & 0x01) == 1 && Bit5[P5[chan]] == 1))
-			{
-				if ((AUDC[chan] & 0x04) != 0) { // pure modified clock selected
-					OutputVol[chan] = (OutputVol[chan] != 0) ? (byte)0 : AUDV[chan];
-				}
-				else if ((AUDC[chan] & 0x08) != 0) { // check for poly5/poly9
-					if (AUDC[chan] == POLY9) { // check for poly9
-						if (++P9[chan] >= 511) { // poly9 size: 2^9 - 1 = 511
-							P9[chan] = 0;
-						}
-						OutputVol[chan] = (Bit9[P9[chan]] == 1) ? AUDV[chan] : (byte)0;
-					}
-					else { // must be poly5
-						OutputVol[chan] = (Bit5[P5[chan]] == 1) ? AUDV[chan] : (byte)0;
-					}
-				}
-				else { // poly4 is the only remaining possibility
-					if (++P4[chan] >= 15) { // POLY4 size: 2^4 - 1 = 15
-						P4[chan] = 0;
-					}
-					OutputVol[chan] = (Bit4[P4[chan]] == 1) ? AUDV[chan] : (byte)0;
-				}
-			}
-		}
-	}
-}
-
-	// TODO : enable stuff below
-/*
 		public void Update(ushort addr, byte data) {
 			if (machine.CPU.Clock > LastUpdateCPUClock) {
 				int updCPUClocks = (int)(machine.CPU.Clock - LastUpdateCPUClock);
@@ -286,16 +227,66 @@ namespace Maria.Core {
 			// only reset those channels that have changed
 			if (new_divn_max != DivByNMaximum[chan]) {
 				DivByNMaximum[chan] = new_divn_max;
-
 				// if the channel is now volume only or was volume only...
-				if (DivByNCounter[chan] == 0 || new_divn_max == 0)
-				{
+				if (DivByNCounter[chan] == 0 || new_divn_max == 0) {
 					// reset the counter (otherwise let it complete the previous)
 					DivByNCounter[chan] = new_divn_max;
 				}
 			}
 		}
 
+		private void RenderSamples(int count) {
+			for (; BufferIndex < Buffer.Length && count-- > 0; BufferIndex++) {
+				if (DivByNCounter[0] > 1) {
+					DivByNCounter[0]--;
+				}
+				else if (DivByNCounter[0] == 1) {
+					DivByNCounter[0] = DivByNMaximum[0];
+					ProcessChannel(0);
+				}
+				if (DivByNCounter[1] > 1) {
+					DivByNCounter[1]--;
+				}
+				else if (DivByNCounter[1] == 1) {
+					DivByNCounter[1] = DivByNMaximum[1];
+					ProcessChannel(1);
+				}
+				Buffer[BufferIndex] = (byte)(OutputVol[0] + OutputVol[1]);
+			}
+		}
+
+		private void ProcessChannel(int chan) {
+			// the P5 counter has multiple uses, so we inc it here
+			if (++P5[chan] >= 31) {  // POLY5 size: 2^5 - 1 = 31
+				P5[chan] = 0;
+			}
+
+			// check clock modifier for clock tick
+			if ((AUDC[chan] & 0x02) == 0 ||
+			   ((AUDC[chan] & 0x01) == 0 && Div31[P5[chan]] == 1) ||
+			   ((AUDC[chan] & 0x01) == 1 && Bit5[P5[chan]] == 1))
+			{
+				if ((AUDC[chan] & 0x04) != 0) { // pure modified clock selected
+					OutputVol[chan] = (OutputVol[chan] != 0) ? (byte)0 : AUDV[chan];
+				}
+				else if ((AUDC[chan] & 0x08) != 0) { // check for poly5/poly9
+					if (AUDC[chan] == POLY9) { // check for poly9
+						if (++P9[chan] >= 511) { // poly9 size: 2^9 - 1 = 511
+							P9[chan] = 0;
+						}
+						OutputVol[chan] = (Bit9[P9[chan]] == 1) ? AUDV[chan] : (byte)0;
+					}
+					else { // must be poly5
+						OutputVol[chan] = (Bit5[P5[chan]] == 1) ? AUDV[chan] : (byte)0;
+					}
+				}
+				else { // poly4 is the only remaining possibility
+					if (++P4[chan] >= 15) { // POLY4 size: 2^4 - 1 = 15
+						P4[chan] = 0;
+					}
+					OutputVol[chan] = (Bit4[P4[chan]] == 1) ? AUDV[chan] : (byte)0;
+				}
+			}
+		}
 	}
 }
-*/

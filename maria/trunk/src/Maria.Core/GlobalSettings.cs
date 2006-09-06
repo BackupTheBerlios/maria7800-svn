@@ -3,5 +3,7 @@ using System;
 
 namespace Maria.Core {
 	public class GlobalSettings {
+		// TODO : stub...
+		public int SoundVolume { get { return 1; } }
 	}
 }
