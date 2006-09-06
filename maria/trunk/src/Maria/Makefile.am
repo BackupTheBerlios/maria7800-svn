@@ -24,7 +24,8 @@ dist_maria_DATA = romproperties.csv
 bin_SCRIPTS = maria
 
 EXTRA_DIST = $(maria_sources) $(maria_sources_in) createlauncherscript.sh
-CLEANFILES = maria maria.exe maria.exe.mdb Tao.Sdl.dll
+CLEANFILES = maria maria.exe maria.exe.mdb Tao.Sdl.dll \
+Maria.Core.dll Vtg.Util.dll
 
 maria_sources_in = AssemblyInfo.cs.in
 maria_generated_sources = $(maria_sources_in:.in=)
@@ -34,12 +35,16 @@ Maria.cs
 
 maria_build_sources = $(addprefix $(srcdir)/, $(maria_sources) $(maria_generated_sources))
 
-OWN_ASSEMBLIES = $(top_srcdir)/tao/Tao.Sdl.dll
+OWN_ASSEMBLIES = \
+$(top_srcdir)/tao/Tao.Sdl.dll \
+$(top_builddir)/src/Maria.Core/Maria.Core.dll
+ADDITIONAL_ASSEMBLIES = \
+$(top_builddir)/src/Vtg.Util/Vtg.Util.dll
 OWN_ASSEMBLY_REFERENCES = $(addprefix -r:,$(OWN_ASSEMBLIES))
 
 maria.exe : $(maria_build_sources)
 	$(MCS) -out:$@ $(OWN_ASSEMBLY_REFERENCES) -r:Mono.GetOptions $^
-	cp $(OWN_ASSEMBLIES) .
+	cp $(OWN_ASSEMBLIES) $(ADDITIONAL_ASSEMBLIES) .
 
 maria : $(srcdir)/createlauncherscript.sh
 	sh $(srcdir)/createlauncherscript.sh "$(MONO)" "$(pkglibdir)" "$(PACKAGE_NAME)".exe > $@

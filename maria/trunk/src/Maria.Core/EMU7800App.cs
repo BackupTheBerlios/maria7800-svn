@@ -10,6 +10,11 @@ namespace Maria.Core {
 		private GlobalSettings _Settings;
 		private ROMProperties _ROMProperties;
 		private Machine _M;
+
+		private EMU7800App() {
+			_Settings = new GlobalSettings();
+			_ROMProperties = new ROMProperties();
+		}
 		
 		public GlobalSettings Settings {
 			get { return _Settings; }
@@ -35,12 +40,7 @@ namespace Maria.Core {
 			M.Done();
 		}
 
-		private EMU7800App() {
-			_Settings = new GlobalSettings();
-			_ROMProperties = new ROMProperties();
-		}
-
-		void LaunchFromCL(string[] args) {
+		public void LaunchFromCL(string[] args) {
 			FileInfo fi = new FileInfo(args[0]);
 			GameSettings gs = ROMProperties.GetGameSettings(MD5.ComputeMD5Digest(fi));
 			gs.FileInfo = fi;

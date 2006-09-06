@@ -1,7 +1,11 @@
-- Perhaps add a fake EMU7800App class that will soon
-  disappear again and that will be used to provide
-  the missing properties currently held by...well...
-  the real EMU7800App ?
+- EMU7800App, line 38:
+  commented out code thast constructs the host...
+  at some point we WILL have to create that host thingy....
+- Perhaps we should now write a temporary GlobalSettings
+  class. No need the thing gets stuff from a file,
+  hardcoding default values will do the job just fine
+  for the moment. Then again, we could just do it right
+  the first time :D	
 - Instead of "Error: blahblah" report "maria: blahblah"
   in the main program.
 - We have our EmuTraceListener, but it doesn't do anything.

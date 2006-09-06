@@ -21,6 +21,7 @@
 using System;
 using System.Reflection;
 using Mono.GetOptions;
+using Maria.Core;
 
 namespace Maria {
 
@@ -42,6 +43,10 @@ namespace Maria {
 				// TODO : pull settings from system/user mariarc
 				// TODO : pull rom info from system/user db
 				// TODO : run the SDL host
+				
+				// TODO : what we do here is just a temporary hack:
+				EMU7800App.Instance.LaunchFromCL(args);
+				
 				return 0;
 			}
 			catch (Exception e) {
