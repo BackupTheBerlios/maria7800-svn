@@ -245,16 +245,6 @@ namespace EMU7800
 			return val;
 		}
 
-		void SetRegistryDWORD(string name, int val)
-		{
-			try
-			{
-				RegistryKey rk = GetSubKey();
-				rk.SetValue(name, val);
-			}
-			catch { }
-		}
-
 		string GetRegistrySZ(string name, string defaultVal)
 		{
 			RegistryKey rk = GetSubKey();
@@ -276,16 +266,6 @@ namespace EMU7800
 				}
 			}
 			return val;
-		}
-
-		void SetRegistrySZ(string name, string val)
-		{
-			try
-			{
-				RegistryKey rk = GetSubKey();
-				rk.SetValue(name, val);
-			}
-			catch { }
 		}
 
 		static RegistryKey GetSubKey()
