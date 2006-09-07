@@ -35,8 +35,7 @@ namespace Maria.Core {
 			}
 			M = Machine.New(gs, Cart.New(gs), ia);
 			M.Reset();
-			// TODO : need to create real host here ?
-			//Host.New(Settings.HostSelect).Run(M);
+			new SDLHost().Run(M);
 			M.Done();
 		}
 

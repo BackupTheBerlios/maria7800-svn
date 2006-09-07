@@ -30,7 +30,7 @@ namespace Maria.Core {
 	[Serializable]
 	public abstract class Machine {
 		[NonSerialized]
-		private Host host;
+		private IHost host;
 		private bool machineHalt;
 		private InputAdapter inputAdapter;
 		private long frameNumber;
@@ -54,7 +54,7 @@ namespace Maria.Core {
 			this.visiblePitch = vPitch;
 		}
 
-		public Host Host {
+		public IHost Host {
 			get { return host; }
 			set { host = value; }
 		}

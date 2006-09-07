@@ -1,8 +1,8 @@
 /*
- * Abstraction of an emulated machine host.
+ * SDL-based host
  *
- * Copyright (C) 2004 Mike Murphy
- * Copyright (C) 2006 Thomas Mathys (tom42@users.berlios.de)
+ * Copyright (C) 2004-2006 Mike Murphy
+ * Copyright (C) 2006 Thomas Mathys  (tom42@users.berlios.de)
  *
  * This file is part of Maria.
  *
@@ -19,13 +19,24 @@
  * You should have received a copy of the GNU General Public License
  * along with Maria; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+ */ 
 using System;
 
 namespace Maria.Core {
-	public interface IHost {
-		void Run(Machine m);
-		void UpdateDisplay(byte[] buf, int scanline, int start, int len);
-		void UpdateSound(byte[] buf);
+	public class SDLHost : IHost {
+		public void Run(Machine m) {
+			// TODO : implement
+			throw new NotImplementedException("Not yet implemented.");
+		}
+
+		public void UpdateDisplay(byte[] buf, int scanline, int start, int len) {
+			// TODO : implement
+			throw new NotImplementedException("Not yet implemented.");
+		}
+
+		public void UpdateSound(byte[] buf) {
+			// TODO : implement
+			throw new NotImplementedException("Not yet implemented.");
+		}
 	}
 }
