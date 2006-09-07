@@ -14,8 +14,6 @@ using Microsoft.Win32;
 
 namespace EMU7800
 {
-	public enum HostType { GDI = 0, SDL = 1 };
-
 	public class GlobalSettings
 	{
 		string _RootDirectory;
@@ -48,19 +46,6 @@ namespace EMU7800
 				_ROMDirectory = value;
 				Trace.Write("ROM Directory: ");
 				Trace.WriteLine(ROMDirectory);
-			}
-		}
-
-		HostType _HostSelect;
-		public HostType HostSelect
-		{
-			get
-			{
-				return _HostSelect;
-			}
-			set
-			{
-				_HostSelect = value;
 			}
 		}
 
@@ -214,7 +199,6 @@ namespace EMU7800
 				ROMDirectory = RootDirectory;
 			}
 
-			HostSelect = (HostType)GetRegistryDWORD("HostSelect", 1);
 			FrameRateAdjust = GetRegistryDWORD("FrameRateAdjust", 0);
 			NumSoundBuffers = GetRegistryDWORD("NumSoundBuffers", 10);
 			Skip7800BIOS = GetRegistryDWORD("Skip7800BIOS", 0) == 1;
@@ -236,23 +220,6 @@ namespace EMU7800
 			JoyBBooster = GetRegistryDWORD("JoyBBooster", 1);
 			CpuSpin = GetRegistryDWORD("CpuSpin", 1);
 			SetRegistrySZ("Version", EMU7800App.Version);
-		}
-
-		~GlobalSettings()
-		{
-			SetRegistrySZ("ROMDirectory", ROMDirectory);
-			SetRegistryDWORD("HostSelect", (int)HostSelect);
-			SetRegistryDWORD("FrameRateAdjust", FrameRateAdjust);
-			SetRegistryDWORD("NumSoundBuffers", NumSoundBuffers);
-			SetRegistryDWORD("Skip7800BIOS", Skip7800BIOS ? 1 : 0);
-			SetRegistryDWORD("Use7800HSC", Use7800HSC ? 1 : 0);
-			SetRegistryDWORD("DeactivateMouseInput", DeactivateMouseInput ? 1 : 0);
-			SetRegistryDWORD("ControlPanelFormWidth", ControlPanelFormSize.Width);
-			SetRegistryDWORD("ControlPanelFormHeight", ControlPanelFormSize.Height);
-			SetRegistryDWORD("NOPRegisterDumping", NOPRegisterDumping ? 1 : 0);
-			SetRegistryDWORD("JoyBTrigger", JoyBTrigger);
-			SetRegistryDWORD("JoyBBooster", JoyBBooster);
-			SetRegistryDWORD("CpuSpin", CpuSpin);
 		}
 
 		int GetRegistryDWORD(string name, int defaultVal)

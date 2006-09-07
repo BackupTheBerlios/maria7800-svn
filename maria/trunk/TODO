@@ -1,7 +1,3 @@
-- Perhaps we should first work on the GlobalSettings class,
-  to make sure what we have in there are valid values and
-  stuff. Oh well. No need to be able to write back changes
-  yet, though...WHATEVER.
 - EMU7800App, line 38:
   commented out code thast constructs the host...
   at some point we WILL have to create that host thingy....	
