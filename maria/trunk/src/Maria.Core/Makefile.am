@@ -38,6 +38,7 @@ CommandLine.cs \
 Controller.cs \
 EMU7800App.cs \
 Exceptions.cs \
+FontRenderer.cs \
 GameSettings.cs \
 GlobalSettings.cs \
 IAddressable.cs \

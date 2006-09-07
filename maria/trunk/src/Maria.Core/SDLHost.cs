@@ -19,7 +19,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Maria; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */ 
+ */
 using System;
 
 namespace Maria.Core {
@@ -28,7 +28,7 @@ namespace Maria.Core {
 		private const int WIDTH = 320;
 		private const int HEIGHT = 240;
 		private const bool FULLSCREEN = false;
-		private const int LIGHTGUN_LATENCY_CLKS = 25;  // 2600-specific, 7800 still needs to be determined
+		private const int LIGHTGUN_LATENCY_CLKS = 25; // 2600-specific, 7800 still needs to be determined
 		private Machine machine;
 		private uint[] FrameBuffer;
 		private byte[] AudioBuffer;
@@ -39,7 +39,31 @@ namespace Maria.Core {
 		private int LeftOffset;
 		private int PanX;
 		private int PanY;
-		
+		private int KeyboardPlayerNo; // Player # that keyboard/mouse maps to
+		private int SdlJoystickSwapper;
+		private int MouseX, MouseY;
+		private bool ShowMouseCursor; // For lightgun emulation
+		private bool DeactivateMouseInput;
+		private FontRenderer FontRenderer;
+		private long TextExpireFrameCount;
+		private int MaxTextMsgLen;
+		private string textMsg;
+		private bool Quit, Paused, Mute;
+		private double FPS, RunMachineTPF, RenderFrameTPF, SleepDurationTPF;
+		private int RunMachineTicks, RenderFrameTicks, SleepDurationTicks, OtherTicks;
+		private int FrameSamples;
+
+		string TextMsg {
+			get { return textMsg; }
+			set {
+				MaxTextMsgLen = value.Length > MaxTextMsgLen ? value.Length : MaxTextMsgLen;
+				textMsg = value.PadRight(MaxTextMsgLen, ' ');
+				if (textMsg != null) {
+					TextExpireFrameCount = machine.FrameNumber + 3 * machine.FrameHZ;
+				}
+			}
+		}
+
 		public void Run(Machine m) {
 			// TODO : implement
 			throw new NotImplementedException("Not yet implemented.");
@@ -59,41 +83,6 @@ namespace Maria.Core {
 
 // TODO : enable the stuff below...
 /*
-		int KeyboardPlayerNo;  // Player # that keyboard/mouse maps to
-
-		int SdlJoystickSwapper;
-
-		int MouseX, MouseY;
-		bool ShowMouseCursor;	// For lightgun emulation
-		bool DeactivateMouseInput;
-
-		FontRenderer FontRenderer;
-		long TextExpireFrameCount;
-		int MaxTextMsgLen;
-		string _TextMsg;
-		string TextMsg
-		{
-			get
-			{
-				return _TextMsg;
-			}
-			set
-			{
-				MaxTextMsgLen = value.Length > MaxTextMsgLen ? value.Length : MaxTextMsgLen;
-				_TextMsg = value.PadRight(MaxTextMsgLen, ' ');
-				if (_TextMsg != null)
-				{
-					TextExpireFrameCount = M.FrameNumber + 3 * M.FrameHZ;
-				}
-			}
-		}
-
-		bool Quit, Paused, Mute;
-
-		double FPS, RunMachineTPF, RenderFrameTPF, SleepDurationTPF;
-		int RunMachineTicks, RenderFrameTicks, SleepDurationTicks, OtherTicks;
-		int FrameSamples;
-
 		public override void Run(Machine m)
 		{
 			M = m;
