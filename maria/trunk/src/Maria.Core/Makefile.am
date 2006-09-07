@@ -49,6 +49,7 @@ M6502.cs \
 M6502DASM.cs \
 Machine.cs \
 Machine2600.cs \
+Machine7800.cs \
 MachineType.cs \
 MariaTables.cs \
 MD5.cs \
