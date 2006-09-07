@@ -1,6 +1,8 @@
-- Would be great to enable one of the real machines...
-  this would allow us to actually execute the program
-  as far as to get into the SDLHost class.
+- Not much left to do:
+  - Theoretically we could continue our work on SDLHost:
+    We have the PAL/NTSC 2600's
+  - Make Maria
+  - Make the 7800 machine classes.
 - Continue work a bit on SDLHost. Would be cool to soonishly
   actually see something, if it's only a window...
 - Perhaps we should now write a temporary GlobalSettings
