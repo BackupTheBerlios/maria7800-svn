@@ -1,7 +1,7 @@
 /*
  * Abstraction of an emulated machine.
  *
- * Copyright (c) 2003, 2004 Mike Murphy
+ * Copyright (C) 2003, 2004 Mike Murphy
  * Copyright (C) 2006 Thomas Mathys (tom42@users.berlios.de)
  *
  * This file is part of Maria.
