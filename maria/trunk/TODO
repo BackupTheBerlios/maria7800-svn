@@ -1,10 +1,13 @@
+- Would be great to enable one of the real machines...
+  this would allow us to actually execute the program
+  as far as to get into the SDLHost class.
 - Continue work a bit on SDLHost. Would be cool to soonishly
   actually see something, if it's only a window...
 - Perhaps we should now write a temporary GlobalSettings
   class. No need the thing gets stuff from a file,
   hardcoding default values will do the job just fine
   for the moment. Then again, we could just do it right
-  the first time :D	
+  the first time :D
 - Instead of "Error: blahblah" report "maria: blahblah"
   in the main program.
 - We have our EmuTraceListener, but it doesn't do anything.
