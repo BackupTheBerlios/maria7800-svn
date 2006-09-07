@@ -66,7 +66,7 @@ namespace Maria.Core {
 
 		public void Run(Machine m) {
 			// TODO : implement
-			throw new NotImplementedException("Not yet implemented.");
+			throw new NotImplementedException("Run: Not yet implemented.");
 		}
 
 		public void UpdateDisplay(byte[] buf, int scanline, int start, int len) {

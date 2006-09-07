@@ -121,14 +121,14 @@ namespace Maria.Core {
 			ArgumentCheck.NotNull(ia, "ia");
 			Machine m;
 			switch (gs.MachineType) {
-				// TODO : enable machine construction...
-				/*case MachineType.A2600NTSC:
+				case MachineType.A2600NTSC:
 					m = new Machine2600NTSC(c, ia);
 					break;
 				case MachineType.A2600PAL:
 					m = new Machine2600PAL(c, ia);
 					break;
-				case MachineType.A7800NTSC:
+				// TODO : enable machine construction...
+				/*case MachineType.A7800NTSC:
 					m = new Machine7800NTSC(c, ia);
 					break;
 				case MachineType.A7800PAL:
