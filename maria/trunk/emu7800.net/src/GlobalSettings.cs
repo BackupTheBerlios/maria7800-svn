@@ -90,19 +90,6 @@ namespace EMU7800
 			}
 		}
 
-		int _SoundVolume;
-		public int SoundVolume
-		{
-			get
-			{
-				return _SoundVolume;
-			}
-			set
-			{
-				_SoundVolume = value;
-			}
-		}
-
 		bool _Skip7800BIOS;
 		public bool Skip7800BIOS
 		{
@@ -230,7 +217,6 @@ namespace EMU7800
 			HostSelect = (HostType)GetRegistryDWORD("HostSelect", 1);
 			FrameRateAdjust = GetRegistryDWORD("FrameRateAdjust", 0);
 			NumSoundBuffers = GetRegistryDWORD("NumSoundBuffers", 10);
-			SoundVolume = GetRegistryDWORD("SoundVolume", 8);
 			Skip7800BIOS = GetRegistryDWORD("Skip7800BIOS", 0) == 1;
 			Use7800HSC = GetRegistryDWORD("Use7800HSC", 0) == 1;
 			DeactivateMouseInput = GetRegistryDWORD("DeactivateMouseInput", 0) == 1;
@@ -258,7 +244,6 @@ namespace EMU7800
 			SetRegistryDWORD("HostSelect", (int)HostSelect);
 			SetRegistryDWORD("FrameRateAdjust", FrameRateAdjust);
 			SetRegistryDWORD("NumSoundBuffers", NumSoundBuffers);
-			SetRegistryDWORD("SoundVolume", SoundVolume);
 			SetRegistryDWORD("Skip7800BIOS", Skip7800BIOS ? 1 : 0);
 			SetRegistryDWORD("Use7800HSC", Use7800HSC ? 1 : 0);
 			SetRegistryDWORD("DeactivateMouseInput", DeactivateMouseInput ? 1 : 0);
