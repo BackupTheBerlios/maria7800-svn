@@ -51,6 +51,7 @@ Machine.cs \
 Machine2600.cs \
 Machine7800.cs \
 MachineType.cs \
+Maria.cs \
 MariaTables.cs \
 MD5.cs \
 NullDevice.cs \
