@@ -26,14 +26,21 @@ namespace Maria.Core {
 	// get settings from some (system/user) config file
 	public class GlobalSettings {
 		private int soundVolume;
+		private bool use7800HSC;
 
 		public GlobalSettings() {
 			SoundVolume = 8;
+			Use7800HSC = false;
 		}
 
 		public int SoundVolume {
 			get { return soundVolume; }
 			set { soundVolume = value; }
 		}
+		
+		public bool Use7800HSC {
+			get { return use7800HSC; }
+			set { use7800HSC = value; }
+		}		
 	}
 }

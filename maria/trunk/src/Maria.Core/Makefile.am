@@ -27,6 +27,7 @@ Maria_Core_sources_in = AssemblyInfo.cs.in
 Maria_Core_generated_sources = $(Maria_Core_sources_in:.in=)
 Maria_Core_sources = \
 AddressSpace.cs \
+Bios7800.cs \
 Cart.cs \
 CartA2K.cs \
 CartA4K.cs \
@@ -41,6 +42,7 @@ Exceptions.cs \
 FontRenderer.cs \
 GameSettings.cs \
 GlobalSettings.cs \
+HSC7800.cs \
 IAddressable.cs \
 IDevice.cs \
 IHost.cs \

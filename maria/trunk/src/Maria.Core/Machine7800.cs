@@ -26,7 +26,7 @@ using System.Diagnostics;
 namespace Maria.Core {
 
 	// TODO : not yet possible (Maria still missing)
-	/*[Serializable]
+	[Serializable]
 	public class Machine7800 : Machine {
 		protected Maria Maria;
 		protected RAM6116 RAM1, RAM2;
@@ -34,45 +34,83 @@ namespace Maria.Core {
 		protected Bios7800 BIOS;
 		protected HSC7800 HSC;
 
+		public Machine7800(Cart c, InputAdapter ia, int slines, int startl, int fHZ, int sRate, int[] p)
+			: base(ia, slines, startl, fHZ, sRate, p, 320) {
+			mem = new AddressSpace(this, 16, 6);  // 7800: 16bit, 64byte pages
+
+			cpu = new M6502(mem);
+			cpu.RunClocksMultiple = 4;
+
+			Maria = new Maria(this);
+			mem.Map(0x0000, 0x0040, Maria);
+			mem.Map(0x0100, 0x0040, Maria);
+			mem.Map(0x0200, 0x0040, Maria);
+			mem.Map(0x0300, 0x0040, Maria);
+
+			pia = new PIA(this);
+			mem.Map(0x0280, 0x0080, pia);
+			mem.Map(0x0480, 0x0080, pia);
+			mem.Map(0x0580, 0x0080, pia); // TODO : unsure about this one
+
+			RAM1 = new RAM6116();
+			mem.Map(0x1800, 0x0800, RAM1);
+
+			RAM2 = new RAM6116();
+			mem.Map(0x2000, 0x0800, RAM2);
+			mem.Map(0x0040, 0x00c0, RAM2); // page 0 shadow
+			mem.Map(0x0140, 0x00c0, RAM2); // page 1 shadow
+			mem.Map(0x2800, 0x0800, RAM2); // shadow1
+			mem.Map(0x3000, 0x0800, RAM2); // shadow2
+			mem.Map(0x3800, 0x0800, RAM2); // shadow3
+
+			// Insert the 7800 Highscore cartridge if requested
+			// TODO : enable again (too much stuff missing)
+			/*if (EMU7800App.Instance.Settings.Use7800HSC) {
+				HSC = new HSC7800();
+				mem.Map(0x1000, 0x800, HSC.SRAM);
+				mem.Map(0x3000, 0x1000, HSC);
+				Trace.WriteLine("7800 Highscore Cartridge Installed");
+			}*/
+
+			Cart = c;
+			mem.Map(0x4000, 0xc000, Cart);
+		}
+
 		public override M6502 CPU {
 			get { return cpu; }
 		}
 
-	}
-	*/
-}
-
-// TODO : enable stuff below
-/*
-namespace EMU7800
-{
-		public void SwapInBIOS()
-		{
-			if (BIOS != null)
-			{
-				Mem.Map((ushort)(0x10000 - BIOS.Size), BIOS.Size, BIOS);
+		public void SwapInBIOS() {
+			if (BIOS != null) {
+				mem.Map((ushort)(0x10000 - BIOS.Size), BIOS.Size, BIOS);
 			}
 		}
 
-		public void SwapOutBIOS()
-		{
-			if (BIOS != null)
-			{
-				Mem.Map((ushort)(0x10000 - BIOS.Size), BIOS.Size, Cart);
-			}
-		}
-
-		protected override void DoReset()
-		{
+		protected override void DoReset() {
 			SwapInBIOS();
-			if (HSC != null)
-			{
+			if (HSC != null) {
 				HSC.Reset();
 			}
 			Cart.Reset();
 			Maria.Reset();
 			PIA.Reset();
 			CPU.Reset();
+		}
+
+
+	}
+}
+
+// TODO : enable stuff below
+/*
+namespace EMU7800
+{
+		public void SwapOutBIOS()
+		{
+			if (BIOS != null)
+			{
+				Mem.Map((ushort)(0x10000 - BIOS.Size), BIOS.Size, Cart);
+			}
 		}
 
 		protected override void DoRun()
@@ -95,50 +133,6 @@ namespace EMU7800
 				HSC.SaveSRAM();
 			}
 		}
-
-		public Machine7800(Cart c, InputAdapter ia, int slines, int startl, int fHZ, int sRate, int[] p)
-			: base(ia, slines, startl, fHZ, sRate, p, 320)
-		{
-			Mem = new AddressSpace(this, 16, 6);  // 7800: 16bit, 64byte pages
-
-			_CPU = new M6502(Mem);
-			_CPU.RunClocksMultiple = 4;
-
-			Maria = new Maria(this);
-			Mem.Map(0x0000, 0x0040, Maria);
-			Mem.Map(0x0100, 0x0040, Maria);
-			Mem.Map(0x0200, 0x0040, Maria);
-			Mem.Map(0x0300, 0x0040, Maria);
-
-			PIA = new PIA(this);
-			Mem.Map(0x0280, 0x0080, PIA);
-			Mem.Map(0x0480, 0x0080, PIA);
-			Mem.Map(0x0580, 0x0080, PIA);  // unsure about this one
-
-			RAM1 = new RAM6116();
-			Mem.Map(0x1800, 0x0800, RAM1);
-
-			RAM2 = new RAM6116();
-			Mem.Map(0x2000, 0x0800, RAM2);
-			Mem.Map(0x0040, 0x00c0, RAM2); // page 0 shadow
-			Mem.Map(0x0140, 0x00c0, RAM2); // page 1 shadow
-			Mem.Map(0x2800, 0x0800, RAM2); // shadow1
-			Mem.Map(0x3000, 0x0800, RAM2); // shadow2
-			Mem.Map(0x3800, 0x0800, RAM2); // shadow3
-
-			// Insert the 7800 Highscore cartridge if requested
-			if (EMU7800App.Instance.Settings.Use7800HSC)
-			{
-				HSC = new HSC7800();
-				Mem.Map(0x1000, 0x800, HSC.SRAM);
-				Mem.Map(0x3000, 0x1000, HSC);
-				Trace.WriteLine("7800 Highscore Cartridge Installed");
-			}
-
-			Cart = c;
-			Mem.Map(0x4000, 0xc000, Cart);
-		}
-	}
 
 	[Serializable]
 	public class Machine7800NTSC : Machine7800

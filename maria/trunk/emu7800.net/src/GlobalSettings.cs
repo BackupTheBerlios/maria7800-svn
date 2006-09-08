@@ -88,19 +88,6 @@ namespace EMU7800
 			}
 		}
 
-		bool _Use7800HSC;
-		public bool Use7800HSC
-		{
-			get
-			{
-				return _Use7800HSC;
-			}
-			set
-			{
-				_Use7800HSC = value;
-			}
-		}
-
 		bool _DeactivateMouseInput;
 		public bool DeactivateMouseInput
 		{
