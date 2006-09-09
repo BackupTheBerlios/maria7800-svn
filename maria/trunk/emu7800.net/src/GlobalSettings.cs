@@ -2,9 +2,9 @@
  * GlobalSettings
  *
  * Retains settings across program invocations.
- * 
+ *
  * Copyright (c) 2004, 2005 Mike Murphy
- * 
+ *
  */
 using System.Configuration;
 using System.Diagnostics;
@@ -22,30 +22,6 @@ namespace EMU7800
 			get
 			{
 				return _RootDirectory;
-			}
-		}
-
-		string _OutputDirectory;
-		public string OutputDirectory
-		{
-			get
-			{
-				return _OutputDirectory;
-			}
-		}
-
-		string _ROMDirectory;
-		public string ROMDirectory
-		{
-			get
-			{
-				return _ROMDirectory;
-			}
-			set
-			{
-				_ROMDirectory = value;
-				Trace.Write("ROM Directory: ");
-				Trace.WriteLine(ROMDirectory);
 			}
 		}
 
@@ -173,7 +149,7 @@ namespace EMU7800
 			Trace.WriteLine(RootDirectory);
 
 			_OutputDirectory = Path.Combine(RootDirectory, "outdir");
-			if (!Directory.Exists(OutputDirectory)) 
+			if (!Directory.Exists(OutputDirectory))
 			{
 				_OutputDirectory = RootDirectory;
 			}

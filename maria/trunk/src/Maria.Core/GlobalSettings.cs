@@ -22,25 +22,38 @@
 using System;
 
 namespace Maria.Core {
-	// TODO : initialized with hardcoded values, later should
+	// TODO : initialized with hardcoded (bogus) values, later should
 	// get settings from some (system/user) config file
 	public class GlobalSettings {
 		private int soundVolume;
 		private bool use7800HSC;
+		private string romDirectory;
+		private string outputDirectory;
 
 		public GlobalSettings() {
 			SoundVolume = 8;
 			Use7800HSC = false;
+			ROMDirectory = ".";
+			outputDirectory = ".";
 		}
 
 		public int SoundVolume {
 			get { return soundVolume; }
 			set { soundVolume = value; }
 		}
-		
+
 		public bool Use7800HSC {
 			get { return use7800HSC; }
 			set { use7800HSC = value; }
-		}		
+		}
+
+		public string ROMDirectory {
+			get { return romDirectory; }
+			set { romDirectory = value; }
+		}
+
+		public string OutputDirectory {
+			get { return outputDirectory; }
+		}
 	}
 }
