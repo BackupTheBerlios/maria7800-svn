@@ -1,5 +1,8 @@
 - Not much left to do:
   - Theoretically we could continue our work on SDLHost:
+    Slowly start working on the Run method, initialize SDL
+    properly, and go on. Look at SdlNativeMethods to see
+    how things are initialized. Or so. Oh well.
   - Remaining cart classes ? (nah, probably not yet)
 - Continue work a bit on SDLHost. Would be cool to soonishly
   actually see something, if it's only a window...

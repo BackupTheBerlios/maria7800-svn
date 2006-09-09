@@ -69,14 +69,58 @@ namespace Maria.Core {
 			throw new NotImplementedException("Run: Not yet implemented.");
 		}
 
-		public void UpdateDisplay(byte[] buf, int scanline, int start, int len) {
-			// TODO : implement
-			throw new NotImplementedException("Not yet implemented.");
+		public void UpdateDisplay(byte[] buf, int scanline, int xstart, int len) {
+			int i = scanline * VisiblePitch + xstart;
+			int x = xstart;
+			if (i + len < FrameBuffer.Length) {
+				while (len-- > 0) {
+					FrameBuffer[i++] = (uint) machine.Palette[buf[x++]] | (uint)0xff000000;
+				}
+			}
 		}
 
 		public void UpdateSound(byte[] buf) {
-			// TODO : implement
-			throw new NotImplementedException("Not yet implemented.");
+			if (Mute) {
+				for (int i = 0; i < buf.Length; i++) {
+					buf[i] = 0;
+				}
+			}
+			AudioBuffer = buf;
+		}
+
+		private void SetKeyboardToPlayerNo(int playerno) {
+			ClearPlayerInput(KeyboardPlayerNo);
+			KeyboardPlayerNo = playerno;
+			ShowMouseCursor = (playerno <= 1 && machine.InputAdapter.Controllers[playerno] == Controller.Lightgun);
+			TextMsg = String.Format("Keyboard/Mouse to Player {0}", KeyboardPlayerNo + 1);
+		}
+
+		private void SetPaddleOhms(int playerno, int val_max, int val) {
+			int ohms = InputAdapter.PADDLEOHM_MAX -
+				(InputAdapter.PADDLEOHM_MAX - InputAdapter.PADDLEOHM_MIN) / val_max * val;
+			machine.InputAdapter.SetOhms(playerno, ohms);
+		}
+
+		private void ClearPlayerInput(int playerno) {
+			InputAdapter ia = machine.InputAdapter;
+			ia[playerno, ControllerAction.Trigger] = false;
+			ia[playerno, ControllerAction.Trigger2] = false;
+			ia[playerno, ControllerAction.Left] = false;
+			ia[playerno, ControllerAction.Up] = false;
+			ia[playerno, ControllerAction.Right] = false;
+			ia[playerno, ControllerAction.Down] = false;
+			ia[playerno, ControllerAction.Keypad7] = false;
+			ia[playerno, ControllerAction.Keypad8] = false;
+			ia[playerno, ControllerAction.Keypad9] = false;
+			ia[playerno, ControllerAction.Keypad4] = false;
+			ia[playerno, ControllerAction.Keypad5] = false;
+			ia[playerno, ControllerAction.Keypad6] = false;
+			ia[playerno, ControllerAction.Keypad1] = false;
+			ia[playerno, ControllerAction.Keypad2] = false;
+			ia[playerno, ControllerAction.Keypad3] = false;
+			ia[playerno, ControllerAction.KeypadA] = false;
+			ia[playerno, ControllerAction.Keypad0] = false;
+			ia[playerno, ControllerAction.KeypadP] = false;
 		}
 	}
 }
@@ -654,69 +698,6 @@ namespace Maria.Core {
             }
         }
 
-		void SetKeyboardToPlayerNo(int playerno)
-		{
-			ClearPlayerInput(KeyboardPlayerNo);
-			KeyboardPlayerNo = playerno;
-			ShowMouseCursor = (playerno <= 1 && M.InputAdapter.Controllers[playerno] == Controller.Lightgun);
-			TextMsg = String.Format("Keyboard/Mouse to Player {0}", KeyboardPlayerNo + 1);
-		}
-
-		void SetPaddleOhms(int playerno, int val_max, int val)
-		{
-			int ohms = InputAdapter.PADDLEOHM_MAX
-				 - (InputAdapter.PADDLEOHM_MAX - InputAdapter.PADDLEOHM_MIN)
-				 / val_max * val;
-			M.InputAdapter.SetOhms(playerno, ohms);
-		}
-
-		void ClearPlayerInput(int playerno)
-		{
-			InputAdapter ia = M.InputAdapter;
-			ia[playerno, ControllerAction.Trigger] = false;
-			ia[playerno, ControllerAction.Trigger2] = false;
-			ia[playerno, ControllerAction.Left] = false;
-			ia[playerno, ControllerAction.Up] = false;
-			ia[playerno, ControllerAction.Right] = false;
-			ia[playerno, ControllerAction.Down] = false;
-			ia[playerno, ControllerAction.Keypad7] = false;
-			ia[playerno, ControllerAction.Keypad8] = false;
-			ia[playerno, ControllerAction.Keypad9] = false;
-			ia[playerno, ControllerAction.Keypad4] = false;
-			ia[playerno, ControllerAction.Keypad5] = false;
-			ia[playerno, ControllerAction.Keypad6] = false;
-			ia[playerno, ControllerAction.Keypad1] = false;
-			ia[playerno, ControllerAction.Keypad2] = false;
-			ia[playerno, ControllerAction.Keypad3] = false;
-			ia[playerno, ControllerAction.KeypadA] = false;
-			ia[playerno, ControllerAction.Keypad0] = false;
-			ia[playerno, ControllerAction.KeypadP] = false;
-		}
-
-		public override void UpdateDisplay(byte[] buf, int scanline, int xstart, int len)
-		{
-			int i = scanline * VisiblePitch + xstart;
-			int x = xstart;
-			if (i + len < FrameBuffer.Length)
-			{
-				while (len-- > 0)
-				{
-					FrameBuffer[i++] = (uint)M.Palette[buf[x++]] | (uint)0xff000000;
-				}
-			}
-		}
-
-		public override void UpdateSound(byte[] buf)
-		{
-			if (Mute)
-			{
-				for (int i = 0; i < buf.Length; i++)
-				{
-					buf[i] = 0;
-				}
-			}
-			AudioBuffer = buf;
-		}
 	}
 }
 */
