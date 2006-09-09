@@ -51,19 +51,6 @@ namespace EMU7800
 			}
 		}
 
-		bool _Skip7800BIOS;
-		public bool Skip7800BIOS
-		{
-			get
-			{
-				return _Skip7800BIOS;
-			}
-			set
-			{
-				_Skip7800BIOS = value;
-			}
-		}
-
 		bool _DeactivateMouseInput;
 		public bool DeactivateMouseInput
 		{

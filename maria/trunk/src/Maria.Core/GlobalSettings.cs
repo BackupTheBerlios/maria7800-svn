@@ -29,6 +29,7 @@ namespace Maria.Core {
 		private bool use7800HSC;
 		private string romDirectory;
 		private string outputDirectory;
+		private bool skip7800BIOS;
 
 		public GlobalSettings() {
 			SoundVolume = 8;
@@ -54,6 +55,11 @@ namespace Maria.Core {
 
 		public string OutputDirectory {
 			get { return outputDirectory; }
+		}
+
+		public bool Skip7800BIOS {
+			get { return skip7800BIOS; }
+			set { skip7800BIOS = value; }
 		}
 	}
 }

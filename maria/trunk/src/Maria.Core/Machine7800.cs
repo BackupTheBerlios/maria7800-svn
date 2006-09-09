@@ -25,7 +25,6 @@ using System.Diagnostics;
 
 namespace Maria.Core {
 
-	// TODO : not yet possible (Maria still missing)
 	[Serializable]
 	public class Machine7800 : Machine {
 		protected Maria Maria;
@@ -64,13 +63,12 @@ namespace Maria.Core {
 			mem.Map(0x3800, 0x0800, RAM2); // shadow3
 
 			// Insert the 7800 Highscore cartridge if requested
-			// TODO : enable again (too much stuff missing)
-			/*if (EMU7800App.Instance.Settings.Use7800HSC) {
+			if (EMU7800App.Instance.Settings.Use7800HSC) {
 				HSC = new HSC7800();
 				mem.Map(0x1000, 0x800, HSC.SRAM);
 				mem.Map(0x3000, 0x1000, HSC);
 				Trace.WriteLine("7800 Highscore Cartridge Installed");
-			}*/
+			}
 
 			Cart = c;
 			mem.Map(0x4000, 0xc000, Cart);
@@ -93,31 +91,19 @@ namespace Maria.Core {
 			}
 			Cart.Reset();
 			Maria.Reset();
-			PIA.Reset();
-			CPU.Reset();
+			pia.Reset();
+			cpu.Reset();
 		}
 
-
-	}
-}
-
-// TODO : enable stuff below
-/*
-namespace EMU7800
-{
-		public void SwapOutBIOS()
-		{
-			if (BIOS != null)
-			{
-				Mem.Map((ushort)(0x10000 - BIOS.Size), BIOS.Size, Cart);
+		public void SwapOutBIOS() {
+			if (BIOS != null) {
+				mem.Map((ushort)(0x10000 - BIOS.Size), BIOS.Size, Cart);
 			}
 		}
 
-		protected override void DoRun()
-		{
+		protected override void DoRun() {
 			Maria.StartFrame();
-			for (int i = 0; i < Scanlines; i++)
-			{
+			for (int i = 0; i < Scanlines; i++) {
 				CPU.RunClocks = CPU.RunClocksMultiple * 114;
 				Maria.DoScanline(i);
 				CPU.Execute();
@@ -126,27 +112,22 @@ namespace EMU7800
 			Maria.EndFrame();
 		}
 
-		protected override void DoDone()
-		{
-			if (HSC != null)
-			{
+		protected override void DoDone() {
+			if (HSC != null) {
 				HSC.SaveSRAM();
 			}
 		}
+	}
 
 	[Serializable]
-	public class Machine7800NTSC : Machine7800
-	{
-		public override string ToString()
-		{
+	public class Machine7800NTSC : Machine7800 {
+		public override string ToString() {
 			return MachineType.A7800NTSC.ToString();
 		}
 
 		public Machine7800NTSC(Cart cart, InputAdapter ia)
-			: base(cart, ia, 262, 16, 60, TIASound.NTSC_SAMPLES_PER_SEC, MariaTables.NTSCPalette)
-		{
-			if (!EMU7800App.Instance.Settings.Skip7800BIOS)
-			{
+			: base(cart, ia, 262, 16, 60, TIASound.NTSC_SAMPLES_PER_SEC, MariaTables.NTSCPalette) {
+			if (!EMU7800App.Instance.Settings.Skip7800BIOS) {
 				BIOS = new Bios7800(MachineType.A7800NTSC);
 			}
 			Trace.Write(this);
@@ -155,23 +136,19 @@ namespace EMU7800
 	}
 
 	[Serializable]
-	public class Machine7800PAL : Machine7800
-	{
-		public override string ToString()
-		{
+	public class Machine7800PAL : Machine7800 {
+		public override string ToString() {
 			return MachineType.A7800PAL.ToString();
 		}
 
 		public Machine7800PAL(Cart cart, InputAdapter ia)
-			: base(cart, ia, 312, 32, 50, TIASound.PAL_SAMPLES_PER_SEC, MariaTables.PALPalette)
-		{
-			if (!EMU7800App.Instance.Settings.Skip7800BIOS)
-			{
+			: base(cart, ia, 312, 32, 50, TIASound.PAL_SAMPLES_PER_SEC, MariaTables.PALPalette) {
+			if (!EMU7800App.Instance.Settings.Skip7800BIOS) {
 				BIOS = new Bios7800(MachineType.A7800PAL);
 			}
 			Trace.Write(this);
 			Trace.WriteLine(" ready");
 		}
 	}
+
 }
-*/
