@@ -31,6 +31,7 @@ namespace Maria.Core {
 		private string outputDirectory;
 		private bool skip7800BIOS;
 		private int frameRateAdjust;
+		public bool deactivateMouseInput;
 
 		public GlobalSettings() {
 			SoundVolume = 8;
@@ -39,6 +40,7 @@ namespace Maria.Core {
 			outputDirectory = ".";
 			Skip7800BIOS = false;
 			FrameRateAdjust = 0;
+			DeactivateMouseInput = false;
 		}
 
 		public int SoundVolume {
@@ -68,6 +70,11 @@ namespace Maria.Core {
 		public int FrameRateAdjust {
 			get { return frameRateAdjust; }
 			set { frameRateAdjust = value; }
+		}
+
+		public bool DeactivateMouseInput {
+			get { return deactivateMouseInput; }
+			set { deactivateMouseInput = value; }
 		}
 	}
 }

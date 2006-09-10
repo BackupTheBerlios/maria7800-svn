@@ -3,7 +3,8 @@
     Slowly start working on the Run method, initialize SDL
     properly, and go on. Look at SdlNativeMethods to see
     how things are initialized. Or so. Oh well.
-    => start working on the main emulation loop
+    => continue with main emulation loop, SDLHost.cs around line 160
+    or something like that
   - Remaining cart classes ? (nah, probably not yet)
 - Continue work a bit on SDLHost. Would be cool to soonishly
   actually see something, if it's only a window...

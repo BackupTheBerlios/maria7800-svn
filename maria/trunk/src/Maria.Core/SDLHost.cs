@@ -128,91 +128,39 @@ namespace Maria.Core {
 		}
 
 		private void Run() {
-			// TODO : Bogus event loop, can be terminated by closing the window.
-			Sdl.SDL_Event evt;
-			bool quitFlag = false;
-			while (!quitFlag) {
-				while (0 != Sdl.SDL_PollEvent(out evt)) {
-					if (evt.type == Sdl.SDL_QUIT) {
-						quitFlag = true;
-					}
-					Thread.Sleep(1);
-				}
-			}
-		}
-
-		private void SetKeyboardToPlayerNo(int playerno) {
-			ClearPlayerInput(KeyboardPlayerNo);
-			KeyboardPlayerNo = playerno;
-			ShowMouseCursor = (playerno <= 1 && machine.InputAdapter.Controllers[playerno] == Controller.Lightgun);
-			TextMsg = String.Format("Keyboard/Mouse to Player {0}", KeyboardPlayerNo + 1);
-		}
-
-		private void SetPaddleOhms(int playerno, int val_max, int val) {
-			int ohms = InputAdapter.PADDLEOHM_MAX -
-				(InputAdapter.PADDLEOHM_MAX - InputAdapter.PADDLEOHM_MIN) / val_max * val;
-			machine.InputAdapter.SetOhms(playerno, ohms);
-		}
-
-		private void ClearPlayerInput(int playerno) {
-			InputAdapter ia = machine.InputAdapter;
-			ia[playerno, ControllerAction.Trigger] = false;
-			ia[playerno, ControllerAction.Trigger2] = false;
-			ia[playerno, ControllerAction.Left] = false;
-			ia[playerno, ControllerAction.Up] = false;
-			ia[playerno, ControllerAction.Right] = false;
-			ia[playerno, ControllerAction.Down] = false;
-			ia[playerno, ControllerAction.Keypad7] = false;
-			ia[playerno, ControllerAction.Keypad8] = false;
-			ia[playerno, ControllerAction.Keypad9] = false;
-			ia[playerno, ControllerAction.Keypad4] = false;
-			ia[playerno, ControllerAction.Keypad5] = false;
-			ia[playerno, ControllerAction.Keypad6] = false;
-			ia[playerno, ControllerAction.Keypad1] = false;
-			ia[playerno, ControllerAction.Keypad2] = false;
-			ia[playerno, ControllerAction.Keypad3] = false;
-			ia[playerno, ControllerAction.KeypadA] = false;
-			ia[playerno, ControllerAction.Keypad0] = false;
-			ia[playerno, ControllerAction.KeypadP] = false;
-		}
-	}
-}
-
-// TODO : enable the stuff below...
-/*
-		void Run()
-		{
 			Quit = false;
 			Paused = false;
 			Mute = false;
-			_TextMsg = "";
+			textMsg = "";
 			TextExpireFrameCount = 0;
-
 			FrameSamples = EffectiveFPS << 1;
 			RunMachineTicks = FrameSamples * 1000 / EffectiveFPS;
-
-			KeyboardPlayerNo = 0;  // Keyboard/mouse defaults to player #1
+			KeyboardPlayerNo = 0; // Keyboard/mouse defaults to player #1
 			DeactivateMouseInput = EMU7800App.Instance.Settings.DeactivateMouseInput;
 			SdlJoystickSwapper = 0;
 
-			SdlNativeMethods.Quit += new SdlNativeMethods.QuitEventHandler(OnQuit);
-			SdlNativeMethods.Keyboard += new SdlNativeMethods.KeyboardEventHandler(OnKeyboard);
-			SdlNativeMethods.JoyButton += new SdlNativeMethods.JoyButtonEventHandler(OnJoyButton);
-			SdlNativeMethods.JoyAxis += new SdlNativeMethods.JoyAxisEventHandler(OnJoyAxis);
-			SdlNativeMethods.MouseButton += new SdlNativeMethods.MouseButtonEventHandler(OnMouseButton);
-			SdlNativeMethods.MouseMotion += new SdlNativeMethods.MouseMotionEventHandler(OnMouseMotion);
+			// TODO : this can be removed. we do the event handling business all in one class
+//			SdlNativeMethods.Quit += new SdlNativeMethods.QuitEventHandler(OnQuit);
+//			SdlNativeMethods.Keyboard += new SdlNativeMethods.KeyboardEventHandler(OnKeyboard);
+//			SdlNativeMethods.JoyButton += new //SdlNativeMethods.JoyButtonEventHandler(OnJoyButton);
+//			SdlNativeMethods.JoyAxis += new SdlNativeMethods.JoyAxisEventHandler(OnJoyAxis);
+//			SdlNativeMethods.MouseButton += new //SdlNativeMethods.MouseButtonEventHandler(OnMouseButton);
+//			SdlNativeMethods.MouseMotion += new //SdlNativeMethods.MouseMotionEventHandler(OnMouseMotion);
 
-			foreach (SdlJoystickDevice dev in SdlNativeMethods.Joysticks)
-			{
-				if (dev.Name != null && dev.Name.Contains("Stelladaptor"))
-				{
+			// TODO : enable for joystick/stelladaptor support. or whatever it's good for.
+			/*foreach (SdlJoystickDevice dev in SdlNativeMethods.Joysticks) {
+				if (dev.Name != null && dev.Name.Contains("Stelladaptor")) {
 					Trace.WriteLine("Stelladaptor detected: disabling mouse input");
 					DeactivateMouseInput = true;
 				}
-			}
+			}*/
 
 			int startOfFrameTick, endOfRunMachineTick, endOfRenderFrameTick;
 
+		}
+		// TODO : continue implementing the nonsense below...
+/*
+		void Run() {
 			while (!Quit && !M.MachineHalt)
 			{
 				startOfFrameTick = SdlNativeMethods.GetTicks();
@@ -263,7 +211,46 @@ namespace Maria.Core {
 				OtherTicks += SdlNativeMethods.GetTicks();
 			}
 		}
+*/
+		private void SetKeyboardToPlayerNo(int playerno) {
+			ClearPlayerInput(KeyboardPlayerNo);
+			KeyboardPlayerNo = playerno;
+			ShowMouseCursor = (playerno <= 1 && machine.InputAdapter.Controllers[playerno] == Controller.Lightgun);
+			TextMsg = String.Format("Keyboard/Mouse to Player {0}", KeyboardPlayerNo + 1);
+		}
 
+		private void SetPaddleOhms(int playerno, int val_max, int val) {
+			int ohms = InputAdapter.PADDLEOHM_MAX -
+				(InputAdapter.PADDLEOHM_MAX - InputAdapter.PADDLEOHM_MIN) / val_max * val;
+			machine.InputAdapter.SetOhms(playerno, ohms);
+		}
+
+		private void ClearPlayerInput(int playerno) {
+			InputAdapter ia = machine.InputAdapter;
+			ia[playerno, ControllerAction.Trigger] = false;
+			ia[playerno, ControllerAction.Trigger2] = false;
+			ia[playerno, ControllerAction.Left] = false;
+			ia[playerno, ControllerAction.Up] = false;
+			ia[playerno, ControllerAction.Right] = false;
+			ia[playerno, ControllerAction.Down] = false;
+			ia[playerno, ControllerAction.Keypad7] = false;
+			ia[playerno, ControllerAction.Keypad8] = false;
+			ia[playerno, ControllerAction.Keypad9] = false;
+			ia[playerno, ControllerAction.Keypad4] = false;
+			ia[playerno, ControllerAction.Keypad5] = false;
+			ia[playerno, ControllerAction.Keypad6] = false;
+			ia[playerno, ControllerAction.Keypad1] = false;
+			ia[playerno, ControllerAction.Keypad2] = false;
+			ia[playerno, ControllerAction.Keypad3] = false;
+			ia[playerno, ControllerAction.KeypadA] = false;
+			ia[playerno, ControllerAction.Keypad0] = false;
+			ia[playerno, ControllerAction.KeypadP] = false;
+		}
+	}
+}
+
+// TODO : enable the stuff below...
+/*
 		unsafe void RenderFrame()
 		{
 			if (PanX < 0)
