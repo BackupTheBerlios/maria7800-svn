@@ -2,6 +2,8 @@
   - Fill in the missing bits in SDLHost.
     The next thing to do would be RenderFrame.
     Can't be THAT hard, actually...
+    => This will probably require us to implement
+    SdlNativeMethods.FillRect(). Or so. Oh well.
   - Remaining cart classes ? (nah, probably not yet)
 - Continue work a bit on SDLHost. Would be cool to soonishly
   actually see something, if it's only a window...
