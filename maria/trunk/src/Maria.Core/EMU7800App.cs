@@ -6,7 +6,7 @@ using System.IO;
 
 namespace Maria.Core {
 	public class EMU7800App {
-		public static readonly EMU7800App Instance = new EMU7800App();		
+		public static readonly EMU7800App Instance = new EMU7800App();
 		private GlobalSettings _Settings;
 		private ROMProperties _ROMProperties;
 		private Machine _M;
@@ -15,7 +15,7 @@ namespace Maria.Core {
 			_Settings = new GlobalSettings();
 			_ROMProperties = new ROMProperties();
 		}
-		
+
 		public GlobalSettings Settings {
 			get { return _Settings; }
 		}

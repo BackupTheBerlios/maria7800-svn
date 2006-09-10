@@ -21,9 +21,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 using System;
+using System.Threading;
+using Tao.Sdl;
 
 namespace Maria.Core {
-	// TODO : implement
 	public class SDLHost : IHost {
 		private const int WIDTH = 320;
 		private const int HEIGHT = 240;
@@ -65,8 +66,46 @@ namespace Maria.Core {
 		}
 
 		public void Run(Machine m) {
-			// TODO : implement
-			throw new NotImplementedException("Run: Not yet implemented.");
+			machine = m;
+			machine.Host = this;
+			try {
+				VisiblePitch = machine.VisiblePitch;
+				ClipStart = machine.FirstScanline;
+				LeftOffset = 0;
+				FrameBuffer = new uint[VisiblePitch * machine.Scanlines];
+				FontRenderer = new FontRenderer(FrameBuffer, VisiblePitch, machine.Palette, 0);
+				EffectiveFPS = machine.FrameHZ + EMU7800App.Instance.Settings.FrameRateAdjust;
+				if (Sdl.SDL_Init(Sdl.SDL_INIT_VIDEO | Sdl.SDL_INIT_AUDIO | Sdl.SDL_INIT_JOYSTICK) < 0) {
+					throw new MariaCoreException("Couldn't initialize SDL: " + Sdl.SDL_GetError());
+				}
+				int flags = Sdl.SDL_HWSURFACE;
+				if (FULLSCREEN)
+					flags |= Sdl.SDL_FULLSCREEN;
+				if (IntPtr.Zero == Sdl.SDL_SetVideoMode(WIDTH, HEIGHT, 32, flags)) {
+					throw new MariaCoreException("Couldn't set video mode: " + Sdl.SDL_GetError());
+				}
+				Sdl.SDL_WM_SetCaption("Maria", "Maria"); // TODO : unhardcode ?
+				Sdl.SDL_ShowCursor(FULLSCREEN ? Sdl.SDL_DISABLE : Sdl.SDL_ENABLE);
+
+				// TODO : SdlNativeMethods.Open does some more shit...:
+				//OpenJoystickDevice(0);
+				//OpenJoystickDevice(1);
+				//SdlNativeMethods.FillRect(Color.Black);
+
+				// TODO : need to initialize sound somehow...
+				/*SoundSampleRate = M.SoundSampleRate * EffectiveFPS / M.FrameHZ;
+				WinmmNativeMethods.Open(
+					SoundSampleRate,
+					M.Scanlines << 1,
+					EMU7800App.Instance.Settings.NumSoundBuffers
+				);*/
+
+				Run();
+			}
+			finally {
+				// TODO : also clean up sound, joystick, whatnot.
+				Sdl.SDL_Quit();
+			}
 		}
 
 		public void UpdateDisplay(byte[] buf, int scanline, int xstart, int len) {
@@ -86,6 +125,20 @@ namespace Maria.Core {
 				}
 			}
 			AudioBuffer = buf;
+		}
+
+		private void Run() {
+			// TODO : Bogus event loop, can be terminated by closing the window.
+			Sdl.SDL_Event evt;
+			bool quitFlag = false;
+			while (!quitFlag) {
+				while (0 != Sdl.SDL_PollEvent(out evt)) {
+					if (evt.type == Sdl.SDL_QUIT) {
+						quitFlag = true;
+					}
+					Thread.Sleep(1);
+				}
+			}
 		}
 
 		private void SetKeyboardToPlayerNo(int playerno) {
@@ -127,40 +180,6 @@ namespace Maria.Core {
 
 // TODO : enable the stuff below...
 /*
-		public override void Run(Machine m)
-		{
-			M = m;
-			M.H = this;
-
-			try
-			{
-				Trace.Write("Simple DirectMedia Layer ");
-				Trace.Write(SdlNativeMethods.Version);
-				Trace.WriteLine(" detected");
-
-				VisiblePitch = M.VisiblePitch;
-				ClipStart = M.FirstScanline;
-				LeftOffset = 0;
-				FrameBuffer = new uint[VisiblePitch * M.Scanlines];
-				FontRenderer = new FontRenderer(FrameBuffer, VisiblePitch, M.Palette, 0);
-				EffectiveFPS = M.FrameHZ + EMU7800App.Instance.Settings.FrameRateAdjust;
-				SdlNativeMethods.Open(WIDTH, HEIGHT, Fullscreen, EMU7800App.Title);
-
-				SoundSampleRate = M.SoundSampleRate * EffectiveFPS / M.FrameHZ;
-				WinmmNativeMethods.Open(SoundSampleRate, M.Scanlines << 1, EMU7800App.Instance.Settings.NumSoundBuffers);
-				Run();
-			}
-			catch (Exception ex)
-			{
-				throw ex;
-			}
-			finally
-			{
-				SdlNativeMethods.Close();
-				WinmmNativeMethods.Close();
-			}
-		}
-
 		void Run()
 		{
 			Quit = false;

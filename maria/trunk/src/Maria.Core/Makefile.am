@@ -69,6 +69,7 @@ TIASound.cs \
 TIATables.cs
 
 OWN_ASSEMBLIES = \
+$(top_srcdir)/tao/Tao.Sdl.dll \
 $(top_builddir)/src/Vtg.Util/Vtg.Util.dll
 
 OWN_ASSEMBLY_REFERENCES = $(addprefix -r:, $(OWN_ASSEMBLIES))

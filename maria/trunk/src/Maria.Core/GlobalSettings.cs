@@ -30,12 +30,15 @@ namespace Maria.Core {
 		private string romDirectory;
 		private string outputDirectory;
 		private bool skip7800BIOS;
+		private int frameRateAdjust;
 
 		public GlobalSettings() {
 			SoundVolume = 8;
 			Use7800HSC = false;
 			ROMDirectory = ".";
 			outputDirectory = ".";
+			Skip7800BIOS = false;
+			FrameRateAdjust = 0;
 		}
 
 		public int SoundVolume {
@@ -60,6 +63,11 @@ namespace Maria.Core {
 		public bool Skip7800BIOS {
 			get { return skip7800BIOS; }
 			set { skip7800BIOS = value; }
+		}
+
+		public int FrameRateAdjust {
+			get { return frameRateAdjust; }
+			set { frameRateAdjust = value; }
 		}
 	}
 }

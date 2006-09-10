@@ -25,19 +25,6 @@ namespace EMU7800
 			}
 		}
 
-		int _FrameRateAdjust;
-		public int FrameRateAdjust
-		{
-			get
-			{
-				return _FrameRateAdjust;
-			}
-			set
-			{
-				_FrameRateAdjust = value;
-			}
-		}
-
 		int _NumSoundBuffers;
 		public int NumSoundBuffers
 		{

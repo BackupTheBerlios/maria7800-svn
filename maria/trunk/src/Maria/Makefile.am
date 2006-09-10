@@ -36,10 +36,10 @@ Maria.cs
 maria_build_sources = $(addprefix $(srcdir)/, $(maria_sources) $(maria_generated_sources))
 
 OWN_ASSEMBLIES = \
-$(top_srcdir)/tao/Tao.Sdl.dll \
 $(top_builddir)/src/Maria.Core/Maria.Core.dll
 ADDITIONAL_ASSEMBLIES = \
-$(top_builddir)/src/Vtg.Util/Vtg.Util.dll
+$(top_builddir)/src/Vtg.Util/Vtg.Util.dll \
+$(top_srcdir)/tao/Tao.Sdl.dll
 OWN_ASSEMBLY_REFERENCES = $(addprefix -r:,$(OWN_ASSEMBLIES))
 
 maria.exe : $(maria_build_sources)
