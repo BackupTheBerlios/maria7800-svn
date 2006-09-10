@@ -77,4 +77,4 @@ OWN_ASSEMBLY_REFERENCES = $(addprefix -r:, $(OWN_ASSEMBLIES))
 Maria_Core_build_sources = $(addprefix $(srcdir)/, $(Maria_Core_sources) $(Maria_Core_generated_sources))
 
 Maria.Core.dll : $(Maria_Core_build_sources)
-	$(MCS) -out:$@ -target:library $(OWN_ASSEMBLY_REFERENCES) $^
+	$(MCS) -out:$@ -target:library -unsafe+ $(OWN_ASSEMBLY_REFERENCES) $^
