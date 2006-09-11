@@ -31,6 +31,7 @@ Bios7800.cs \
 Cart.cs \
 CartA2K.cs \
 CartA4K.cs \
+CartA8K.cs \
 Cart7808.cs \
 Cart7816.cs \
 Cart7832.cs \

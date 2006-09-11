@@ -72,67 +72,6 @@ namespace EMU7800
 	}
 
 	/**
-	  Atari standard 8KB bankswitched carts
-
-	  Cart Format                Mapping to ROM Address Space
-	  Bank1: 0x0000:0x1000       0x1000:0x1000  Bank selected by accessing 0x1ff8,0x1ff9
-	  Bank2: 0x1000:0x1000
-
-	 */
-	[Serializable]
-	public sealed class CartA8K : Cart, IDevice
-	{
-		ushort BankBaseAddr;
-	
-		int Bank
-		{
-			set
-			{
-				BankBaseAddr = (ushort)(value * 0x1000);
-			}
-		}
-	
-		public override void Reset()
-		{
-			Bank = 1;
-		}
-	
-		public byte this[ushort addr]
-		{
-			get
-			{
-				addr &= 0x0fff;
-				UpdateBank(addr);
-				return ROM[BankBaseAddr + addr];
-			}
-			set
-			{
-				addr &= 0x0fff;
-				UpdateBank(addr);
-			}
-		}
-	
-		public CartA8K(BinaryReader br)
-		{
-			LoadRom(br, 0x2000);
-			Bank = 1;
-		}
-
-		void UpdateBank(ushort addr)
-		{
-			switch(addr)
-			{
-				case 0x0ff8:
-					Bank = 0;
-					break;
-				case 0x0ff9:
-					Bank = 1;
-					break;
-			}
-		}
-	}
-
-	/**
 	  Atari standard 8KB bankswitched carts with 128 bytes of RAM
 
 	  Cart Format                Mapping to ROM Address Space
