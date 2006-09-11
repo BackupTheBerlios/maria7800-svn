@@ -34,6 +34,7 @@ CartA4K.cs \
 CartA8K.cs \
 CartA8KR.cs \
 CartA16K.cs \
+CartA16KR.cs \
 Cart7808.cs \
 Cart7816.cs \
 Cart7832.cs \
