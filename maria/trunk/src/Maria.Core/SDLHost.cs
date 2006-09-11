@@ -23,6 +23,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading;
 using Tao.Sdl;
 
@@ -92,7 +93,7 @@ namespace Maria.Core {
 				// TODO : SdlNativeMethods.Open does some more shit...:
 				//OpenJoystickDevice(0);
 				//OpenJoystickDevice(1);
-				//SdlNativeMethods.FillRect(Color.Black);
+				FillRect(0, 0, 0, 0);
 
 				// TODO : need to initialize sound somehow...
 				/*SoundSampleRate = M.SoundSampleRate * EffectiveFPS / M.FrameHZ;
@@ -545,117 +546,111 @@ namespace Maria.Core {
 			}
 		}
 
+		private int FillRect(byte r, byte g, byte b, byte a) {
+			Sdl.SDL_Rect rect = new Sdl.SDL_Rect(0, 0, WIDTH, HEIGHT);
+			// TODO : actually put the thing together from the
+			// color components passed as parameters
+			int pf = 0;
+			return Sdl.SDL_FillRect(Sdl.SDL_GetVideoSurface(), ref rect, pf);
+		}
+
 		private unsafe void RenderFrame() {
 			// TODO : do something here...
-		}
+			if (PanX < 0) {
+				++LeftOffset;
+				FillRect(0, 0, 0, 0);
+				if (LeftOffset > 300) {
+					LeftOffset = 300;
+				}
+			}
+			if (PanX > 0) {
+				--LeftOffset;
+				FillRect(0, 0, 0, 0);
+				if (LeftOffset < -300) {
+					LeftOffset = -300;
+				}
+			}
+			if (PanY < 0) {
+				++ClipStart;
+				FillRect(0, 0, 0, 0);
+				if (ClipStart > 300) {
+					ClipStart = 300;
+				}
+			}
+			if (PanY > 0) {
+				--ClipStart;
+				FillRect(0, 0, 0, 0);
+				if (ClipStart < -300) {
+					ClipStart = -300;
+				}
+			}
+
+			if (TextExpireFrameCount > machine.FrameNumber) {
+				FontRenderer.DrawText(TextMsg, 5, ClipStart + 4, 10, 0);
+			}
+
+			if (Sdl.SDL_LockSurface(Sdl.SDL_GetVideoSurface()) < 0) {
+				throw new MariaCoreException("Couldn't lock video surface: " +
+					Sdl.SDL_GetError());
+			}
+
+			// TODO : probably we should do the whole unmarshaling shebang only once...
+			Sdl.SDL_Surface srfc = (Sdl.SDL_Surface) Marshal.PtrToStructure(
+				Sdl.SDL_GetVideoSurface(),
+				typeof(Sdl.SDL_Surface)
+			);
+                                			
+			uint* tptr = (uint*) (void*) srfc.pixels;
+			int si = ClipStart * VisiblePitch + LeftOffset;
+			if (tptr != null) {
+				uint* xptr = tptr;
+				uint* yptr;
+
+				if (VisiblePitch == (WIDTH >> 1)) {
+					for (int i = 0; i < HEIGHT; i++) {
+						while (si < 0) {
+							si += FrameBuffer.Length;
+						}
+						yptr = xptr;
+						for (int j = 0; j < (WIDTH >> 1); j++) {
+							while (si >= FrameBuffer.Length) {
+								si -= FrameBuffer.Length;
+							}
+							*yptr++ = *yptr++ = FrameBuffer[si++];
+						}
+						xptr += (srfc.pitch >> 2);
+					}
+				}
+				else if (VisiblePitch == WIDTH) {
+					for (int i = 0; i < HEIGHT; i++) {
+						while (si < 0) {
+							si += FrameBuffer.Length;
+						}
+						yptr = xptr;
+						for (int j = 0; j < WIDTH; j++) {
+							while (si >= FrameBuffer.Length) {
+								si -= FrameBuffer.Length;
+							}
+							*yptr++ = FrameBuffer[si++];
+						}
+						xptr += (srfc.pitch >> 2);
+					}
+				}
+
+				if (ShowMouseCursor) {
+					tptr[MouseY * WIDTH + MouseX] = 0xffffff;
+				}
+			}
+						
+			Sdl.SDL_UnlockSurface(Sdl.SDL_GetVideoSurface());
+			//SdlNativeMethods.UpdateRect(0, 0, WIDTH, HEIGHT);
+			Sdl.SDL_Flip(Sdl.SDL_GetVideoSurface());
+		}		
 	}
 }
 
 // TODO : enable the stuff below...
 /*
-		unsafe void RenderFrame()
-		{
-			if (PanX < 0)
-			{
-				LeftOffset++;
-				SdlNativeMethods.FillRect(Color.Black);
-				if (LeftOffset > 300)
-				{
-					LeftOffset = 300;
-				}
-			}
-			if (PanX > 0)
-			{
-				LeftOffset--;
-				SdlNativeMethods.FillRect(Color.Black);
-				if (LeftOffset < -300)
-				{
-					LeftOffset = -300;
-				}
-			}
-			if (PanY < 0)
-			{
-				ClipStart++;
-				SdlNativeMethods.FillRect(Color.Black);
-				if (ClipStart > 300)
-				{
-					ClipStart = 300;
-				}
-			}
-			if (PanY > 0)
-			{
-				ClipStart--;
-				SdlNativeMethods.FillRect(Color.Black);
-				if (ClipStart < -300)
-				{
-					ClipStart = -300;
-				}
-			}
-
-			if (TextExpireFrameCount > M.FrameNumber)
-			{
-				FontRenderer.DrawText(TextMsg, 5, ClipStart + 4, 10, 0);
-			}
-
-			SdlNativeMethods.Lock();
-			uint* tptr = (uint*)SdlNativeMethods.Pixels.ToPointer();
-			int si = ClipStart * VisiblePitch + LeftOffset;
-			if (tptr != null)
-			{
-				uint* xptr = tptr;
-				uint* yptr;
-
-				if (VisiblePitch == (WIDTH >> 1))
-				{
-					for (int i = 0; i < HEIGHT; i++)
-					{
-						while (si < 0)
-						{
-							si += FrameBuffer.Length;
-						}
-						yptr = xptr;
-						for (int j = 0; j < (WIDTH >> 1); j++)
-						{
-							while (si >= FrameBuffer.Length)
-							{
-								si -= FrameBuffer.Length;
-							}
-							*yptr++ = *yptr++ = FrameBuffer[si++];
-						}
-						xptr += (SdlNativeMethods.Pitch >> 2);
-					}
-				}
-				else if (VisiblePitch == WIDTH)
-				{
-					for (int i = 0; i < HEIGHT; i++)
-					{
-						while (si < 0)
-						{
-							si += FrameBuffer.Length;
-						}
-						yptr = xptr;
-						for (int j = 0; j < WIDTH; j++)
-						{
-							while (si >= FrameBuffer.Length)
-							{
-								si -= FrameBuffer.Length;
-							}
-							*yptr++ = FrameBuffer[si++];
-						}
-						xptr += (SdlNativeMethods.Pitch >> 2);
-					}
-				}
-
-				if (ShowMouseCursor)
-				{
-					tptr[MouseY * WIDTH + MouseX] = 0xffffff;
-				}
-			}
-			SdlNativeMethods.Unlock();
-			//SdlNativeMethods.UpdateRect(0, 0, WIDTH, HEIGHT);
-			SdlNativeMethods.Flip();
-		}
-
 		void OnJoyButton(int deviceno, int button, bool down)
 		{
 			InputAdapter ia = M.InputAdapter;
