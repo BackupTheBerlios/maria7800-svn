@@ -26,11 +26,11 @@ using System.IO;
 using Vtg.Util;
 
 namespace Maria.Core {
-	
+
 	public class UnknownCartTypeException : MariaCoreException {
 		public UnknownCartTypeException(string msg) : base(msg) {}
 	}
-	
+
 	[Serializable]
 	public abstract class Cart : IDevice {
 		private Machine machine;
@@ -65,7 +65,7 @@ namespace Maria.Core {
 		}
 
 		private static Cart New(BinaryReader rom, CartType cartType) {
-			Cart c;			
+			Cart c;
 			switch (cartType) {
 				case CartType.A2K:
 					c = new CartA2K(rom);
@@ -85,8 +85,11 @@ namespace Maria.Core {
 				case CartType.A16KR:
 					c = new CartA16KR(rom);
 					break;
+				case CartType.DC8K:
+					c = new CartDC8K(rom);
+					break;
 				// TODO : remaining 2600 cart types
-					
+
 				case CartType.A7808:
 					c = new Cart7808(rom);
 					break;
@@ -98,7 +101,7 @@ namespace Maria.Core {
 					c = new Cart7832(rom);
 					break;
 				// TODO : remaining 7800 cart types
-					
+
 				default:
 					throw new UnknownCartTypeException("Unknown cart type: " +
 						cartType.ToString());
@@ -106,9 +109,6 @@ namespace Maria.Core {
 			return c;
 			// TODO : move everything up into real switch...
 			/*switch (cartType) {
-				case CartType.DC8K:
-					c = new CartDC8K(rom);
-					break;
 				case CartType.PB8K:
 					c = new CartPB8K(rom);
 					break;
@@ -158,7 +158,7 @@ namespace Maria.Core {
 					break;
 				default:
 					throw new Exception("Unexpected CartType: " + cartType.ToString());
-			}*/			
+			}*/
 		}
 
 		public static Cart New(GameSettings gs) {
@@ -170,7 +170,7 @@ namespace Maria.Core {
 			Console.WriteLine("I'm gonna use CartType " + gs.CartType);
 			return Cart.New(rom, gs.CartType);
 		}
-		
+
 		// TODO : should probably be in the GameSettings class
 		private static void FixCartType(GameSettings gs) {
 			FileInfo fi = new FileInfo(gs.FileInfo.FullName);
@@ -201,7 +201,7 @@ namespace Maria.Core {
 					break;
 			}
 		}
-		
+
 		protected void LoadRom(BinaryReader br, int minSize) {
 			ArgumentCheck.NotNull(br, "br");
 			int flen = (int)(br.BaseStream.Length - br.BaseStream.Position);
@@ -209,6 +209,6 @@ namespace Maria.Core {
 			ROM = new byte[size];
 			br.Read(ROM, 0, size);
 			br.Close();
-		}		
+		}
 	}
 }

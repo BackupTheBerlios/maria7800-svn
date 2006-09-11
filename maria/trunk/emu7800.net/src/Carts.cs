@@ -1,4 +1,4 @@
-namespace EMU7800 
+namespace EMU7800
 {
 
 
@@ -18,51 +18,51 @@ namespace EMU7800
 		ushort BankBaseAddr;
 		ushort LastBankBaseAddr;
 
-		byte Bank 
+		byte Bank
 		{
-			set 
+			set
 			{
 				BankBaseAddr = (ushort)(0x0800 * value);
 				BankBaseAddr %= (ushort)ROM.Length;
 			}
 		}
-	
+
 		public override void Reset()
 		{
 			Bank = 0;
 		}
 
-		public override bool RequestSnooping 
+		public override bool RequestSnooping
 		{
 			get
 			{
 				return true;
 			}
 		}
-	
+
 		public byte this[ushort addr]
 		{
 			get
 			{
 				addr &= 0x0fff;
-				if (addr < 0x0800) 
+				if (addr < 0x0800)
 				{
 					return ROM[BankBaseAddr + (addr & 0x07ff)];
-				} 
-				else 
+				}
+				else
 				{
 					return ROM[LastBankBaseAddr + (addr & 0x07ff)];
 				}
 			}
 			set
 			{
-				if (addr <= 0x003f) 
+				if (addr <= 0x003f)
 				{
 					Bank = value;
 				}
 			}
 		}
-	
+
 		public CartTV8K(BinaryReader br)
 		{
 			LoadRom(br, 0x1000);
@@ -72,46 +72,9 @@ namespace EMU7800
 	}
 
 	/**
-	  Activison's Robot Tank and Decathlon 8KB bankswitching cart.
-
-	  Cart Format                Mapping to ROM Address Space	
-	  Bank1: 0x0000:0x1000       0x1000:0x1000  Bank selected by A13=0/1?
-	  Bank2: 0x1000:0x1000
-  
-	  This does what the Stella code does, which is to follow A13 to determine
-	  the bank.  Since A0-A12 are the only significant bits on the program
-	  counter, I am unsure how the cart/hardware could utilize this.
-
-	*/
-	[Serializable]
-	public sealed class CartDC8K : Cart, IDevice
-	{
-		public byte this[ushort addr]
-		{
-			get
-			{
-				if ((addr & 0x2000) == 0)
-				{
-					return ROM[addr & 0x0fff + 0x1000];
-				} 
-				else
-				{
-					return ROM[addr & 0x0fff];
-				}
-			}
-			set { }
-		}
-	
-		public CartDC8K(BinaryReader br) 
-		{
-			LoadRom(br, 0x2000);
-		}
-	}
-
-	/**
 	  Parker Brothers 8KB bankswitched carts.
 
-	  Cart Format                Mapping to ROM Address Space	
+	  Cart Format                Mapping to ROM Address Space
 	  Segment1: 0x0000:0x0400    Bank1:0x1000:0x0400  Select Segment: 1fe0-1fe7
 	  Segment2: 0x0400:0x0400    Bank2:0x1400:0x0400  Select Segment: 1fe8-1ff0
 	  Segment3: 0x0800:0x0400    Bank3:0x1800:0x0400  Select Segment: 1ff0-1ff8
@@ -126,14 +89,14 @@ namespace EMU7800
 	public sealed class CartPB8K : Cart, IDevice
 	{
 		ushort[] SegmentBase;
-	
+
 		public override void Reset()
 		{
 			SegmentBase[0] = ComputeSegmentBase(4);
 			SegmentBase[1] = ComputeSegmentBase(5);
 			SegmentBase[2] = ComputeSegmentBase(6);
 		}
-	
+
 		public byte this[ushort addr]
 		{
 			get
@@ -148,7 +111,7 @@ namespace EMU7800
 				UpdateSegmentBases(addr);
 			}
 		}
-	
+
 		public CartPB8K(BinaryReader br)
 		{
 			LoadRom(br, 0x2000);
@@ -185,7 +148,7 @@ namespace EMU7800
 	/**
 	  M-Network 16KB bankswitched carts with 2KB RAM.
 
-	  Cart Format                Mapping to ROM Address Space	
+	  Cart Format                Mapping to ROM Address Space
 	  Segment1: 0x0000:0x0800    Bank1:0x1000:0x0800  Select Seg: 1fe0-1fe6, 1fe7=RAM Seg1
 	  Segment2: 0x0800:0x0800    Bank2:0x1800:0x0800  Always Seg8
 	  Segment3: 0x1000:0x0800
@@ -194,7 +157,7 @@ namespace EMU7800
 	  Segment6: 0x2800:0x0800
 	  Segment7: 0x3000:0x0800
 	  Segment8: 0x3800:0x0800
-  
+
 	  RAM                        RAM Segment1 when 1fe7 select is accessed
 	  Segment1: 0x0000:0x0400    0x1000-0x13FF write port
 	  Segment2: 0x0400:0x0400    0x1400-0x17FF read port
@@ -205,7 +168,7 @@ namespace EMU7800
 
 	*/
 	[Serializable]
-	public sealed class CartMN16K : Cart, IDevice 
+	public sealed class CartMN16K : Cart, IDevice
 	{
 		ushort BankBaseAddr, BankBaseRAMAddr;
 		bool RAMBankOn;
@@ -233,7 +196,7 @@ namespace EMU7800
 			Bank = 0;
 			BankRAM = 0;
 		}
-	
+
 		public byte this[ushort addr]
 		{
 			get
@@ -243,15 +206,15 @@ namespace EMU7800
 				if (RAMBankOn && addr >= 0x0400 && addr < 0x0800)
 				{
 					return RAM[addr & 0x03ff];
-				} 
+				}
 				else if (addr >= 0x0900 && addr < 0x0a00)
 				{
 					return RAM[0x400 + BankBaseRAMAddr + (addr & 0xff)];
-				} 
+				}
 				else if (addr < 0x0800)
 				{
 					return ROM[BankBaseAddr + (addr & 0x07ff)];
-				} 
+				}
 				else
 				{
 					return ROM[0x3800 + (addr & 0x07ff)];
@@ -264,14 +227,14 @@ namespace EMU7800
 				if (RAMBankOn && addr < 0x0400)
 				{
 					RAM[addr & 0x03ff] = value;
-				} 
+				}
 				else if (addr >= 0x0800 && addr < 0x0900)
 				{
 					RAM[0x400 + BankBaseRAMAddr + (addr & 0xff)] = value;
 				}
 			}
 		}
-	
+
 		public CartMN16K(BinaryReader br)
 		{
 			LoadRom(br, 0x4000);
@@ -285,7 +248,7 @@ namespace EMU7800
 			if (addr >= 0x0fe0 && addr < 0x0fe8)
 			{
 				Bank = addr & 0x07;
-			} 
+			}
 			else if (addr >= 0x0fe8 && addr < 0x0fec)
 			{
 				BankRAM = addr & 0x03;
@@ -296,13 +259,13 @@ namespace EMU7800
 	/**
 	  CBS RAM Plus 12KB bankswitched carts with 128 bytes of RAM.
 
-	  Cart Format                Mapping to ROM Address Space	
+	  Cart Format                Mapping to ROM Address Space
 	  Bank1: 0x0000:0x1000       Bank1:0x1000:0x1000  Select Segment: 0ff8-0ffa
 	  Bank2: 0x1000:0x1000
 	  Bank3: 0x2000:0x1000
 								 Shadows ROM
 					 0x1000:0x80 RAM write port
-					 0x1080:0x80 RAM read port 
+					 0x1080:0x80 RAM read port
 
 	*/
 	[Serializable]
@@ -310,7 +273,7 @@ namespace EMU7800
 	{
 		ushort BankBaseAddr;
 		byte[] RAM;
-	
+
 		int Bank
 		{
 			set
@@ -323,7 +286,7 @@ namespace EMU7800
 		{
 			Bank = 2;
 		}
-	
+
 		public byte this[ushort addr]
 		{
 			get
@@ -336,7 +299,7 @@ namespace EMU7800
 				UpdateBank(addr);
 				return ROM[BankBaseAddr + addr];
 			}
-			set 
+			set
 			{
 				addr &= 0x0fff;
 				if (addr < 0x0100)
@@ -347,8 +310,8 @@ namespace EMU7800
 				UpdateBank(addr);
 			}
 		}
-	
-		public CartCBS12K(BinaryReader br) 
+
+		public CartCBS12K(BinaryReader br)
 		{
 			LoadRom(br, 0x3000);
 			Bank = 2;
@@ -383,7 +346,7 @@ namespace EMU7800
 	public sealed class CartA32K : Cart, IDevice
 	{
 		ushort BankBaseAddr;
-	
+
 		int Bank
 		{
 			set
@@ -391,12 +354,12 @@ namespace EMU7800
 				BankBaseAddr = (ushort)(value * 0x1000);
 			}
 		}
-	
+
 		public override void Reset()
 		{
 			Bank = 7;
 		}
-	
+
 		public byte this[ushort addr]
 		{
 			get
@@ -411,7 +374,7 @@ namespace EMU7800
 				UpdateBank(addr);
 			}
 		}
-	
+
 		public CartA32K(BinaryReader br)
 		{
 			LoadRom(br, 0x8000);
@@ -448,7 +411,7 @@ namespace EMU7800
 	{
 		ushort BankBaseAddr;
 		byte[] RAM;
-	
+
 		int Bank
 		{
 			set
@@ -456,12 +419,12 @@ namespace EMU7800
 				BankBaseAddr = (ushort)(value * 0x1000);
 			}
 		}
-	
+
 		public override void Reset()
 		{
 			Bank = 7;
 		}
-	
+
 		public byte this[ushort addr]
 		{
 			get
@@ -485,7 +448,7 @@ namespace EMU7800
 				UpdateBank(addr);
 			}
 		}
-	
+
 		public CartA32KR(BinaryReader br)
 		{
 			LoadRom(br, 0x8000);
@@ -545,7 +508,7 @@ namespace EMU7800
 		{
 			get
 			{
-		
+
 				byte a, x;
 				a = _ShiftRegister;
 				a &= (1 << 0);
@@ -576,7 +539,7 @@ namespace EMU7800
 				_ShiftRegister = value;
 			}
 		}
-	
+
 		public override void Reset()
 		{
 			Bank = 1;
@@ -584,7 +547,7 @@ namespace EMU7800
 			FractionalClocks = 0.0;
 			ShiftRegister = 1;
 		}
-	
+
 		public byte this[ushort addr]
 		{
 			get
@@ -597,7 +560,7 @@ namespace EMU7800
 				UpdateBank(addr);
 				return ROM[BankBaseAddr + addr];
 			}
-			set 
+			set
 			{
 				addr &= 0x0fff;
 				if (addr >= 0x0040 && addr < 0x0080)
@@ -610,7 +573,7 @@ namespace EMU7800
 				}
 			}
 		}
-	
+
 		public CartDPC(BinaryReader br)
 		{
 			LoadRom(br, 0x2800);
@@ -643,12 +606,12 @@ namespace EMU7800
 			if ((Counters[i] & 0x00ff) == Tops[i])
 			{
 				Flags[i] = 0xff;
-			} 
+			}
 			else if ((Counters[i] & 0x00ff) == Bots[i])
 			{
 				Flags[i] = 0x00;
 			}
-		
+
 			switch (fn)
 			{
 				case 0x00:
@@ -699,7 +662,7 @@ namespace EMU7800
 				Counters[i]--;
 				Counters[i] &= 0x07ff;
 			}
- 
+
 			return result;
 		}
 
@@ -707,7 +670,7 @@ namespace EMU7800
 		{
 			ulong sysClockDelta = 3*M.CPU.Clock - LastSystemClock;
 			LastSystemClock = 3*M.CPU.Clock;
- 
+
 			double OSCclocks = ((15750.0 * sysClockDelta) / 1193182.0)
 				+ FractionalClocks;
 
@@ -734,11 +697,11 @@ namespace EMU7800
 				if (Tops[r] != 0)
 				{
 					newLow -= (wholeClocks % top);
-					if (newLow < 0) 
+					if (newLow < 0)
 					{
 						newLow += top;
 					}
-				} 
+				}
 				else
 				{
 					newLow = 0;
@@ -747,7 +710,7 @@ namespace EMU7800
 				if (newLow <= Bots[r])
 				{
 					Flags[r] = 0x00;
-				} 
+				}
 				else if (newLow <= Tops[r])
 				{
 					Flags[r] = 0xff;
@@ -795,7 +758,7 @@ namespace EMU7800
 					Counters[i] &= 0x00ff;
 					Counters[i] |= (ushort)((val & 0x07) << 8);
 					// Execute special code for music mode data fetchers
-					if (i >= 5) 
+					if (i >= 5)
 					{
 						MusicMode[i - 5] = (val & 0x10) != 0;
 						// NOTE: We are not handling the clock source input for
@@ -816,10 +779,10 @@ namespace EMU7800
 
 	/**
 	  Atari 7800 non-bankswitched 48KB cartridge
-  
+
 	  Cart Format                Mapping to ROM Address Space
 	  0x0000:0xc000              0x4000:0xc000
-  
+
 	*/
 	[Serializable]
 	public sealed class Cart7848 : Cart, IDevice
@@ -843,7 +806,7 @@ namespace EMU7800
 
 	/**
 	  Atari 7800 SuperGame bankswitched cartridge
-  
+
 	  Cart Format                Mapping to ROM Address Space
 	  Bank0: 0x00000:0x4000      0x0000:0x4000
 	  Bank1: 0x04000:0x4000      0x4000:0x4000  Bank6
@@ -853,7 +816,7 @@ namespace EMU7800
 	  Bank5: 0x14000:0x4000
 	  Bank6: 0x18000:0x4000
 	  Bank7: 0x1c000:0x4000
-  
+
 	*/
 	[Serializable]
 	public sealed class Cart78SG : Cart, IDevice
@@ -872,7 +835,7 @@ namespace EMU7800
 				if (RAM != null && BankNo == 1)
 				{
 					return RAM[addr & 0x3fff];
-				} 
+				}
 				else
 				{
 					return ROM[ (Bank[BankNo] << 14) | (addr & 0x3fff) ];
@@ -914,7 +877,7 @@ namespace EMU7800
 
 	/**
 	  Atari 7800 SuperGame S9 bankswitched cartridge
-  
+
 	  Cart Format                Mapping to ROM Address Space
 	  Bank0: 0x00000:0x4000      0x0000:0x4000
 	  Bank1: 0x04000:0x4000      0x4000:0x4000  Bank0
@@ -924,8 +887,8 @@ namespace EMU7800
 	  Bank5: 0x14000:0x4000
 	  Bank6: 0x18000:0x4000
 	  Bank7: 0x1c000:0x4000
-	  Bank8: 0x20000:0x4000  
-  
+	  Bank8: 0x20000:0x4000
+
 	*/
 	[Serializable]
 	public sealed class Cart78S9 : Cart, IDevice
@@ -958,7 +921,7 @@ namespace EMU7800
 			Bank[1] = 0;
 			Bank[2] = 1;
 			Bank[3] = 8;
-	
+
 			int size = (int)(br.BaseStream.Length - br.BaseStream.Position);
 			LoadRom(br, size);
 		}
@@ -966,16 +929,16 @@ namespace EMU7800
 
 	/**
 	  Atari 7800 SuperGame S4 bankswitched cartridge
-  
+
 	  Cart Format                Mapping to ROM Address Space
 	  Bank0: 0x00000:0x4000      0x0000:0x4000
 	  Bank1: 0x04000:0x4000      0x4000:0x4000  Bank2
 	  Bank2: 0x08000:0x4000      0x8000:0x4000  Bank0 (0 on startup)
 	  Bank3: 0x0c000:0x4000      0xc000:0x4000  Bank3
-  
+
 	  Banks 0-3 are the same as banks 4-7
- 
-  
+
+
 	*/
 	[Serializable]
 	public sealed class Cart78S4 : Cart, IDevice
@@ -994,7 +957,7 @@ namespace EMU7800
 				if (RAM != null && BankNo == 1)
 				{
 					return RAM[addr & 0x3fff];
-				} 
+				}
 				else
 				{
 					return ROM[ (Bank[BankNo] << 14) | (addr & 0x3fff) ];
@@ -1036,13 +999,13 @@ namespace EMU7800
 
 	/**
 	  Atari 7800 Absolute bankswitched cartridge
-  
+
 	  Cart Format                Mapping to ROM Address Space
 	  Bank0: 0x00000:0x4000      0x0000:0x4000
 	  Bank1: 0x04000:0x4000      0x4000:0x4000  Bank0-1 (0 on startup)
 	  Bank2: 0x08000:0x4000      0x8000:0x4000  Bank2
 	  Bank3: 0x0c000:0x4000      0xc000:0x4000  Bank3
-  
+
 	*/
 	[Serializable]
 	public sealed class Cart78AB : Cart, IDevice
@@ -1051,7 +1014,7 @@ namespace EMU7800
 		int BankNo;
 
 		public override void Reset() { }
-	
+
 		public byte this[ushort addr]
 		{
 			get
@@ -1084,7 +1047,7 @@ namespace EMU7800
 
 	/**
 	  Atari 7800 Activision bankswitched cartridge
-  
+
 	  Cart Format                Mapping to ROM Address Space
 	  Bank0 : 0x00000:0x2000      0x0000:0x2000
 	  Bank1 : 0x02000:0x2000      0x2000:0x2000
@@ -1094,15 +1057,15 @@ namespace EMU7800
 	  Bank5 : 0x0a000:0x2000      0xa000:0x2000  Bank(n)   n in [0-15], n=0 on startup
 	  Bank6 : 0x0c000:0x2000      0xc000:0x2000  Bank(n+1)
 	  Bank7 : 0x0e000:0x2000      0xe000:0x2000  Bank14
-	  Bank8 : 0x10000:0x2000  
+	  Bank8 : 0x10000:0x2000
 	  Bank9 : 0x12000:0x2000
 	  Bank10: 0x14000:0x2000
 	  Bank11: 0x16000:0x2000
 	  Bank12: 0x18000:0x2000
 	  Bank13: 0x1a000:0x2000
-	  Bank14: 0x1c000:0x2000          
+	  Bank14: 0x1c000:0x2000
 	  Bank15: 0x13000:0x2000
-  
+
 	*/
 	[Serializable]
 	public sealed class Cart78AC : Cart, IDevice
@@ -1110,7 +1073,7 @@ namespace EMU7800
 		int[] Bank = new int[8];
 
 		public override void Reset() { }
-	
+
 		public byte this[ushort addr]
 		{
 			get
