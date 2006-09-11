@@ -76,6 +76,12 @@ namespace Maria.Core {
 				case CartType.A8K:
 					c = new CartA8K(rom);
 					break;
+				case CartType.A8KR:
+					c = new CartA8KR(rom);
+					break;
+				case CartType.A16K:
+					c = new CartA16K(rom);
+					break;
 				// TODO : remaining 2600 cart types
 					
 				case CartType.A7808:
@@ -97,12 +103,6 @@ namespace Maria.Core {
 			return c;
 			// TODO : move everything up into real switch...
 			/*switch (cartType) {
-				case CartType.A8KR:
-					c = new CartA8KR(rom);
-					break;
-				case CartType.A16K:
-					c = new CartA16K(rom);
-					break;
 				case CartType.A16KR:
 					c = new CartA16KR(rom);
 					break;
@@ -164,8 +164,10 @@ namespace Maria.Core {
 		public static Cart New(GameSettings gs) {
 			BinaryReader rom = new BinaryReader(File.OpenRead(gs.FileInfo.FullName));
 			rom.BaseStream.Seek(gs.Offset, SeekOrigin.Begin);
+			Console.WriteLine("CartType from database : " + gs.CartType);
 			if (gs.CartType == CartType.Default)
 				FixCartType(gs);
+			Console.WriteLine("I'm gonna use CartType " + gs.CartType);
 			return Cart.New(rom, gs.CartType);
 		}
 		

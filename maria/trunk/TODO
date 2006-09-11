@@ -1,4 +1,3 @@
-- Add the standard 8k bankswitched cart...
 - Not much left to do:
   - Fill in the missing bits in SDLHost.
     => OYSTRON is rendering correctly, but something

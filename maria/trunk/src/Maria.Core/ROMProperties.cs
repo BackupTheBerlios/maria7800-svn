@@ -30,7 +30,7 @@ using System.IO;
 namespace Maria.Core {
 	public class ROMProperties
 	{
-		const string ROM_PROPERTIES_FN = "ROMProperties.csv";
+		const string ROM_PROPERTIES_FN = "romproperties.csv";
 		Hashtable PropertyTable = null;
 
 		public GameSettings GetGameSettings(string md5)
