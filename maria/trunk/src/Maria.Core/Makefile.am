@@ -38,6 +38,7 @@ CartA16KR.cs \
 CartDC8K.cs \
 CartPB8K.cs \
 CartTV8K.cs \
+CartCBS12K.cs \
 Cart7808.cs \
 Cart7816.cs \
 Cart7832.cs \

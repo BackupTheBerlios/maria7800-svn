@@ -94,6 +94,9 @@ namespace Maria.Core {
 				case CartType.TV8K:
 					c = new CartTV8K(rom);
 					break;
+				case CartType.CBS12K:
+					c = new CartCBS12K(rom);
+					break;
 				// TODO : remaining 2600 cart types
 
 				case CartType.A7808:
@@ -115,9 +118,6 @@ namespace Maria.Core {
 			return c;
 			// TODO : move everything up into real switch...
 			/*switch (cartType) {
-				case CartType.CBS12K:
-					c = new CartCBS12K(rom);
-					break;
 				case CartType.A32K:
 					c = new CartA32K(rom);
 					break;
