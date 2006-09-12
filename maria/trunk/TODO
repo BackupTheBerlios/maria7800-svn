@@ -74,7 +74,9 @@
 - At some point search for \n sequences in source code and
   replace them by Environment.NewLine. Or so. Oh well.
 ---
-Stuff to clean up:
+Stuff to clean up/fix:
+- Glitches in fatal run
+- oystron : controller input not working correctly
 - Should look at HSC7800. The thing is U*G*L*Y
 - The whole Cart base/concrete class business looks a bit odd to me
 - Duplicated code (offset calculation) in MD5.cs and GameSettings.cs
