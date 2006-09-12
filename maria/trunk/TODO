@@ -76,6 +76,7 @@
 ---
 Stuff to clean up/fix:
 - Glitches in fatal run
+- Pitfall2 not working ?
 - oystron : controller input not working correctly
 - Should look at HSC7800. The thing is U*G*L*Y
 - The whole Cart base/concrete class business looks a bit odd to me

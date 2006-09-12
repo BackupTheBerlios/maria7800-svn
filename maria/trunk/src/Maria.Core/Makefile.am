@@ -41,6 +41,7 @@ CartPB8K.cs \
 CartTV8K.cs \
 CartCBS12K.cs \
 CartMN16K.cs \
+CartDPC.cs \
 Cart7808.cs \
 Cart7816.cs \
 Cart7832.cs \
