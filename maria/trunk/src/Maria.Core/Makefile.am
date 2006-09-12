@@ -46,6 +46,7 @@ Cart7808.cs \
 Cart7816.cs \
 Cart7832.cs \
 Cart7848.cs \
+Cart78AC.cs \
 CartType.cs \
 CommandLine.cs \
 Controller.cs \

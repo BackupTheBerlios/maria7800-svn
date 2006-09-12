@@ -122,6 +122,9 @@ namespace Maria.Core {
 					c = new Cart7848(rom);
 					break;
 				// TODO : remaining 7800 cart types
+				case CartType.A78AC:
+					c = new Cart78AC(rom);
+					break;
 
 				default:
 					throw new UnknownCartTypeException("Unknown cart type: " +
@@ -152,9 +155,6 @@ namespace Maria.Core {
 					break;
 				case CartType.A78AB:
 					c = new Cart78AB(rom);
-					break;
-				case CartType.A78AC:
-					c = new Cart78AC(rom);
 					break;
 				default:
 					throw new Exception("Unexpected CartType: " + cartType.ToString());
