@@ -51,7 +51,6 @@ namespace Maria {
 			}
 			catch (Exception e) {
 				Console.Error.WriteLine("Error: " + e.Message);
-				throw;
 				return 1;
 			}
 		}

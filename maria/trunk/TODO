@@ -77,6 +77,8 @@
 Stuff to clean up/fix:
 - Problem in Cart78AB : NTSC F-18 crashes. Seems to be a problem
   in the bankswitching code. Does it happen with original version too ?
+- Problem in Cart78S4 : NTSC Tower Toppler behaves pretty odd...
+  Does emu7800 have the same problem ?
 - Glitches in fatal run
 - Pitfall2 not working ?
 - oystron : controller input not working correctly
