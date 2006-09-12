@@ -127,13 +127,12 @@ namespace Maria.Core {
 				case MachineType.A2600PAL:
 					m = new Machine2600PAL(c, ia);
 					break;
-				// TODO : enable machine construction...
-				/*case MachineType.A7800NTSC:
+				case MachineType.A7800NTSC:
 					m = new Machine7800NTSC(c, ia);
 					break;
 				case MachineType.A7800PAL:
 					m = new Machine7800PAL(c, ia);
-					break;*/
+					break;
 				default:
 					throw new Exception("Unexpected machine type: " + gs.MachineType.ToString());
 			}
