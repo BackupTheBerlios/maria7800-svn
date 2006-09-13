@@ -122,6 +122,10 @@ namespace Maria.Core {
 					c = new Cart7848(rom);
 					break;
 				// TODO : remaining 7800 cart types
+				case CartType.A78SGP:
+				case CartType.A78SG:
+					c = new Cart78SG(rom, false);
+					break;
 				case CartType.A78S4:
 					c = new Cart78S4(rom, false);
 					break;
@@ -149,10 +153,6 @@ namespace Maria.Core {
 					c = new CartA32K(rom);
 					break;
 
-				case CartType.A78SGP:
-				case CartType.A78SG:
-					c = new Cart78SG(rom, false);
-					break;
 				case CartType.A78SGR:
 					c = new Cart78SG(rom, true);
 					break;
