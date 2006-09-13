@@ -1,3 +1,8 @@
+- One of the next things to fix would probably be 
+  the sound. Probably that's because some games run too fast...
+  emu7800 throttles the whole thing via the sound emulation.
+  ouch.
+- Or we could add some invalid opcodes.
 - Fix a few TODOs ?
 - Not much left to do:
   - Fill in the missing bits in SDLHost.
@@ -29,8 +34,6 @@
   outputs and should decide which should be Trace and which
   should be Debug and which should go directly to
   stdout/stderr...
-- Give Machine class a try ?
-  - construction method (Maria.New) not yet complete...
 - The RomProperties class might be a neat candidate too.
   Here we should add a few unixish things:
   [WE ADD THOSE UNIXISH THINGS LATER. I WANT TO SEE THE
