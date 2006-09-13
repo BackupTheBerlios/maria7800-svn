@@ -1,3 +1,4 @@
+- Fix a few TODOs ?
 - Not much left to do:
   - Fill in the missing bits in SDLHost.
     => OYSTRON is rendering correctly, but something
@@ -14,6 +15,9 @@
   the first time :D
 - Instead of "Error: blahblah" report "maria: blahblah"
   in the main program.
+- Don't just catch all exceptions in main program ?
+  (At least don't catch Exception...because we don't
+  get any stack trace then, which kind of sucks...)
 - We have our EmuTraceListener, but it doesn't do anything.
   => Read about how Trace/Debug are supposed to work. Then come
   back.
