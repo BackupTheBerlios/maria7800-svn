@@ -126,6 +126,9 @@ namespace Maria.Core {
 				case CartType.A78SG:
 					c = new Cart78SG(rom, false);
 					break;
+				case CartType.A78SGR:
+					c = new Cart78SG(rom, true);
+					break;
 				case CartType.A78S4:
 					c = new Cart78S4(rom, false);
 					break;
@@ -153,9 +156,6 @@ namespace Maria.Core {
 					c = new CartA32K(rom);
 					break;
 
-				case CartType.A78SGR:
-					c = new Cart78SG(rom, true);
-					break;
 				default:
 					throw new Exception("Unexpected CartType: " + cartType.ToString());
 			}*/
