@@ -126,11 +126,10 @@ namespace Maria.Core {
 		// 1: TIM8T:  set    8 clock interval (6.7 usec/interval)
 		// 2: TIM64T: set   64 clock interval (53.6 usec/interval)
 		// 3: T1024T: set 1024 clock interval (858.2 usec/interval)
+		private static readonly int[] timerShiftTable = new int[] {0, 3, 6, 10};
 		void SetTimerRegister(byte data, int interval) {
 			IRQTriggered = false;
-			// TODO : I'm not sure creating an array every time
-			// the register is accessed is such a good idea...
-			TimerShift = new int[] { 0, 3, 6, 10 }[interval];
+			TimerShift = timerShiftTable[interval];
 			TimerTarget = machine.CPU.Clock + (ulong)(data << TimerShift);
 		}
 
