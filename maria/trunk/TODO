@@ -75,6 +75,7 @@
   replace them by Environment.NewLine. Or so. Oh well.
 ---
 Stuff to clean up/fix:
+- Parse cart settings also from .A78 files ?
 - Problem in Cart78AB : NTSC F-18 crashes. Seems to be a problem
   in the bankswitching code. Does it happen with original version too ?
 - Problem in Cart78S4 : NTSC Tower Toppler behaves pretty odd...
