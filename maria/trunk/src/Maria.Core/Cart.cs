@@ -100,14 +100,15 @@ namespace Maria.Core {
 				case CartType.MN16K:
 					c = new CartMN16K(rom);
 					break;
+				case CartType.A32K:
+					c = new CartA32K(rom);
+					break;					
 				case CartType.A32KR:
 					c = new CartA32KR(rom);
 					break;
 				case CartType.DPC:
 					c = new CartDPC(rom);
 					break;
-				// TODO : remaining 2600 cart types
-
 				case CartType.A7808:
 					c = new Cart7808(rom);
 					break;
@@ -121,7 +122,6 @@ namespace Maria.Core {
 				case CartType.A7848:
 					c = new Cart7848(rom);
 					break;
-				// TODO : remaining 7800 cart types
 				case CartType.A78SGP:
 				case CartType.A78SG:
 					c = new Cart78SG(rom, false);
@@ -144,21 +144,11 @@ namespace Maria.Core {
 				case CartType.A78AC:
 					c = new Cart78AC(rom);
 					break;
-
 				default:
 					throw new UnknownCartTypeException("Unknown cart type: " +
 						cartType.ToString());
 			}
 			return c;
-			// TODO : move everything up into real switch...
-			/*switch (cartType) {
-				case CartType.A32K:
-					c = new CartA32K(rom);
-					break;
-
-				default:
-					throw new Exception("Unexpected CartType: " + cartType.ToString());
-			}*/
 		}
 
 		public static Cart New(GameSettings gs) {

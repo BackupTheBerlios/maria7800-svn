@@ -35,6 +35,7 @@ CartA8K.cs \
 CartA8KR.cs \
 CartA16K.cs \
 CartA16KR.cs \
+CartA32K.cs \
 CartA32KR.cs \
 CartDC8K.cs \
 CartPB8K.cs \

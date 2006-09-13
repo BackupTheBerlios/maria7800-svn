@@ -1,13 +1,10 @@
 - Not much left to do:
   - Fill in the missing bits in SDLHost.
-    => I'd say we add some more cart types. It's fun, and
-       easy to pull off.
     => OYSTRON is rendering correctly, but something
        is utterly wrong with keyboard input...
        No idea wether the problem is in the emu
        core or perhaps in the PIA, or what...
        We'll see...       
-  - Remaining cart classes ? (nah, probably not yet)
 - Continue work a bit on SDLHost. Would be cool to soonishly
   actually see something, if it's only a window...
 - Perhaps we should now write a temporary GlobalSettings
@@ -62,9 +59,6 @@
     to...well...wherever docs go...
 - Currently we simply use Tao assemblies built for 1.1
   is this a good thing (what if the target framework is 2.0 ?)
-- Possibly we can work on the Cart classes.
-  - I think I'll port the remaining carts and then
-    worry about refactoring them.
 - Build process:
   - At some point we should perhaps keep referenced assemblies
     as dependencies of the assembly that should be built.
